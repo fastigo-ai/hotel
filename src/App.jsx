@@ -8,6 +8,7 @@ import Home from './components/ui/Home';
 import AppLayout from './components/layout/AppLayout'
 import Error from './components/ui/Error'
 import CardDetails from './pages/cards/CardDetails';
+import Confirm from './pages/payment/Confirm';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         {
           path:'/carddetails/:id',
           element:<CardDetails/>,
+        },
+        {
+          path:'/confirm',
+          element:<Confirm/>,
         },
       ]
     

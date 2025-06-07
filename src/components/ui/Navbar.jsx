@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import UK from "../../assets/country/launguage/uk.jpg";
 
 
-const navItems = [
-  { label: "Stays", icon: "🏨", active: true },
-  { label: "Flights", icon: "✈️" },
-  { label: "Flight + Hotel", icon: "🧳" },
-  { label: "Car rentals", icon: "🚗" },
-  { label: "Attractions", icon: "🗺️" },
-  { label: "Airport taxis", icon: "🚕" },
-];
+// const navItems = [
+//   { label: "Stays", icon: "🏨", active: true },
+//   { label: "Flights", icon: "✈️" },
+//   { label: "Flight + Hotel", icon: "🧳" },
+//   { label: "Car rentals", icon: "🚗" },
+//   { label: "Attractions", icon: "🗺️" },
+//   { label: "Airport taxis", icon: "🚕" },
+// ];
 
 const BookingHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,7 +81,7 @@ const BookingHeader = () => {
       </aside>
 
       {/* Bottom nav row (hidden on small screens) */}
-      <div className=" md:block relative z-10">
+      {/* <div className=" md:block relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
           <div className="flex space-x-2">
             {navItems.map((item) => (
@@ -99,7 +99,7 @@ const BookingHeader = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Hero text */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">

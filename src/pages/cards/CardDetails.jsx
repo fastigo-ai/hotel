@@ -185,7 +185,7 @@ const CardDetails = () => {
 
         {/* Booking Card */}
         
-          <BookingWidget/>
+          <BookingWidget property={property}/>
        
       </div>
     </div>
