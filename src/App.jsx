@@ -9,6 +9,8 @@ import AppLayout from './components/layout/AppLayout'
 import Error from './components/ui/Error'
 import CardDetails from './pages/cards/CardDetails';
 import Confirm from './pages/payment/Confirm';
+import OtplessLogin from './pages/Login/LoginPage';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,8 +28,16 @@ const router = createBrowserRouter([
           element:<CardDetails/>,
         },
         {
+          path:'/carddetails/:id/confirm',
+          element:<CardDetails/>,
+        },
+        {
           path:'/confirm',
           element:<Confirm/>,
+        },
+        {
+          path:'/login',
+          element:<OtplessLogin/>,
         },
       ]
     

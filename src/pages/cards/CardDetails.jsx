@@ -24,8 +24,8 @@ const CardDetails = () => {
       host: "Sumit",
       description:
         "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
-      images: [Image1, Image2, Image3, Image4,Image5,Image6],
-      price: 6147,
+      images: [Image1, Image2, Image3, Image4, Image5, Image6],
+      price: 69,
     },
   };
 
@@ -86,16 +86,14 @@ const CardDetails = () => {
           <div className="border rounded-xl px-6 py-4 flex items-center justify-between gap-4 max-w-4xl">
             {/* Badge Info */}
             <div className="flex items-center gap-4">
-              
               <div className="text-center leading-tight">
                 <p className="font-semibold text-lg">Guest</p>
                 <p className="font-semibold text-lg">favourite</p>
               </div>
 
               <p className="text-base text-gray-800 font-medium ml-4 hidden lg:block">
-  One of the most loved homes, according to guests
-</p>
-
+                One of the most loved homes, according to guests
+              </p>
             </div>
 
             {/* Rating Info */}
@@ -184,9 +182,8 @@ const CardDetails = () => {
         </div>
 
         {/* Booking Card */}
-        
-          <BookingWidget property={property}/>
-       
+
+        <BookingWidget property={property} />
       </div>
     </div>
   );

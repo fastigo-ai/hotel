@@ -1,6 +1,6 @@
 // components/TrendingDestinations.jsx
 import React from "react";
-import Image1 from '../../assets/trending/1.jpg'
+import Image1 from '../../assets/card Image/no1.jpg'
 import Image2 from '../../assets/trending/2.jpg'
 import Image3 from '../../assets/trending/3.jpg'
 import Image4 from '../../assets/trending/4.jpg'
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const destinations = {
   top: [
     { name: "London", flag: "🇬🇧", image: Image1 },
-    { name: "Seoul", flag: "🇰🇷", image: Image2 },
+    { name: "Seoul", flag: "🇰🇷", image: Image1 },
   ],
   bottom: [
     { name: "Toronto", flag: "🇨🇦", image: Image3 },
@@ -39,7 +39,7 @@ const TrendingDestinations = () => {
 
   return (
     <section className="max-w-7xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-4">Trending destinations</h2>
+      <h2 className="text-3xl font-bold mb-4">Trending Destinations</h2>
 
       {/* Desktop & Tablet View */}
       <div className="hidden sm:block">

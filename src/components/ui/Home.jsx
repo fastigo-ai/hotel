@@ -1,16 +1,23 @@
-import React from 'react'
-import Trending from '../../pages/tranding/Trending'
-import Card from '../../pages/cards/Card'
-import Search from '../../pages/searching/Search'
+import React from "react";
+import Trending from "../../pages/tranding/Trending";
+import Card from "../../pages/cards/Card";
+import Search from "../../pages/searching/Search";
+import Offers from "../../pages/offers/Offer";
 
 const Home = () => {
   return (
-    < >
-    <Search/>
-    <Trending/>
-    <Card/>
-    </>
-  )
-}
+    <>
+      <Search />
+      <Trending />
+      <Card />
 
-export default Home
+      <Offers />
+
+      <Card />
+      <hr />
+      <Card />
+    </>
+  );
+};
+
+export default Home;

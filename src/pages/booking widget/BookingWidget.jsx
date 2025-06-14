@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 Add this
+import { useNavigate } from "react-router-dom";
 
 const BookingWidget = ({ property }) => {
-  const navigate = useNavigate(); // 👈 Initialize
+  const navigate = useNavigate();
 
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -17,20 +17,29 @@ const BookingWidget = ({ property }) => {
   const totalGuests = guests.adults + guests.children;
 
   const updateGuestCount = (type, delta) => {
-    setGuests((prev) => {
-      const updated = { ...prev, [type]: Math.max(0, prev[type] + delta) };
-      return updated;
-    });
+    setGuests((prev) => ({
+      ...prev,
+      [type]: Math.max(0, prev[type] + delta),
+    }));
   };
 
   const handleReserve = () => {
-    navigate('/confirm',  { state: { property } }); // 👈 Redirect to confirm page
+    navigate('/confirm', {
+      state: {
+        property,
+        checkIn,
+        checkOut,
+        guests: totalGuests,
+      },
+    });
   };
 
   return (
     <div className="md:w-1/3 mt-8 md:mt-0 max-w-7xl">
       <div className="border p-6 rounded-xl shadow-lg space-y-4">
-        <h2 className="text-xl font-semibold">₹18,727 <span className="text-sm font-normal text-gray-500">for 2 nights</span></h2>
+        <h2 className="text-xl font-semibold">
+          $79 <span className="text-sm font-normal text-gray-500">for 2 nights</span>
+        </h2>
 
         {/* Date & Guest Picker */}
         <div className="border rounded-lg w-full">
@@ -63,7 +72,7 @@ const BookingWidget = ({ property }) => {
 
             {showGuestOptions && (
               <div className="absolute z-10 top-[100%] left-0 w-full bg-white border rounded-lg shadow-lg p-4 mt-1 space-y-4">
-                {/* Guests Rows */}
+                {/* Guest Count Controls */}
                 <GuestRow label="Adults" subtitle="Age 13+" count={guests.adults} onDecrease={() => updateGuestCount("adults", -1)} onIncrease={() => updateGuestCount("adults", 1)} />
                 <GuestRow label="Children" subtitle="Ages 2–12" count={guests.children} onDecrease={() => updateGuestCount("children", -1)} onIncrease={() => updateGuestCount("children", 1)} />
                 <GuestRow label="Infants" subtitle="Under 2" count={guests.infants} onDecrease={() => updateGuestCount("infants", -1)} onIncrease={() => updateGuestCount("infants", 1)} />
@@ -80,7 +89,12 @@ const BookingWidget = ({ property }) => {
         {/* Reserve Button */}
         <button
           onClick={handleReserve}
-          className="w-full bg-blue-800 text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition"
+          disabled={!checkIn || !checkOut}
+          className={`w-full py-3 px-4 rounded-lg font-semibold transition ${
+            !checkIn || !checkOut
+              ? "bg-gray-400 cursor-not-allowed text-white"
+              : "bg-blue-800 text-white hover:opacity-90"
+          }`}
         >
           Reserve
         </button>
