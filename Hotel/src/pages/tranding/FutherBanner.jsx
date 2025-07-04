@@ -1,0 +1,38 @@
+import React from 'react';
+import Image from '../../assets/card Image/no1.png';
+import QR from '../../assets/logo/qrcode.png';
+
+const ExpediaCard = () => {
+  return (
+    <div className="flex flex-col md:flex-row p-6 bg-white rounded-lg shadow-md max-w-7xl mx-auto">
+      {/* Image Section */}
+      <div className="w-full md:w-1/2">
+        <img
+          src={Image}
+          alt="Travel Destination"
+          className="w-full h-64 md:h-full object-cover rounded-lg"
+        />
+      </div>
+
+      {/* Content Section */}
+      <div className="w-full md:w-1/2 p-4 flex flex-col justify-center">
+        <h2 className="text-2xl font-bold mb-2">Go further with the Expedia app</h2>
+        <p className="text-gray-700 mb-4">
+          Save on select hotels and earn OneKeyCash on bookings in the app. Our app deals help you to save on trips so you can travel more and manage it all on the go.
+        </p>
+        <p className="text-gray-700 mb-4">
+          Scan the QR code with your device camera and download our app
+        </p>
+        <div className="flex justify-start">
+          <img
+            src={QR}
+            alt="QR Code"
+            className="w-24 h-24 object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ExpediaCard;
