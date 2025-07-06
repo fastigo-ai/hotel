@@ -27,7 +27,7 @@ const CardDetails = () => {
       description:
         "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
       images: [Bed1, Image1, Image3, Image4, Image5, Image6],
-      price: 69,
+      price: 90,
     },
     "Plains Motors, Double Room": {
       title: "Plains Motors, Double Room",
@@ -42,7 +42,7 @@ const CardDetails = () => {
       description:
         "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
       images: [bed2, Image1, Image3, Image4, Image5, Image6],
-      price: 69,
+      price: 99,
     },
     "Plains Motors, 1 Queen Bed": {
       title: "Plains Motors, 1 Queen Bed",
@@ -57,7 +57,7 @@ const CardDetails = () => {
       description:
         "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
       images: [Queen, Image3, Image4, Image5, Image6],
-      price: 69,
+      price: 90,
     },
   };
 
