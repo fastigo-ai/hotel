@@ -4,7 +4,7 @@ import QR from '../../assets/logo/qrcode.png';
 
 const ExpediaCard = () => {
   return (
-    <div className="flex flex-col md:flex-row p-6 bg-white rounded-lg shadow-md max-w-7xl mx-auto">
+    <div className="flex flex-col md:flex-row p-6 bg-white rounded-lg  max-w-7xl mx-auto">
       {/* Image Section */}
       <div className="w-full md:w-1/2">
         <img

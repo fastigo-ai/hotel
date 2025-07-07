@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import '../../App.css'
 import Queen from '../../assets/Card/queenbed.webp';
-import Image3 from "../../assets/card Image/3.avif";
 import Image4 from "../../assets/card Image/4.avif";
 import Image5 from "../../assets/card Image/5.avif";
 import Image6 from "../../assets/card Image/6.avif";

@@ -13,6 +13,16 @@ import Card from "./pages/cards/Card";
 import HotelCard from "./pages/searching/HotelCard ";
 
 import OtpForm from "./pages/Login/OtpForm";
+import About from "./pages/footerDetails/About";
+import Careers from "./pages/footerDetails/Careers";
+import Partner from "./pages/footerDetails/Partner";
+import News from "./pages/footerDetails/News";
+import Advertise from "./pages/footerDetails/Advertise";
+import Affiliate from "./pages/footerDetails/Affiliate";
+import TravelGuide from "./pages/footerDetails/TravelGuide";
+import MotelsInCanada from "./pages/footerDetails/MotelsInCanada";
+import VacationRentals from "./pages/footerDetails/VacationRentals";
+import ComparisonTable from "./pages/footerDetails/ComparisonTable";
 
 
 
@@ -60,6 +70,55 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <OtpForm />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/Careers",
+        element: <Careers />,
+
+      },
+      {
+        path: "/Partner",
+        element: <Partner />,
+
+      },
+      {
+        path: "/news",
+        element: <News />,
+
+      },
+      {
+        path: "/advertise",
+        element: <Advertise />,
+
+      },
+      {
+        path: "/affiliate",
+        element: <Affiliate />,
+
+      },
+      {
+        path: "/travelGuide",
+        element: <TravelGuide />,
+
+      },
+      {
+        path: "/MotelsInCanada",
+        element: <MotelsInCanada />,
+
+      },
+      {
+        path: "/vacationRentals",
+        element: <VacationRentals />,
+
+      },
+      {
+        path: "/comparisonTable",
+        element: <ComparisonTable />,
+
       },
       
     ],
