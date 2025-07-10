@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut, signIn } from "../../redux/slices/authSlice";
-import Logo from "../../assets/logo/logo13.png";
+import Logo from "../../assets/logo/Logo13.png";
 
 export default function ExpediaHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
