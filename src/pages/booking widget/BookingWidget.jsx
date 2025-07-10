@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BookingWidget = ({ property }) => {
+const BookingWidget = ({ property, isSignedIn }) => {
   const navigate = useNavigate();
 
   const [checkIn, setCheckIn] = useState("");
@@ -24,32 +24,31 @@ const BookingWidget = ({ property }) => {
   };
 
   const handleReserve = () => {
+    if (!isSignedIn) {
+      alert("Please sign in to proceed with the reservation.");
+      return;
+    }
+
     navigate("/confirm", {
       state: {
         property,
         checkIn,
         checkOut,
-        guests, // ✅ Pass full guest object
+        guests,
       },
     });
   };
 
   const getMinDate = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return today.toISOString().split("T")[0]; // YYYY-MM-DD
   };
 
   const getMinCheckOutDate = () => {
     if (checkIn) {
       const checkInDate = new Date(checkIn);
       checkInDate.setDate(checkInDate.getDate() + 1);
-      const year = checkInDate.getFullYear();
-      const month = String(checkInDate.getMonth() + 1).padStart(2, "0");
-      const day = String(checkInDate.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
+      return checkInDate.toISOString().split("T")[0];
     }
     return getMinDate();
   };
