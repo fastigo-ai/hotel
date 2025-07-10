@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { LoginWithOtp, VerifyOtp } from "../../api/Api";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo/logo13.png";
+import logo from "../../assets/logo/Logo13.png";
 
 export default function SignInPage() {
   const [mobile, setMobile] = useState("");
@@ -40,7 +40,7 @@ export default function SignInPage() {
     {/* Company Logo */}
     <div className="flex justify-center mb-6">
       <img
-        src={Logo} // 🔁 Replace with actual logo path
+        src={logo} 
         alt="Company Logo"
         className="h-12 object-contain"
       />
