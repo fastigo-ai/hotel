@@ -1,6 +1,7 @@
 import axios from "axios";
 import { signIn } from "../redux/slices/authSlice"
 const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
+// const BASE_URL = "http://localhost:3000";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
