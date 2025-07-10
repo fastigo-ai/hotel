@@ -24,10 +24,10 @@ const BookingWidget = ({ property, isSignedIn }) => {
   };
 
   const handleReserve = () => {
-    if (!isSignedIn) {
-      alert("Please sign in to proceed with the reservation.");
-      return;
-    }
+    // if (!isSignedIn) {
+    //   alert("Please sign in to proceed with the reservation.");
+    //   return;
+    // }
 
     navigate("/confirm", {
       state: {
