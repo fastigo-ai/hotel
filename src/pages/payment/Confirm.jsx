@@ -7,13 +7,7 @@ const Confirm = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { property, checkIn, checkOut, guests } = state || {};
-  const user = useSelector((state)=>state.auth.user)
-  console.log(user,"show user detail");
-  console.log(property);
-  console.log(checkIn);
-  console.log(checkOut);
-  console.log(guests);
-  
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,7 +30,7 @@ const Confirm = () => {
 
   const [formData, setFormData] = useState({
     propertyId: property._id,
-    userId: user?.user?._id || null,
+    userId: user?.user?.id || null,
     checkInDate: checkIn,
     checkOutDate: checkOut,
     totalStay: nights,

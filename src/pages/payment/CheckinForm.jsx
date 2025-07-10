@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import {
-  CardElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
 
-export default function UnifiedCheckInAndCheckoutForm({ total }) {
-  const stripe = useStripe();
-  const elements = useElements();
-
+export default function UnifiedCheckInAndCheckoutForm({ 
+  total, 
+  propertyId, 
+  userId, 
+  checkInDate, 
+  checkOutDate, 
+  totalStay, 
+  guests 
+}) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,8 +22,6 @@ export default function UnifiedCheckInAndCheckoutForm({ total }) {
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
   const [msg, setMsg] = useState("");
-  const [cardError, setCardError] = useState("");
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +33,17 @@ export default function UnifiedCheckInAndCheckoutForm({ total }) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{6,15}$/;
 
-    if (!emailRegex.test(formData.email)) {
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required.";
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Enter a valid email address.";
     }
 
@@ -56,175 +64,228 @@ export default function UnifiedCheckInAndCheckoutForm({ total }) {
     setMsg("");
 
     if (!validate()) return;
-    if (!stripe || !elements) {
-      setMsg("Stripe not ready yet.");
+
+    // Validate required props
+    if (!propertyId || !userId || !checkInDate || !checkOutDate || !totalStay || !guests || !total) {
+      setMsg("❌ Missing booking information. Please try again.");
       return;
     }
 
     setProcessing(true);
-    setMsg("⏳ Processing payment...");
+    setMsg("⏳ Creating checkout session...");
 
     try {
-      const res = await fetch("http://localhost:4242/create-payment-intent", {
+      // Create the exact payload structure you specified
+      const payload = {
+        propertyId: propertyId,
+        userId: userId,
+        checkInDate: checkInDate,
+        checkOutDate: checkOutDate,
+        totalStay: totalStay,
+        guests: {
+          adults: guests.adults || 0,
+          children: guests.children || 0,
+          infants: guests.infants || 0,
+          pets: guests.pets || 0
+        },
+        specialRequest: formData.specialRequest || "",
+        user: {
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          phone: formData.phone
+        },
+        totalAmount: total,
+        currency: "usd"
+      };
+
+      console.log("Sending payload:", payload);
+
+      // Call your createCheckoutSession API
+      const response = await fetch("/api/create-checkout-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: total }), // NOTE: in cents if backend expects cents
+        headers: {
+          "Content-Type": "application/json",
+          // Add authorization header if needed
+          // "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-      if (!data.clientSecret) {
-        setMsg("❌ Failed to create payment intent.");
-        setProcessing(false);
-        return;
+      const data = await response.json();
+
+      console.log("API Response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || `Server error: ${response.status}`);
       }
 
-      const result = await stripe.confirmCardPayment(data.clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      });
-
-      if (result.error) {
-        setMsg("❌ " + result.error.message);
-      } else if (result.paymentIntent.status === "succeeded") {
+      if (data.success && data.url) {
+        // Save form data before redirect
         const completeData = {
           ...formData,
           amountPaid: total,
+          bookingId: data.bookingId,
+          orderId: data.orderId,
+          sessionId: data.sessionId,
+          payload: payload,
           time: new Date().toISOString(),
         };
+        
         setSubmittedData((prev) => [...prev, completeData]);
-        setMsg("✅ Payment successful and data saved!");
-        setPaymentSuccess(true);
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          countryCode: "+1",
-          phone: "",
-          specialRequest: "",
-        });
-        elements.getElement(CardElement).clear();
+        setMsg("✅ Checkout session created! Redirecting to payment...");
+        
+        // Small delay to show success message before redirect
+        setTimeout(() => {
+          window.location.href = data.url;
+        }, 1000);
       } else {
-        setMsg("⚠ Payment status: " + result.paymentIntent.status);
+        throw new Error(data.message || "Invalid response from server");
       }
-    } catch (err) {
-      setMsg("❌ " + err.message);
+    } catch (error) {
+      console.error("Checkout error:", error);
+      setMsg("❌ " + error.message);
+      setProcessing(false);
     }
-
-    setProcessing(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-3xl mx-auto p-6 space-y-6 bg-white rounded shadow-md"
-    >
-      <h1 className="text-2xl font-bold">Who's checking in?</h1>
+    <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white rounded shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <h1 className="text-2xl font-bold">Who's checking in?</h1>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          placeholder="First name *"
-          required
-          className="flex-1 px-4 py-3 border rounded"
-        />
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          placeholder="Last name *"
-          required
-          className="flex-1 px-4 py-3 border rounded"
-        />
-      </div>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="First name *"
+              required
+              className={`w-full px-4 py-3 border rounded ${
+                errors.firstName ? "border-red-500" : ""
+              }`}
+            />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+            )}
+          </div>
+          
+          <div className="flex-1">
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Last name *"
+              required
+              className={`w-full px-4 py-3 border rounded ${
+                errors.lastName ? "border-red-500" : ""
+              }`}
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+            )}
+          </div>
+        </div>
 
-      <input
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email address *"
-        required
-        className={`w-full px-4 py-3 border rounded ${
-          errors.email ? "border-red-500" : ""
-        }`}
-      />
-      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+        <div>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email address *"
+            required
+            className={`w-full px-4 py-3 border rounded ${
+              errors.email ? "border-red-500" : ""
+            }`}
+          />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+        </div>
 
-      <div className="flex flex-row gap-2">
-        <select
-          name="countryCode"
-          value={formData.countryCode}
-          onChange={handleChange}
-          className="px-2 py-3 border rounded"
-        >
-          <option value="+1">+1</option>
-          <option value="+44">+44</option>
-          <option value="+91">+91</option>
-        </select>
+        <div className="flex flex-row gap-2">
+          <select
+            name="countryCode"
+            value={formData.countryCode}
+            onChange={handleChange}
+            className="px-2 py-3 border rounded"
+          >
+            <option value="+1">+1 (US/CA)</option>
+            <option value="+44">+44 (UK)</option>
+            <option value="+91">+91 (IN)</option>
+          </select>
 
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="Phone number *"
-          required
-          className={`w-full px-4 py-3 border rounded ${
-            errors.phone ? "border-red-500" : ""
-          }`}
-        />
-      </div>
-      {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+          <div className="flex-1">
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone number *"
+              required
+              className={`w-full px-4 py-3 border rounded ${
+                errors.phone ? "border-red-500" : ""
+              }`}
+            />
+            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          </div>
+        </div>
 
-      <textarea
-        name="specialRequest"
-        value={formData.specialRequest}
-        onChange={handleChange}
-        placeholder="Accessibility needs or special requests (optional)"
-        className="w-full px-4 py-3 border rounded min-h-[100px]"
-      />
-
-      <div>
-        <h2 className="text-xl font-semibold mb-2">💳 Payment</h2>
-        <p className="mb-4 text-gray-600">
-          You're about to pay <strong>{total} CAD</strong> for Plains Motor.
-        </p>
-
-        <div className="p-3 border rounded bg-gray-50 mb-2">
-          <CardElement
-            options={cardStyle}
-            onChange={(e) =>
-              setCardError(e.error ? e.error.message : "")
-            }
+        <div>
+          <textarea
+            name="specialRequest"
+            value={formData.specialRequest}
+            onChange={handleChange}
+            placeholder="Accessibility needs or special requests (optional)"
+            className="w-full px-4 py-3 border rounded min-h-[100px]"
           />
         </div>
 
-        {cardError && <p className="text-red-500 text-sm mb-2">{cardError}</p>}
+        <div className="border-t pt-6">
+          <h2 className="text-xl font-semibold mb-2">💳 Payment</h2>
+          <p className="mb-4 text-gray-600">
+            You're about to pay <strong>${total} USD</strong> for your booking.
+          </p>
 
-        <button
-          type="submit"
-          disabled={processing || !stripe || paymentSuccess}
-          className={`w-full py-3 rounded text-white font-bold ${
-            processing || paymentSuccess
-              ? "bg-gray-400"
-              : "bg-indigo-600 hover:bg-indigo-700"
-          }`}
-        >
-          {processing
-            ? "Processing..."
-            : paymentSuccess
-            ? "✅ Payment Completed"
-            : `Pay ${total} CAD`}
-        </button>
+          <button
+            type="submit"
+            disabled={processing}
+            className={`w-full py-3 rounded text-white font-bold ${
+              processing
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            {processing ? "Creating Checkout Session..." : `Pay $${total} USD`}
+          </button>
 
-        {msg && (
-          <p className="mt-3 text-center text-sm text-gray-700">{msg}</p>
-        )}
+          {msg && (
+            <div className={`mt-3 p-3 rounded text-center text-sm ${
+              msg.includes('✅') ? 'bg-green-100 text-green-700' : 
+              msg.includes('❌') ? 'bg-red-100 text-red-700' : 
+              'bg-blue-100 text-blue-700'
+            }`}>
+              {msg}
+            </div>
+          )}
+        </div>
+      </form>
+
+      {/* Debug Information */}
+      <div className="mt-6 p-4 bg-gray-100 rounded">
+        <h3 className="font-semibold text-sm mb-2">Debug Info:</h3>
+        <pre className="text-xs text-gray-600 overflow-x-auto">
+          {JSON.stringify({
+            propertyId,
+            userId,
+            checkInDate,
+            checkOutDate,
+            totalStay,
+            guests,
+            total
+          }, null, 2)}
+        </pre>
       </div>
 
       {submittedData.length > 0 && (
@@ -235,18 +296,6 @@ export default function UnifiedCheckInAndCheckoutForm({ total }) {
           </pre>
         </div>
       )}
-    </form>
+    </div>
   );
 }
-
-const cardStyle = {
-  style: {
-    base: {
-      fontSize: "16px",
-      color: "#32325d",
-      "::placeholder": { color: "#aab7c4" },
-      fontFamily: "Nunito, sans-serif",
-    },
-    invalid: { color: "#fa755a" },
-  },
-};
