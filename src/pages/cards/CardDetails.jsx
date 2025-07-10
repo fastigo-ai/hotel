@@ -1,80 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Bed1 from '../../assets/Card/bed1.png'
-import Queen from '../../assets/Card/queenbed.webp'
-import Image1 from "../../assets/card Image/no1.png";
-import bed2 from "../../assets/Card/bed2.png";
-import Image3 from "../../assets/card Image/no3.jpg";
-import Image4 from "../../assets/card Image/no4.jpg";
-import Image5 from "../../assets/card Image/no5.jpg";
-import Image6 from "../../assets/card Image/no6.jpg";
+import { getPropertyDetail } from "../../api/Api"; 
 import BookingWidget from "../booking widget/BookingWidget";
 
 const CardDetails = () => {
   const { id } = useParams();
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const listings = {
-    "Plains Motors, Single Room": {
-      title: "Plains Motors, Single Room",
-      location: "Stettler, Alberta, Canada",
-      guests: 4,
-      bedroom: 1,
-      bed: 1,
-      bathroom: 1,
-      rating: 4.99,
-      reviews: 79,
-      host: "Sumit",
-      description:
-        "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
-      images: [Bed1, Image1, Image3, Image4, Image5, Image6],
-      price: 90,
-    },
-    "Plains Motors, Double Room": {
-      title: "Plains Motors, Double Room",
-      location: "Stettler, Alberta, Canada",
-      guests: 2,
-      bedroom: 1,
-      bed: 1,
-      bathroom: 1,
-      rating: 4.99,
-      reviews: 79,
-      host: "Sumit",
-      description:
-        "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
-      images: [bed2, Image1, Image3, Image4, Image5, Image6],
-      price: 99,
-    },
-    "Plains Motors, 1 Queen Bed": {
-      title: "Plains Motors, 1 Queen Bed",
-      location: "Stettler, Alberta, Canada",
-      guests: 2,
-      bedroom: 1,
-      bed: 1,
-      bathroom: 1,
-      rating: 4.99,
-      reviews: 79,
-      host: "Sumit",
-      description:
-        "Welcome to this another luxurious property by Tulip Homes situated on 12 floor...",
-      images: [Queen, Image3, Image4, Image5, Image6],
-      price: 90,
-    },
-  };
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const data = await getPropertyDetail(id);
+        setProperty(data);
+      } catch (error) {
+        console.error("Error loading property detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const property = listings[id];
+    fetchProperty();
+  }, [id]);
 
-  if (!property) return <div className="p-4">Property not found.</div>;
+  if (loading) return <p className="px-4">Loading property details...</p>;
+  if (!property) return <p className="px-4">Property not found.</p>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      {/* Title + Location */}
       <h1 className="text-2xl font-bold mb-1">{property.title}</h1>
 
-      {/* Images Section */}
+      {/* Desktop Images */}
       <div className="hidden md:grid grid-cols-4 gap-2 h-[500px] my-6">
         <div className="col-span-2 row-span-2">
           <img
-            src={property.images[0]}
+            src={`${property.images[0]}`}
             alt="Main"
             className="w-full h-full object-cover rounded-xl"
           />
@@ -88,22 +48,24 @@ const CardDetails = () => {
           />
         ))}
       </div>
+
+      {/* Location and Info */}
       <div className="mx-auto py-4">
         <h3 className="text-xl font-bold mb-1">
           Entire rental unit in {property.location}
         </h3>
-        <p className="text-gray-600 ">
-          {property.guests} guests • {property.bedroom} bedroom • {property.bed}{" "}
-          bed • {property.bathroom} bathroom
+        <p className="text-gray-600">
+          2 guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
+          {property.bathroom} bathroom
         </p>
       </div>
 
-      {/* Mobile Scrollable Image Section */}
+      {/* Mobile Scrollable Images */}
       <div className="md:hidden flex gap-2 overflow-x-auto snap-x scroll-smooth pb-4 my-6">
         {property.images.map((img, i) => (
           <img
             key={i}
-            src={img}
+            src={`/${img}.jpg`}
             alt={`property-${i}`}
             className="w-80 h-60 object-cover rounded-xl flex-shrink-0 snap-center"
           />
@@ -114,30 +76,25 @@ const CardDetails = () => {
       <div className="flex flex-col md:flex-row md:gap-10 max-w-7xl justify-between">
         {/* Left Content */}
         <div className="md:w-1/2 space-y-6">
-          {/* Rating & Tags */}
+          {/* Rating and Badges */}
           <div className="border rounded-xl px-6 py-4 flex items-center justify-between gap-4 max-w-4xl">
-            {/* Badge Info */}
             <div className="flex items-center gap-4">
               <div className="text-center leading-tight">
                 <p className="font-semibold text-lg">Guest</p>
                 <p className="font-semibold text-lg">favourite</p>
               </div>
-
               <p className="text-base text-gray-800 font-medium ml-4 hidden lg:block">
                 One of the most loved homes, according to guests
               </p>
             </div>
 
-            {/* Rating Info */}
             <div className="flex items-center gap-4 border-l pl-4">
               <div className="text-right">
-                <p className="text-xl font-semibold">
-                  {property.rating.toFixed(2)}
-                </p>
+                <p className="text-xl font-semibold">{property.rating}</p>
                 <p className="text-sm text-yellow-500">★★★★★</p>
               </div>
               <div className="text-right">
-                <p className="text-xl font-semibold">{property.reviews}</p>
+                <p className="text-xl font-semibold">128</p>
                 <p className="text-sm text-gray-500">Reviews</p>
               </div>
             </div>
@@ -151,7 +108,7 @@ const CardDetails = () => {
               className="rounded-full w-12 h-12"
             />
             <div>
-              <p className="font-semibold">Hosted by {property.host}</p>
+              <p className="font-semibold">Hosted by Alice</p>
               <p className="text-gray-500 text-sm">
                 Superhost • 1 year hosting
               </p>
@@ -160,62 +117,32 @@ const CardDetails = () => {
 
           {/* Highlights */}
           <div className="space-y-4 border-t pt-4">
-            <div><h1 className="text-xl font-bold mb-1">About this property</h1></div>
-            <div >
-              <div className="flex items-center gap-4">
-              <span role="img" aria-label="Breakfast" className="text-xl">
-                ☕
-              </span>
-              <p className="font-medium">Breakfast included</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span
-                role="img"
-                aria-label="Air conditioning"
-                className="text-xl"
-              >
-                ❄️
-              </span>
-              <p className="font-medium">Air conditioning</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span role="img" aria-label="Housekeeping" className="text-xl">
-                ✔️
-              </span>
-              <p className="font-medium">Housekeeping</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span role="img" aria-label="Pet friendly" className="text-xl">
-                🐾
-              </span>
-              <p className="font-medium">Pet friendly</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span role="img" aria-label="WiFi" className="text-xl">
-                📶
-              </span>
-              <p className="font-medium">Free WiFi</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <span role="img" aria-label="Parking" className="text-xl">
-                🅿️
-              </span>
-              <p className="font-medium">Parking included</p>
-            </div>
-            </div>
+            <h1 className="text-xl font-bold mb-1">About this property</h1>
+            {[
+              ["☕", "Breakfast included"],
+              ["❄️", "Air conditioning"],
+              ["✔️", "Housekeeping"],
+              ["🐾", "Pet friendly"],
+              ["📶", "Free WiFi"],
+              ["🅿️", "Parking included"],
+            ].map(([icon, label], index) => (
+              <div key={index} className="flex items-center gap-4">
+                <span role="img" className="text-xl">
+                  {icon}
+                </span>
+                <p className="font-medium">{label}</p>
+              </div>
+            ))}
           </div>
 
           {/* Description */}
           <div>
             <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <p className="text-gray-700 whitespace-pre-line">
-              {property.description}
-            </p>
+            <p className="text-gray-700 whitespace-pre-line">{property.description}</p>
           </div>
         </div>
 
         {/* Booking Card */}
-
         <BookingWidget property={property} />
       </div>
     </div>

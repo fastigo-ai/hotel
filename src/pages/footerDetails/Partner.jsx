@@ -4,14 +4,14 @@ const Partner = () => {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-black mb-4 text-center">
+        <h1 className="text-4xl font-bold text-black mb-4 ">
           Partner with Plains Motor Inn
         </h1>
 
-        <p className="text-lg mb-6 text-center">
+        <p className="text-lg mb-6 ">
           At Plains Motor Inn, we believe in building long-term relationships that benefit both our partners and our community.
         </p>
-        <p className="text-lg mb-6 text-center">
+        <p className="text-lg mb-6 ">
           Whether you're a corporate client, a contractor, or a local business, we offer flexible, value-driven accommodation solutions tailored to your needs.
         </p>
 

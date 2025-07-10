@@ -23,6 +23,9 @@ import TravelGuide from "./pages/footerDetails/TravelGuide";
 import MotelsInCanada from "./pages/footerDetails/MotelsInCanada";
 import VacationRentals from "./pages/footerDetails/VacationRentals";
 import ComparisonTable from "./pages/footerDetails/ComparisonTable";
+import AccommodationGuide from "./pages/footerDetails/Accommodation ";
+import CarRentalGuide from "./pages/footerDetails/CarRentalGuide";
+import DomesticFlightsGuide from "./pages/footerDetails/DomesticFlightsGuide";
 
 
 
@@ -39,12 +42,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/carddetails/:id",
-        element: <CardDetails />,
-      },
-      {
         path: "/card",
         element: <Card />,
+      },
+      {
+        path: "/carddetails/:id",
+        element: <CardDetails />,
       },
 
       {
@@ -118,6 +121,21 @@ const router = createBrowserRouter([
       {
         path: "/comparisonTable",
         element: <ComparisonTable />,
+
+      },
+      {
+        path: "/accommodationGuide",
+        element: <AccommodationGuide />,
+
+      },
+      {
+        path: "/car-rentalGuide",
+        element: <CarRentalGuide />,
+
+      },
+      {
+        path: "/domestic-Flights-Guide",
+        element: <DomesticFlightsGuide />,
 
       },
       

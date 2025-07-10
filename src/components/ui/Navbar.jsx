@@ -1,38 +1,48 @@
-import React, { useState } from "react";
+// src/components/Header/ExpediaHeader.jsx
+import React, { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link, Links } from "react-router-dom";
-import Logo from "../../assets/logo/logo12.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut, signIn } from "../../redux/slices/authSlice";
+import Logo from "../../assets/logo/logo13.png";
 
 export default function ExpediaHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    try {
+      const localUser = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+
+      if (localUser && token && !isAuthenticated) {
+        dispatch(signIn({ user: JSON.parse(localUser), token }));
+      }
+    } catch (error) {
+      console.error("LocalStorage parse error:", error);
+    }
+  }, [dispatch, isAuthenticated]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    dispatch(signOut());
+    setMenuOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="border-b border-gray-300 bg-white z-50 relative">
       <nav className="max-w-7xl mx-auto flex items-center justify-between py-3 px-4 sm:px-6 lg:px-8">
-        {/* Logo Section */}
-        <div className="flex items-center space-x-4">
-          <Link to="/">
-          <img src={Logo} alt="Logo" className="h-14 shadow-none border-none" />
-          </Link>
-        </div>
+        <Link to="/">
+          <img src={Logo} alt="Logo" className="h-14" />
+        </Link>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <button
-            type="button"
-            className="flex items-center space-x-2 border border-gray-300 rounded-full py-1.5 px-4 text-gray-900 text-sm font-medium hover:bg-gray-100"
-          >
+          <button className="flex items-center space-x-2 border border-gray-300 rounded-full py-1.5 px-4 text-gray-900 text-sm font-medium hover:bg-gray-100">
             <span>Get the app</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-blue-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path d="M12 4v16m0 0l-6-6m6 6l6-6" />
-            </svg>
           </button>
 
           <div className="flex items-center space-x-1 cursor-pointer">
@@ -45,20 +55,27 @@ export default function ExpediaHeader() {
             />
           </div>
 
-          
-          <a href="#" className="text-gray-900 text-sm font-medium hover:text-blue-600">
-            Support
-          </a>
-         
+          <a href="#" className="text-gray-900 text-sm font-medium hover:text-blue-600">Support</a>
 
-          
-
-          <Link to='/signin' className="text-gray-900 text-sm font-medium hover:text-blue-600">
-            Sign in
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm text-gray-900 font-medium">
+                Welcome, {user?.name || user?.mobile}
+              </span>
+              <button
+                onClick={handleSignOut}
+                className="text-gray-900 text-sm font-medium hover:text-blue-600"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link to="/signin" className="text-gray-900 text-sm font-medium hover:text-blue-600">
+              Sign in
+            </Link>
+          )}
         </div>
 
-        {/* Hamburger Icon */}
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -70,7 +87,6 @@ export default function ExpediaHeader() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 bg-white border-t">
           <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
@@ -79,14 +95,30 @@ export default function ExpediaHeader() {
           <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             CAD
           </a>
-         
           <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             Support
           </a>
-         
-          <Link to="/signin" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
-            Sign in
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <div className="text-gray-800 text-sm font-medium">
+                Welcome, {user?.name || user?.mobile}
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="text-left w-full text-gray-800 text-sm font-medium hover:text-blue-600"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/signin"
+              onClick={() => setMenuOpen(false)}
+              className="block text-gray-800 text-sm font-medium hover:text-blue-600"
+            >
+              Sign in
+            </Link>
+          )}
         </div>
       )}
     </header>

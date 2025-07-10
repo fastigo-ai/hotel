@@ -1,153 +1,90 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+// src/pages/SignInPage.jsx
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { LoginWithOtp, VerifyOtp } from "../../api/Api";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../assets/logo/logo13.png";
 
-function OtpForm() {
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
+export default function SignInPage() {
+  const [mobile, setMobile] = useState("");
+  const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1);
-  const [msg, setMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendOtp = async () => {
-    try {
-      setIsLoading(true);
-      setMsg('');
-      
-      const res = await axios.post('http://localhost:4242/send-otp', { 
-        phone: phone // Change from email to phone
-      }, {
-        timeout: 10000,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-      if (res.data.status === 'pending') {
-        setMsg('OTP sent successfully!');
-        setStep(2);
-      } else {
-        setMsg('Failed to send OTP');
-      }
+  const handleSendOtp = async () => {
+    if (!mobile || mobile.length < 10) return alert("Invalid mobile number.");
+    try {
+      await LoginWithOtp(mobile, setIsLoading);
+      setStep(2);
     } catch (err) {
-      setMsg(err.response?.data?.error || 'Failed to send OTP. Please try again.');
-    } finally {
-      setIsLoading(false);
+      alert("Failed to send OTP.");
     }
   };
 
-  const verifyOtp = async () => {
+  const handleVerifyOtp = async () => {
+    if (!otp || otp.length < 4) return alert("Invalid OTP.");
     try {
-      setIsLoading(true);
-      setMsg('');
-      
-      const res = await axios.post('http://localhost:4242/verify-otp', { 
-        phone: phone, // Change from email to phone
-        code: otp 
-      });
-
-      if (res.data.status === 'approved') {
-        setMsg('OTP verified successfully!');
-        // Redirect or perform action after successful verification
-      } else {
-        setMsg('Invalid OTP. Please try again.');
-      }
+      await VerifyOtp(mobile, otp, setIsLoading, dispatch);
+      navigate("/");
     } catch (err) {
-      setMsg(err.response?.data?.error || 'Verification failed. Please try again.');
-    } finally {
-      setIsLoading(false);
+      alert("OTP verification failed.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            OTP Verification
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            We will send you a One Time Passcode via this mobile number
-          </p>
-        </div>
-
-        <div className="mt-8 space-y-6">
-          {step === 1 ? (
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone Number
-                </label>
-                <input
-                  type="tel" // Change input type to tel for phone numbers
-                  id="phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                  placeholder="Enter your mobile number"
-                  required
-                />
-              </div>
-
-              <button
-                onClick={sendOtp}
-                disabled={!phone || isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${(isLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {isLoading ? 'Sending...' : 'Send OTP'}
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
-                  Verification Code
-                </label>
-                <input
-                  type="text"
-                  id="otp"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                  placeholder="Enter 6-digit OTP"
-                  maxLength="6"
-                  required
-                />
-              </div>
-
-              <button
-                onClick={verifyOtp}
-                disabled={otp.length < 6 || isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${(otp.length < 6 || isLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {isLoading ? 'Verifying...' : 'Verify OTP'}
-              </button>
-            </div>
-          )}
-
-          {msg && (
-            <div className={`rounded-md p-4 ${msg.includes('success') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  {msg.includes('success') ? (
-                    <svg className="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  )}
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium">{msg}</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+   <div className="flex items-center justify-center min-h-1/2 bg-gray-100 px-4">
+  <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full">
+    {/* Company Logo */}
+    <div className="flex justify-center mb-6">
+      <img
+        src={Logo} // 🔁 Replace with actual logo path
+        alt="Company Logo"
+        className="h-12 object-contain"
+      />
     </div>
+
+    <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign In with OTP</h2>
+
+    <div className="space-y-5">
+      <input
+        type="tel"
+        placeholder="Enter mobile number"
+        value={mobile}
+        onChange={(e) => setMobile(e.target.value)}
+        className="border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-3 w-full rounded-lg text-gray-700"
+        disabled={isLoading || step === 2}
+      />
+
+      {step === 2 && (
+        <input
+          type="text"
+          placeholder="Enter OTP"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+          className="border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 p-3 w-full rounded-lg text-gray-700"
+          disabled={isLoading}
+        />
+      )}
+
+      <button
+        onClick={step === 1 ? handleSendOtp : handleVerifyOtp}
+        className={`w-full py-3 rounded-lg text-white font-semibold transition duration-300 ${
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : step === 1
+            ? "bg-blue-600 hover:bg-blue-700"
+            : "bg-green-600 hover:bg-green-700"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Loading..." : step === 1 ? "Send OTP" : "Verify OTP"}
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 }
-
-export default OtpForm;

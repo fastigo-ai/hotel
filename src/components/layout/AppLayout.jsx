@@ -1,18 +1,23 @@
-import React from 'react'
-import Navbar from '../ui/Navbar'
-import { Outlet } from 'react-router-dom'
-import Footer from '../ui/Footer'
-import ScrollToTop from '../ui/ScrollToTop'
+import React from "react";
+import Navbar from "../ui/Navbar"; // or ExpediaHeader if that’s your main nav
+import { Outlet } from "react-router-dom";
+import Footer from "../ui/Footer";
+import ScrollToTop from "../ui/ScrollToTop";
 
 const AppLayout = () => {
   return (
-    <div>
-      <ScrollToTop/>
-      <Navbar/>
-      <Outlet/>
-      <Footer/>
-    </div>
-  )
-}
+    <div >
+      <ScrollToTop />
 
-export default AppLayout
+      <Navbar />
+
+      <main >
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default AppLayout;

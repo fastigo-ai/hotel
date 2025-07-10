@@ -29,9 +29,9 @@ const Footer = () => {
             <li><Link to="/MotelsInCanada" className="text-blue-600">Motels in Canada</Link></li>
             <li><Link to="/vacationRentals" className="text-blue-600">Vacation Rentals in Canada</Link></li>
             <li><Link to="/comparisonTable" className="text-blue-600">Vacation packages in Canada</Link></li>
-            <li><Link to="#" className="text-blue-600">Domestic flights</Link></li>
-            <li><Link to="#" className="text-blue-600">Car rentals in United States of America</Link></li>
-            <li><Link to="#" className="text-blue-600">All accommodation types</Link></li>
+            <li><Link to="/domestic-Flights-Guide" className="text-blue-600">Domestic flights</Link></li>
+            <li><Link to="/car-rentalGuide" className="text-blue-600">Car rentals in Canada</Link></li>
+            <li><Link to="/accommodationGuide" className="text-blue-600">All accommodation types</Link></li>
             <li><Link to="#" className="text-blue-600">One Key credit cards</Link></li>
           </ul>
         </div>
@@ -41,9 +41,9 @@ const Footer = () => {
           <ul className="mt-4 space-y-2">
             <li><Link to="/privacy-policy" className="text-blue-600">Privacy</Link></li>
             <li><Link to="#" className="text-blue-600">Cookies</Link></li>
-            <li><Link to="" className="text-blue-600">Terms of use</Link></li>
+            {/* <li><Link to="" className="text-blue-600">Terms of </Link></li> */}
             <li><Link to="/terms" className="text-blue-600">Terms and conditions</Link></li>
-            <li><Link to="#" className="text-blue-600">Vrbo terms and conditions</Link></li>
+            <li><Link to="/terms" className="text-blue-600">Plains & Motors terms and conditions</Link></li>
             <li><Link to="#" className="text-blue-600">Accessibility</Link></li>
             <li><Link to="#" className="text-blue-600">Your privacy choices</Link></li>
             <li><Link to="#" className="text-blue-600">Content guidelines and reporting content</Link></li>
@@ -55,10 +55,9 @@ const Footer = () => {
           <ul className="mt-4 space-y-2">
             <li><Link to="#" className="text-blue-600">Support</Link></li>
             <li><Link to="#" className="text-blue-600">Cancel your hotel or vacation rental booking</Link></li>
-            <li><Link to="#" className="text-blue-600">Cancel your flight</Link></li>
             <li><Link to="/refund-policy" className="text-blue-600">Refund basics</Link></li>
-            <li><Link to="#" className="text-blue-600">Use an Expedia coupon</Link></li>
-            <li><Link to="#" className="text-blue-600">International travel documents</Link></li>
+            {/* <li><Link to="#" className="text-blue-600">Use an Expedia coupon</Link></li> */}
+            {/* <li><Link to="#" className="text-blue-600">International travel documents</Link></li> */}
             <li><Link to="#" className="text-blue-600">Your rights as a flights traveler</Link></li>
           </ul>
         </div>

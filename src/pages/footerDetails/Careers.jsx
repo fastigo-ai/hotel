@@ -4,10 +4,10 @@ const Careers = () => {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-black mb-4 text-center">
+        <h1 className="text-4xl font-bold text-black mb-4 ">
           Careers at Plains Motor Inn
         </h1>
-        <p className="text-lg mb-6 text-center">
+        <p className="text-lg mb-6 ">
           <span className="font-semibold">Be part of something new. Grow with us.</span>
         </p>
 

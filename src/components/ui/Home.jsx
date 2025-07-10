@@ -19,10 +19,7 @@ const Home = () => {
 
       <Offers />
       <ExpediaCard/>
-{/* 
-      <Card />
-      <hr />
-      <Card /> */}
+
     </>
   );
 };

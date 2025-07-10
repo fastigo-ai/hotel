@@ -7,7 +7,12 @@ const Offers = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/login");
+    const isSignedIn = localStorage.getItem("user"); // or "token"
+    if (isSignedIn) {
+      navigate("/");
+    } else {
+      navigate("/signin");
+    }
   };
 
   return (
@@ -29,12 +34,6 @@ const Offers = () => {
                 className="bg-blue-600 text-white px-4 py-2 text-sm rounded hover:bg-blue-700 transition"
               >
                 Sign in
-              </button>
-              <button
-                onClick={handleClick}
-                className="border border-blue-600 text-blue-600 px-4 py-2 text-sm rounded hover:bg-blue-50 transition"
-              >
-                Register
               </button>
             </div>
           </div>
