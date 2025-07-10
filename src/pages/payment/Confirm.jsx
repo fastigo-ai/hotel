@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CancellationAndInfo from "../terms and setting/CancellationAndInfo ";
+import { useSelector } from "react-redux";
 
 const Confirm = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { property, checkIn, checkOut } = state || {};
+  const { property, checkIn, checkOut, guests } = state || {};
+  const user = useSelector((state)=>state.auth.user)
+  console.log(user,"show user detail");
+  console.log(property);
+  console.log(checkIn);
+  console.log(checkOut);
+  console.log(guests);
+  
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,12 +22,13 @@ const Confirm = () => {
     return <div className="p-4">Booking data not available.</div>;
   }
 
-  const nights = checkIn && checkOut
-    ? Math.max(
-        (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24),
-        1
-      )
-    : 1;
+  const nights =
+    checkIn && checkOut
+      ? Math.max(
+          (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24),
+          1
+        )
+      : 1;
 
   const subtotal = property.price * nights;
   const tax = subtotal * 0.05;
@@ -27,9 +36,9 @@ const Confirm = () => {
 
   const [formData, setFormData] = useState({
     propertyId: property._id,
-    userId: '1234567', // Replace with actual user ID from auth context
-    checkInDate: property.checkIn,
-    checkOutDate: property.checkOut,
+    userId: user?.user?._id || null,
+    checkInDate: checkIn,
+    checkOutDate: checkOut,
     totalStay: nights,
     totalAmount: total.toFixed(2),
     currency: "cad",
@@ -39,7 +48,7 @@ const Confirm = () => {
       lastname: "",
       phone: "",
     },
-    guests: {
+    guests: guests || {
       adults: 1,
       children: 0,
       infants: 0,
@@ -53,14 +62,7 @@ const Confirm = () => {
     setError(null);
 
     try {
-      if (
-        !formData.propertyId ||
-        !formData.userId ||
-        !formData.checkInDate ||
-        !formData.checkOutDate
-      ) {
-        throw new Error("Please fill in all required fields");
-      }
+      
 
       const response = await fetch(
         "https://starfish-app-6yhui.ondigitalocean.app/api/payments/create-checkout-session",
@@ -87,6 +89,7 @@ const Confirm = () => {
   return (
     <>
       <div className="container mx-auto max-w-7xl px-4 md:px-8 py-10 flex flex-col md:flex-row gap-10 font-sora">
+        {/* FORM SECTION */}
         <form
           onSubmit={handleSubmit}
           className="md:w-2/3 bg-white p-6 rounded-lg shadow space-y-6"
@@ -180,7 +183,7 @@ const Confirm = () => {
           {/* Error */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          {/* Pay button */}
+          {/* Pay Button */}
           <button
             type="submit"
             disabled={loading}
@@ -190,7 +193,7 @@ const Confirm = () => {
           </button>
         </form>
 
-        {/* Sidebar */}
+        {/* SIDEBAR */}
         <div className="md:w-1/3">
           <div className="border rounded-xl shadow-lg p-5 space-y-4 bg-white">
             <div className="flex gap-4">

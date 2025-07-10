@@ -29,31 +29,29 @@ const BookingWidget = ({ property }) => {
         property,
         checkIn,
         checkOut,
-        guests: totalGuests,
+        guests, // ✅ Pass full guest object
       },
     });
   };
 
-  // Get current date in YYYY-MM-DD format for min attribute
   const getMinDate = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
-  // Determine the minimum checkout date based on check-in date
   const getMinCheckOutDate = () => {
     if (checkIn) {
       const checkInDate = new Date(checkIn);
-      checkInDate.setDate(checkInDate.getDate() + 1); // Checkout must be at least one day after check-in
+      checkInDate.setDate(checkInDate.getDate() + 1);
       const year = checkInDate.getFullYear();
       const month = String(checkInDate.getMonth() + 1).padStart(2, "0");
       const day = String(checkInDate.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     }
-    return getMinDate(); // If no check-in, min checkout is today
+    return getMinDate();
   };
 
   return (
@@ -73,7 +71,7 @@ const BookingWidget = ({ property }) => {
                 type="date"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
-                min={getMinDate()} // Set minimum check-in date to today
+                min={getMinDate()}
                 className="w-full text-sm text-black outline-none"
               />
             </div>
@@ -83,17 +81,14 @@ const BookingWidget = ({ property }) => {
                 type="date"
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
-                min={getMinCheckOutDate()} // Set minimum check-out date based on check-in
+                min={getMinCheckOutDate()}
                 className="w-full text-sm text-black outline-none"
               />
             </div>
           </div>
 
           {/* Guest Picker */}
-          <div
-            className="p-3 relative cursor-pointer"
-            onClick={() => setShowGuestOptions(!showGuestOptions)}
-          >
+          <div className="p-3 relative cursor-pointer" onClick={() => setShowGuestOptions(!showGuestOptions)}>
             <p className="text-xs font-semibold text-gray-600 uppercase">Guests</p>
             <p className="text-sm">
               {totalGuests} guest{totalGuests > 1 ? "s" : ""}
@@ -101,45 +96,14 @@ const BookingWidget = ({ property }) => {
 
             {showGuestOptions && (
               <div className="absolute z-10 top-[100%] left-0 w-full bg-white border rounded-lg shadow-lg p-4 mt-1 space-y-4">
-                {/* Guest Count Controls */}
-                <GuestRow
-                  label="Adults"
-                  subtitle="Age 13+"
-                  count={guests.adults}
-                  onDecrease={() => updateGuestCount("adults", -1)}
-                  onIncrease={() => updateGuestCount("adults", 1)}
-                />
-                <GuestRow
-                  label="Children"
-                  subtitle="Ages 2–12"
-                  count={guests.children}
-                  onDecrease={() => updateGuestCount("children", -1)}
-                  onIncrease={() => updateGuestCount("children", 1)}
-                />
-                <GuestRow
-                  label="Infants"
-                  subtitle="Under 2"
-                  count={guests.infants}
-                  onDecrease={() => updateGuestCount("infants", -1)}
-                  onIncrease={() => updateGuestCount("infants", 1)}
-                />
-                <GuestRow
-                  label="Pets"
-                  subtitle={<a href="#" className="underline">Bringing a service animal?</a>}
-                  count={guests.pets}
-                  onDecrease={() => updateGuestCount("pets", -1)}
-                  onIncrease={() => updateGuestCount("pets", 1)}
-                />
+                <GuestRow label="Adults" subtitle="Age 13+" count={guests.adults} onDecrease={() => updateGuestCount("adults", -1)} onIncrease={() => updateGuestCount("adults", 1)} />
+                <GuestRow label="Children" subtitle="Ages 2–12" count={guests.children} onDecrease={() => updateGuestCount("children", -1)} onIncrease={() => updateGuestCount("children", 1)} />
+                <GuestRow label="Infants" subtitle="Under 2" count={guests.infants} onDecrease={() => updateGuestCount("infants", -1)} onIncrease={() => updateGuestCount("infants", 1)} />
+                <GuestRow label="Pets" subtitle={<a href="#" className="underline">Bringing a service animal?</a>} count={guests.pets} onDecrease={() => updateGuestCount("pets", -1)} onIncrease={() => updateGuestCount("pets", 1)} />
                 <p className="text-xs text-gray-600">
                   This place has a maximum of 2 guests, not including infants. Pets aren't allowed.
                 </p>
-                <button
-                  className="text-sm mt-2 underline text-gray-800"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowGuestOptions(false);
-                  }}
-                >
+                <button className="text-sm mt-2 underline text-gray-800" onClick={(e) => { e.stopPropagation(); setShowGuestOptions(false); }}>
                   Close
                 </button>
               </div>
@@ -174,20 +138,14 @@ const GuestRow = ({ label, subtitle, count, onDecrease, onIncrease }) => (
     </div>
     <div className="flex items-center gap-4">
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onDecrease();
-        }}
+        onClick={(e) => { e.stopPropagation(); onDecrease(); }}
         className="w-8 h-8 rounded-full border flex items-center justify-center text-lg font-bold text-gray-600"
       >
         –
       </button>
       <span>{count}</span>
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onIncrease();
-        }}
+        onClick={(e) => { e.stopPropagation(); onIncrease(); }}
         className="w-8 h-8 rounded-full border flex items-center justify-center text-lg font-bold text-gray-600"
       >
         +
