@@ -41,9 +41,11 @@ export default function ExpediaHeader() {
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">
+          <Link to="/get-app">
           <button className="flex items-center space-x-2 border border-gray-300 rounded-full py-1.5 px-4 text-gray-900 text-sm font-medium hover:bg-gray-100">
             <span>Get the app</span>
           </button>
+          </Link>
 
           <div className="flex items-center space-x-1 cursor-pointer">
             <span className="text-gray-900 font-medium text-sm">CAD</span>
@@ -54,8 +56,8 @@ export default function ExpediaHeader() {
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           </div>
-
-          <a href="#" className="text-gray-900 text-sm font-medium hover:text-blue-600">Support</a>
+{/* <a href="tel:4037423491" className="text-blue-600">Support</a> */}
+          <a href="tel:4037423491" className="text-gray-900 text-sm font-medium hover:text-blue-600">Support</a>
 
           {isAuthenticated ? (
             <>

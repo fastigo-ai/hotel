@@ -1,35 +1,37 @@
 // components/TrendingDestinations.jsx
 import React from "react";
 import Image1 from '../../assets/card Image/no1.png'
-import Image2 from '../../assets/trending/2.jpg'
-import Image3 from '../../assets/logo/COUNTER.jpg'
-import Image4 from '../../assets/trending/4.jpg'
-import Image5 from '../../assets/trending/5.jpg'
+import Image2 from '../../assets/trending/2.jpeg'
+import Image3 from '../../assets/logo/121.JPG'
+import Image4 from '../../assets/trending/1.webp'
+import Image5 from '../../assets/trending/1.jpeg'
 import { Link } from "react-router-dom";
 import "../../App.css";
 
 const destinations = {
   top: [
-    { name: "Canada", flag: "CA", image: Image1 },
-    { name: "Canada", flag: "CA", image: Image1 },
+    { name: "Alberta ", flag: "CA", image: Image1 },
+    { name: "Alberta ", flag: "CA", image: Image2 },
   ],
   bottom: [
-    { name: "Canada", flag: "CA", image: Image3 },
-    { name: "Canada Falls", flag: "🇨🇦", image: Image4 },
-    { name: "Canada", flag: "🇨🇦", image: Image5 },
+    { name: "Alberta ", flag: "CA", image: Image3 },
+    { name: "Alberta  Falls", flag: "🇨🇦", image: Image4 },
+    { name: "Alberta ", flag: "🇨🇦", image: Image5 },
   ],
 };
 
 const DestinationCard = ({ name, flag, image }) => (
-  <Link to=''>
+  <Link to='to="https://destinationstettler.com/things-to-do/"'>
     <div className="relative rounded-lg overflow-hidden shadow-md group cursor-pointer min-w-[250px]">
+      <Link >
       <img
         src={image}
         alt={name}
         className="w-full h-75 object-cover transition-transform duration-300 group-hover:scale-105"
       />
+      </Link>
       <div className="absolute top-2 left-2 text-white text-2xl font-bold bg-opacity-40 px-2 py-1 rounded">
-        {name} <span className="ml-1">{flag}</span>
+        <Link to="https://destinationstettler.com/things-to-do/">{name} <span className="ml-1">{flag}</span></Link>
       </div>
     </div>
   </Link>

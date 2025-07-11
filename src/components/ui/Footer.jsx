@@ -6,16 +6,14 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="bg-gray-50">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl pb-10">
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Plains Motor Inn</h4>
           <ul className="mt-4 space-y-2">
             <li><Link to="/about" className="text-blue-600">About</Link></li>
             <li><Link to="/Careers" className="text-blue-600">Jobs</Link></li>
-            <li><Link to="#" className="text-blue-600">List your property</Link></li>
             <li><Link to="/Partner" className="text-blue-600">Partnerships</Link></li>
             <li><Link to="/news" className="text-blue-600">Newsroom</Link></li>
-            <li><Link to="#" className="text-blue-600">Investor Relations</Link></li>
             <li><Link to="/advertise" className="text-blue-600">Advertising</Link></li>
             <li><Link to="/affiliate" className="text-blue-600">Affiliate Marketing</Link></li>
             <li><Link to="#" className="text-blue-600">Feedback</Link></li>
@@ -32,7 +30,6 @@ const Footer = () => {
             <li><Link to="/domestic-Flights-Guide" className="text-blue-600">Domestic flights</Link></li>
             <li><Link to="/car-rentalGuide" className="text-blue-600">Car rentals in Canada</Link></li>
             <li><Link to="/accommodationGuide" className="text-blue-600">All accommodation types</Link></li>
-            <li><Link to="#" className="text-blue-600">One Key credit cards</Link></li>
           </ul>
         </div>
 
@@ -40,26 +37,20 @@ const Footer = () => {
           <h4 className="text-xl font-semibold text-blue-700">Policies</h4>
           <ul className="mt-4 space-y-2">
             <li><Link to="/privacy-policy" className="text-blue-600">Privacy</Link></li>
-            <li><Link to="#" className="text-blue-600">Cookies</Link></li>
-            {/* <li><Link to="" className="text-blue-600">Terms of </Link></li> */}
+            <li><Link to="/cookies" className="text-blue-600">Cookies</Link></li>
             <li><Link to="/terms" className="text-blue-600">Terms and conditions</Link></li>
             <li><Link to="/terms" className="text-blue-600">Plains & Motors terms and conditions</Link></li>
-            <li><Link to="#" className="text-blue-600">Accessibility</Link></li>
-            <li><Link to="#" className="text-blue-600">Your privacy choices</Link></li>
-            <li><Link to="#" className="text-blue-600">Content guidelines and reporting content</Link></li>
+            <li><Link to="/accessibility" className="text-blue-600">Accessibility</Link></li>
           </ul>
         </div>
 
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Help</h4>
           <ul className="mt-4 space-y-2">
-            <li><Link to="#" className="text-blue-600">Support</Link></li>
-            <li><Link to="#" className="text-blue-600">Cancel your hotel or vacation rental booking</Link></li>
+            <li><a href="tel:4037423491" className="text-blue-600">Support</a></li>
             <li><Link to="/refund-policy" className="text-blue-600">Refund basics</Link></li>
-            {/* <li><Link to="#" className="text-blue-600">Use an Expedia coupon</Link></li> */}
-            {/* <li><Link to="#" className="text-blue-600">International travel documents</Link></li> */}
-            <li><Link to="#" className="text-blue-600">Your rights as a flights traveler</Link></li>
           </ul>
+         
         </div>
       </div>
 

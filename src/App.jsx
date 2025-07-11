@@ -26,7 +26,9 @@ import ComparisonTable from "./pages/footerDetails/ComparisonTable";
 import AccommodationGuide from "./pages/footerDetails/Accommodation ";
 import CarRentalGuide from "./pages/footerDetails/CarRentalGuide";
 import DomesticFlightsGuide from "./pages/footerDetails/DomesticFlightsGuide";
-
+import ComingSoon from "./components/ui/ComingSoon";
+import Cookies from "./pages/footerDetails/Cookies";
+import Accessibility from "./pages/footerDetails/Accessibility"
 
 
 
@@ -40,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/get-app",
+        element: <ComingSoon />,
       },
       {
         path: "/card",
@@ -136,6 +142,16 @@ const router = createBrowserRouter([
       {
         path: "/domestic-Flights-Guide",
         element: <DomesticFlightsGuide />,
+
+      },
+      {
+        path: "/cookies",
+        element: <Cookies />,
+
+      },
+      {
+        path: "/accessibility",
+        element: <Accessibility />,
 
       },
       

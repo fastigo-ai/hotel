@@ -8,7 +8,7 @@ const CardBanner = () => {
   return (
     <div className="flex md:flex-row flex-nowrap overflow-x-auto gap-4 p-4 max-w-7xl mx-auto hide-scrollbar">
       <Link
-          
+          to="/carddetails/686fec855bda7cee043451e1"
           className="min-w-[75%] sm:min-w-[300px] md:min-w-0 md:flex-1"
         >
           <img
@@ -18,7 +18,7 @@ const CardBanner = () => {
           />
         </Link>
       <Link
-          
+          to="/carddetails/686feb9f5bda7cee043451cf"
           className="min-w-[75%] sm:min-w-[300px] md:min-w-0 md:flex-1"
         >
           <img
@@ -28,7 +28,7 @@ const CardBanner = () => {
           />
         </Link>
       <Link
-          
+          to="/hotel-card"
           className="min-w-[75%] sm:min-w-[300px] md:min-w-0 md:flex-1"
         >
           <img

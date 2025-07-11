@@ -3,6 +3,7 @@ import { FaTags } from "react-icons/fa";
 
 const MembershipBanner = () => {
   return (
+    <a href="tel:4037423491" className="text-black ">
     <div className="  max-w-7xl mx-auto px-4">
     <div className="bg-[#57ccc4] text-black rounded-2xl flex items-center justify-between px-4  py-4">
       
@@ -14,9 +15,10 @@ const MembershipBanner = () => {
         </div>
 
         {/* Promo Text */}
-        <p className="text-sm md:text-base font-medium">
-          Call Now or Book Online to reserve your room today.
+        <p className="text-sm md:text-base font-medium ">
+          Call Now or Book to Reserve your Room Today.
 
+        
         </p>
       </div>
 
@@ -26,6 +28,7 @@ const MembershipBanner = () => {
       </button>
     </div>
     </div>
+    </a>
   );
 };
 

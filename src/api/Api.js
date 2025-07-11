@@ -65,12 +65,4 @@ export const getPropertyDetail = async (id) => {
   }
 };
 
-export const deleteProperty = async (id) => {
-    try {
-        const response = await axios.delete(`${BASE_URL}/api/property/delete-property/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error deleting property:", error);
-        throw error;
-    }
-};
+

@@ -16,9 +16,9 @@ const ExpediaCard = () => {
 
       {/* Content Section */}
       <div className="w-full md:w-1/2 p-4 flex flex-col justify-center">
-        <h2 className="text-2xl font-bold mb-2">Go further with the Expedia app</h2>
+        <h2 className="text-2xl font-bold mb-2">Go further with the Plains Motors INN</h2>
         <p className="text-gray-700 mb-4">
-          Save on select hotels and earn OneKeyCash on bookings in the app. Our app deals help you to save on trips so you can travel more and manage it all on the go.
+          Save on select Room and earn OneKeyCash on bookings in the app. Our app deals help you to save on trips so you can travel more and manage it all on the go.
         </p>
         <p className="text-gray-700 mb-4">
           Scan the QR code with your device camera and download our app

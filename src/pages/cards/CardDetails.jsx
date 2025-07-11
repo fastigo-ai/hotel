@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getPropertyDetail } from "../../api/Api"; 
+import { getPropertyDetail } from "../../api/Api";
 import BookingWidget from "../booking widget/BookingWidget";
 
 const CardDetails = () => {
@@ -12,6 +12,7 @@ const CardDetails = () => {
     const fetchProperty = async () => {
       try {
         const data = await getPropertyDetail(id);
+        console.log("Property images:", data.images); // Optional: Debug
         setProperty(data);
       } catch (error) {
         console.error("Error loading property detail:", error);
@@ -34,7 +35,7 @@ const CardDetails = () => {
       <div className="hidden md:grid grid-cols-4 gap-2 h-[500px] my-6">
         <div className="col-span-2 row-span-2">
           <img
-            src={`${property.images[0]}`}
+            src={property.images[0]}
             alt="Main"
             className="w-full h-full object-cover rounded-xl"
           />
@@ -55,7 +56,7 @@ const CardDetails = () => {
           Entire rental unit in {property.location}
         </h3>
         <p className="text-gray-600">
-          2 guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
+          {property.guest} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
           {property.bathroom} bathroom
         </p>
       </div>
@@ -65,7 +66,7 @@ const CardDetails = () => {
         {property.images.map((img, i) => (
           <img
             key={i}
-            src={`/${img}.jpg`}
+            src={img} // ✅ FIXED: Use full path
             alt={`property-${i}`}
             className="w-80 h-60 object-cover rounded-xl flex-shrink-0 snap-center"
           />
@@ -109,9 +110,7 @@ const CardDetails = () => {
             />
             <div>
               <p className="font-semibold">Hosted by Alice</p>
-              <p className="text-gray-500 text-sm">
-                Superhost • 1 year hosting
-              </p>
+              <p className="text-gray-500 text-sm">Superhost • 1 year hosting</p>
             </div>
           </div>
 
@@ -142,7 +141,7 @@ const CardDetails = () => {
           </div>
         </div>
 
-        {/* Booking Card */}
+        {/* Booking Widget */}
         <BookingWidget property={property} />
       </div>
     </div>

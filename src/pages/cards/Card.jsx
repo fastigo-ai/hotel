@@ -53,7 +53,7 @@ const CardSlider = () => {
                 {item.title}
               </h3>
               <p className="text-sm text-gray-700">
-                {item.price} CAD for 2 nights • ★ {item.rating}
+                {item.price} CAD for 1 nights • ★ {item.rating}
               </p>
             </div>
           </Link>

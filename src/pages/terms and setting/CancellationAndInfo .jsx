@@ -2,7 +2,7 @@ import React from 'react';
 
 const CancellationAndInfo = () => {
     return (
-        <div className=" max-w-7xl mx-auto bg-white   px-4 py-6 pb-6">
+        <div className=" max-w-7xl mx-auto bg-white rounded-lg  px-4 py-6 pb-6">
             <div className="mb-4">
                 <h2 className="text-xl font-bold mb-2">Cancellation policy</h2>
                 <ul className="list-disc pl-5">
