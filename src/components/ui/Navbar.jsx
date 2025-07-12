@@ -56,8 +56,7 @@ export default function ExpediaHeader() {
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           </div>
-{/* <a href="tel:4037423491" className="text-blue-600">Support</a> */}
-          <a href="tel:4037423491" className="text-gray-900 text-sm font-medium hover:text-blue-600">Support</a>
+          <a href="tel:4037423491" className="text-gray-900 text-sm font-medium hover:text-blue-600">Contact</a>
 
           {isAuthenticated ? (
             <>
@@ -97,8 +96,8 @@ export default function ExpediaHeader() {
           <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             CAD
           </a>
-          <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
-            Support
+          <a href="tel:4037423491" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
+            Contact
           </a>
           {isAuthenticated ? (
             <>

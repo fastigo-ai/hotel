@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import '../../App.css'
 const Footer = () => {
   return (
     <footer className="bg-gray-50">
       <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl pb-10">
         <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-semibold text-blue-700">Plains Motor Inn</h4>
+          <h4 className="text-xl font-semibold text-blue-700"><span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN</h4>
           <ul className="mt-4 space-y-2">
             <li><Link to="/about" className="text-blue-600">About</Link></li>
             <li><Link to="/Careers" className="text-blue-600">Jobs</Link></li>
@@ -47,7 +47,7 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Help</h4>
           <ul className="mt-4 space-y-2">
-            <li><a href="tel:4037423491" className="text-blue-600">Support</a></li>
+            <li><a href="tel:4037423491" className="text-blue-600">Contact</a></li>
             <li><Link to="/refund-policy" className="text-blue-600">Refund basics</Link></li>
           </ul>
          

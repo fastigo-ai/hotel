@@ -15,6 +15,7 @@ const Home = () => {
       <MembershipBanner/>
       <CardBanner/>
       <Trending />
+      
       <Card />
 
       <Offers />
