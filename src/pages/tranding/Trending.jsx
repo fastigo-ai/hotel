@@ -104,13 +104,7 @@ const TrendingDestinations = () => {
           </div>
         </div>
 
-        <div className="sm:hidden">
-          <div className="flex gap-4 overflow-x-auto pb-4">
-            {allDestinations.map((dest, index) => (
-              <DestinationCard key={`mobile-dup-${index}`} {...dest} />
-            ))}
-          </div>
-        </div>
+        
       </section>
     </div>
   );
