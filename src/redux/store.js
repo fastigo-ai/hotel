@@ -1,8 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slices/authSlice"; // ✅ your auth logic
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import authReducer from "./slices/authSlice";
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth']
+};
+
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: persistedAuthReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/PURGE', 'persist/REGISTER'],
+      },
+    }),
 });
+
+export const persistor = persistStore(store);
