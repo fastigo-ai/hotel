@@ -90,9 +90,9 @@ export default function ExpediaHeader() {
 
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 bg-white border-t">
-          <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
+          <Link to="/get-app" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             Get the app
-          </a>
+          </Link>
           <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             CAD
           </a>
