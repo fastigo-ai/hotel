@@ -6,8 +6,10 @@ const About = () => {
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold mb-6 text-center text-black">About Us</h1>
 
+
+
         <p className="mb-6 text-lg leading-relaxed">
-          Welcome to <span className="font-semibold">Plans Motor Inn</span> — Stettler, Alberta’s trusted stay, now under new management.
+          Welcome to <span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn — Stettler, Alberta’s trusted stay, now under new management.
         </p>
 
         <p className="mb-6 text-lg leading-relaxed">
@@ -29,7 +31,7 @@ const About = () => {
 
         <div className="mt-10 text-lg leading-relaxed">
           <p className="mb-4">
-            At <span className="font-semibold">Plans Motor Inn</span>, we’re more than just a place to rest — we’re your home on the road.
+            At <span className="font-semibold"><span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn</span>, we’re more than just a place to rest — we’re your home on the road.
           </p>
           <p>
             Whether you're passing through or staying awhile, we look forward to welcoming you with warmth and hospitality.

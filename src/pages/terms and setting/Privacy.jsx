@@ -1,10 +1,10 @@
 import React from "react";
-
+import '../../App.css'
 const PrivacyPolicy = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 text-gray-800">
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
-      <p className="mb-6">Plains Motor Inn – Stettler, Alberta</p>
+      <p className="mb-6"><span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn – Stettler, Alberta</p>
       <p className="text-sm text-gray-500 mb-8">Effective Date: June 14, 2025</p>
 
       <p className="mb-6">

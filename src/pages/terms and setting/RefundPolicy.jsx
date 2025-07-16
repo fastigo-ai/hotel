@@ -1,11 +1,11 @@
 import React from "react";
-
+import '../../App.css'
 const RefundPolicy = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 text-gray-800">
       <h1 className="text-3xl font-bold mb-6">Refund Policy</h1>
 
-      <p className="mb-4">Plains Motor Inn – Stettler, Alberta</p>
+      <p className="mb-4"><span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn – Stettler, Alberta</p>
       <p className="mb-6">We strive to provide a clean, safe, and comfortable stay for all our guests. Please review our Refund Policy before making a reservation.</p>
 
       <section className="mb-6">
@@ -71,7 +71,7 @@ const RefundPolicy = () => {
 
       <div className="mt-8 border-t pt-4">
         <h3 className="text-lg font-semibold">Contact Info:</h3>
-        <p>Plains Motor Inn</p>
+        <p><span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn</p>
         <p>4812 - 61 Street, Stettler, AB T0C 2L1</p>
         <p>Phone: <a href="tel:4037423491" className="text-blue-600 underline">403-742-3491</a></p>
       </div>

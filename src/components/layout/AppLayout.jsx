@@ -6,12 +6,10 @@ import ScrollToTop from "../ui/ScrollToTop";
 
 const AppLayout = () => {
   return (
-    <div >
+    <div>
       <ScrollToTop />
-
       <Navbar />
-
-      <main >
+      <main>
         <Outlet />
       </main>
 

@@ -1,11 +1,11 @@
 import React from "react";
-
+import '../../App.css'
 const Careers = () => {
   return (
     <div className="bg-white text-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold text-black mb-4 ">
-          Careers at Plains Motor Inn
+          Careers at <span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn
         </h1>
         <p className="text-lg mb-6 ">
           <span className="font-semibold">Be part of something new. Grow with us.</span>
@@ -50,8 +50,7 @@ const Careers = () => {
           <p className="text-lg font-medium mb-2">📍 Visit us at:</p>
           <p className="mb-4">Plains Motor Inn<br />4812 - 61 Street<br />Stettler, AB T0C 2L1</p>
 
-          <p className="text-lg font-medium mb-2">📞 Call us:</p>
-          <p className="text-black font-semibold">403-742-3491</p>
+          <p className="text-lg font-medium mb-2">📞 Call us: 403-742-3491</p>
         </div>
       </div>
     </div>

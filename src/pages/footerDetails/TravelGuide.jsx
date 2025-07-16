@@ -1,5 +1,5 @@
 import React from "react";
-
+import '../../App.css'
 const TravelGuide = () => {
   return (
     <div className="bg-white text-gray-900 min-h-screen">
@@ -14,7 +14,7 @@ const TravelGuide = () => {
           Planning a trip across Canada? Whether you're driving through Alberta or exploring the great outdoors, Canada offers some of the world’s most breathtaking landscapes, warm hospitality, and unforgettable experiences.
         </p>
         <p className="text-lg mb-10 text-center font-medium">
-          Plains Motor Inn is proud to be part of your journey.
+          <span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN is proud to be part of your journey.
         </p>
 
         {/* Getting Around */}

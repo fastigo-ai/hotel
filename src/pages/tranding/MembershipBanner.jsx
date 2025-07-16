@@ -15,7 +15,7 @@ const MembershipBanner = () => {
         </div>
 
         {/* Promo Text */}
-        <p className="text-sm md:text-base font-medium ">
+        <p className="text-sm md:text-base font-medium text-center">
           Call Now or Book to Reserve your Room Today.
 
         
@@ -23,9 +23,9 @@ const MembershipBanner = () => {
       </div>
 
       {/* Sign In Button */}
-      <button className="bg-white text-black text-sm font-semibold px-4 py-2 rounded-full ">
+      {/* <button className="bg-white text-black text-sm font-semibold px-4 py-2 rounded-full ">
         Sign in
-      </button>
+      </button> */}
     </div>
     </div>
     </a>

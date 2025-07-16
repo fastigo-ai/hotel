@@ -67,3 +67,7 @@ export const getPropertyDetail = async (id) => {
 };
 
 
+export const fetchUserBookings = async (userId) => {
+  const response = await axios.get(`${BASE_URL}/api/property/my-bookings/${userId}`);
+  return response.data.bookings; // Assuming response looks like { bookings: [...] }
+};

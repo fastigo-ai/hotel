@@ -1,10 +1,12 @@
 // src/components/Header/ExpediaHeader.jsx
 import React, { useEffect, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { CgMenuRound } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut, signIn } from "../../redux/slices/authSlice";
 import Logo from "../../assets/logo/Logo13.png";
+import UserMenu from "./UserMenu"; 
 
 export default function ExpediaHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,11 +42,12 @@ export default function ExpediaHeader() {
           <img src={Logo} alt="Logo" className="h-14" />
         </Link>
 
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/get-app">
-          <button className="flex items-center space-x-2 border border-gray-300 rounded-full py-1.5 px-4 text-gray-900 text-sm font-medium hover:bg-gray-100">
-            <span>Get the app</span>
-          </button>
+            <button className="flex items-center space-x-2 border border-gray-300 rounded-full py-1.5 px-4 text-gray-900 text-sm font-medium hover:bg-gray-100">
+              <span>Get the app</span>
+            </button>
           </Link>
 
           <div className="flex items-center space-x-1 cursor-pointer">
@@ -56,20 +59,11 @@ export default function ExpediaHeader() {
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           </div>
-          <a href="tel:4037423491" className="text-gray-900 text-sm font-medium hover:text-blue-600">Contact</a>
+          <Link to="/gallery" className="text-gray-900 text-sm font-medium hover:text-blue-600">Gallery</Link>
+          <Link to="/contact" className="text-gray-900 text-sm font-medium hover:text-blue-600">Contact</Link>
 
           {isAuthenticated ? (
-            <>
-              <span className="text-sm text-gray-900 font-medium">
-                Welcome, {user?.name || user?.mobile}
-              </span>
-              <button
-                onClick={handleSignOut}
-                className="text-gray-900 text-sm font-medium hover:text-blue-600"
-              >
-                Sign out
-              </button>
-            </>
+            <UserMenu />
           ) : (
             <Link to="/signin" className="text-gray-900 text-sm font-medium hover:text-blue-600">
               Sign in
@@ -77,46 +71,42 @@ export default function ExpediaHeader() {
           )}
         </div>
 
+        {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-gray-900 p-2 focus:outline-none"
             aria-label="Toggle menu"
           >
-            {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+            {menuOpen ? <FaTimes size={22} /> : <CgMenuRound size={28} style={{ color: "rgb(243, 156, 17)" }}/>}
           </button>
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 bg-white border-t">
-          <Link to="/get-app" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
+          <Link to="/get-app" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             Get the app
           </Link>
-          <a href="#" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
-            CAD
-          </a>
-          <a href="tel:4037423491" className="block text-gray-800 text-sm font-medium hover:text-blue-600">
-            Contact
-          </a>
+          <a href="#" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">CAD</a>
+          <Link to="/gallery" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">Gallery</Link>
+          <Link to="/contact" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">Contact</Link>
+
           {isAuthenticated ? (
             <>
               <div className="text-gray-800 text-sm font-medium">
                 Welcome, {user?.name || user?.mobile}
               </div>
-              <button
-                onClick={handleSignOut}
-                className="text-left w-full text-gray-800 text-sm font-medium hover:text-blue-600"
-              >
+              <Link to="/booking-history" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">
+                Booking Details
+              </Link>
+              <button onClick={handleSignOut} className="text-left w-full text-gray-800 text-sm font-medium hover:text-blue-600">
                 Sign out
               </button>
             </>
           ) : (
-            <Link
-              to="/signin"
-              onClick={() => setMenuOpen(false)}
-              className="block text-gray-800 text-sm font-medium hover:text-blue-600"
-            >
+            <Link to="/signin" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">
               Sign in
             </Link>
           )}

@@ -1,4 +1,5 @@
 import React from "react";
+import '../../App.css'
 
 const Affiliate = () => {
   return (
@@ -8,7 +9,7 @@ const Affiliate = () => {
           Affiliate Program
         </h1>
         <p className="text-lg mb-8 text-center">
-          <strong>Earn with Every Referral to Plains Motor Inn</strong>
+          <strong>Earn with Every Referral to <span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN</strong>
         </p>
         <p className="text-lg mb-6 text-center">
           Do you have an audience, network, or client base that travels through Central Alberta? Plains Motor Inn offers a simple way for you to earn passive income — just refer your contacts to us and get rewarded when they book a stay.
@@ -44,7 +45,8 @@ const Affiliate = () => {
             <a href="mailto:plainsmotorinnn@gmail.com" className="text-black underline">
               plainsmotorinnn@gmail.com
             </a>{" "}
-            with the subject <strong>"Affiliate Program"</strong>
+            with the subject <strong>"Affiliate Pro
+              gram"</strong>
           </p>
           <p className="text-lg mb-4">
             📞 Or call{" "}

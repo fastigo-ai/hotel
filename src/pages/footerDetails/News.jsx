@@ -1,4 +1,5 @@
 import React from "react";
+import '../../App.css'
 
 const newsItems = [
   {
@@ -46,7 +47,7 @@ const News = () => {
           News & Updates
         </h1>
         <p className="text-lg text-center mb-10">
-          Stay connected with what's happening at Plains Motor Inn and around Stettler.
+          Stay connected with what's happening at <span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn and around Stettler.
         </p>
 
         <div className="space-y-10">

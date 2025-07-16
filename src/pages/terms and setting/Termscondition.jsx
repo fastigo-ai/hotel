@@ -1,9 +1,9 @@
 import React from "react";
-
+import '../../App.css'
 const TermsAndConditions = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 text-gray-800">
-      <h1 className="text-3xl font-bold mb-4">Plains Motor Inn – Terms & Conditions</h1>
+      <h1 className="text-3xl font-bold mb-4"><span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn – Terms & Conditions</h1>
       <p className="mb-6">
         Welcome to Plains Motor Inn in Stettler, Alberta. Please take a moment to review our terms and conditions, which help ensure a safe, comfortable, and respectful environment for all guests.
       </p>

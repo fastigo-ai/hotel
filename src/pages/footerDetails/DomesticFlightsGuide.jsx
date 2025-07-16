@@ -1,5 +1,6 @@
 // src/components/DomesticFlightsGuide.jsx
 import React from "react";
+import '../../App.css'
 
 const airlines = [
   { name: "Air Canada", description: "Canada’s national airline with wide domestic coverage" },
@@ -38,7 +39,7 @@ const DomesticFlightsGuide = () => {
           Travel Canada by Air — Your Gateway to Adventure Starts Here
         </p>
         <p className="mt-4 text-gray-700 max-w-2xl mx-auto">
-          Canada is vast, and flying is often the fastest way to explore it. Whether you're visiting from Vancouver, Toronto, or Halifax, Plains Motor Inn in Stettler, Alberta, is a convenient stop along your journey.
+          Canada is vast, and flying is often the fastest way to explore it. Whether you're visiting from Vancouver, Toronto, or Halifax, <span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN in Stettler, Alberta, is a convenient stop along your journey.
         </p>
       </div>
 
@@ -65,7 +66,7 @@ const DomesticFlightsGuide = () => {
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm mb-8">
-        <h3 className="text-xl font-semibold text-blue-800 mb-4">🛬 Nearest Airports to Plains Motor Inn</h3>
+        <h3 className="text-xl font-semibold  mb-4">🛬 Nearest Airports to <span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN</h3>
         <ul className="list-disc list-inside text-gray-700 space-y-4">
           {airports.map((airport, index) => (
             <li key={index}>

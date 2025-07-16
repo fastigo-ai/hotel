@@ -29,6 +29,10 @@ import DomesticFlightsGuide from "./pages/footerDetails/DomesticFlightsGuide";
 import ComingSoon from "./components/ui/ComingSoon";
 import Cookies from "./pages/footerDetails/Cookies";
 import Accessibility from "./pages/footerDetails/Accessibility"
+import Contact from "./pages/footerDetails/Contact";
+import FeedBack from "./pages/footerDetails/FeedBack";
+import Gallery from "./pages/gallery/Gallery";
+import BookingDetails from "./pages/profilePage/BookingDetails";
 
 
 
@@ -152,6 +156,26 @@ const router = createBrowserRouter([
       {
         path: "/accessibility",
         element: <Accessibility />,
+
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+
+      },
+      {
+        path: "/feedback",
+        element: <FeedBack />,
+
+      },
+      {
+        path: "/gallery",
+        element: <Gallery />,
+
+      },
+      {
+        path: "/booking-history",
+        element: <BookingDetails />,
 
       },
       

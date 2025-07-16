@@ -16,7 +16,7 @@ const Footer = () => {
             <li><Link to="/news" className="text-blue-600">Newsroom</Link></li>
             <li><Link to="/advertise" className="text-blue-600">Advertising</Link></li>
             <li><Link to="/affiliate" className="text-blue-600">Affiliate Marketing</Link></li>
-            <li><Link to="#" className="text-blue-600">Feedback</Link></li>
+            <li><Link to="/feedback" className="text-blue-600">Feedback</Link></li>
           </ul>
         </div>
 
@@ -47,7 +47,7 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Help</h4>
           <ul className="mt-4 space-y-2">
-            <li><a href="tel:4037423491" className="text-blue-600">Contact</a></li>
+            <li><Link to="/contact" className="text-blue-600">Contact</Link></li>
             <li><Link to="/refund-policy" className="text-blue-600">Refund basics</Link></li>
           </ul>
          

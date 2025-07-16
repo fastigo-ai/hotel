@@ -5,7 +5,7 @@ const Partner = () => {
     <div className="bg-white text-gray-800 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold text-black mb-4 ">
-          Partner with Plains Motor Inn
+          Partner with <span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn
         </h1>
 
         <p className="text-lg mb-6 ">

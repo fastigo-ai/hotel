@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import Banner from "../../assets/logo/topBanner.png";
 import Banner1 from "../../assets/logo/topBanner1.png";
 import Daily from "../../assets/logo/daily.png";
+import monthly from "../../assets/logo/monthly.png";
+import weekly from "../../assets/logo/weekly.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -34,6 +36,8 @@ const CardBanner = () => {
     { to: "/carddetails/686fec855bda7cee043451e1", image: Banner },
     { to: "/carddetails/686feb9f5bda7cee043451cf", image: Banner1 },
     { to: "/hotel-card", image: Daily },
+    // { to: "/hotel-card", image: monthly },
+    // { to: "/hotel-card", image: weekly },
   ];
 
   return (

@@ -22,7 +22,7 @@ const CancellationAndInfo = () => {
                         after-hours check-in. The front desk is staffed during limited hours.
                     </li>
                     <li>
-                        Please note that Expedia and the hotel will not issue a tax invoice. You will 
+                        Please note that Plains Motors Inn and the hotel will not issue a tax invoice. You will 
                         receive a commercial receipt for the purpose of the transaction.
                     </li>
                 </ul>
