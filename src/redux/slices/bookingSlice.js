@@ -5,9 +5,9 @@ import { fetchUserBookings } from "../../api/Api";
 // Async thunk to fetch bookings
 export const getUserBookings = createAsyncThunk(
   "booking/getUserBookings",
-  async (userId, thunkAPI) => {
+  async ( thunkAPI) => {
     try {
-      return await fetchUserBookings(userId);
+      return await fetchUserBookings();
     } catch (error) {
       return thunkAPI.rejectWithValue("Failed to fetch bookings");
     }

@@ -6,15 +6,11 @@ import { getUserBookings } from "../../redux/slices/bookingSlice";
 const BookingDetails = () => {
   const dispatch = useDispatch();
   const { bookings, loading, error } = useSelector((state) => state.booking);
-  // const { user } = useSelector((state) => state.auth); // ✅ Get user from Redux
-  const user = JSON.parse(localStorage.getItem('user'))
-console.log(JSON.parse(user.user));
 
   useEffect(() => {
-    if (user) {
-      dispatch(getUserBookings(user.user.id));
-    }
-  }, []);
+    // user will be null initially, and then contain the user object with another user property inside
+      dispatch(getUserBookings());
+  }, [dispatch]);
 
   return (
     <div className="p-4 overflow-x-auto">

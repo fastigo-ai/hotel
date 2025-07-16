@@ -13,8 +13,8 @@ const authSlice = createSlice({
   reducers: {
     signIn: (state, action) => {
       state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.user = action.payload; // The payload is the user object
+      state.token = action.payload.token; // Assuming token is part of the user object payload
     },
     signOut: (state) => {
       state.isAuthenticated = false;
