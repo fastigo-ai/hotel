@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated, selectUser } from "../../redux/slices/authSlice";
-import SignInModal from "../Login/OtpForm"; // Adjust path if needed
+import SignInModal from "../Login/OtpForm";
 
 const BookingWidget = ({ property }) => {
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const BookingWidget = ({ property }) => {
   });
 
   const totalGuests = guests.adults + guests.children;
+
 
   const updateGuestCount = (type, delta) => {
     setGuests((prev) => ({
@@ -71,7 +72,7 @@ const BookingWidget = ({ property }) => {
     <div className="md:w-1/3 mt-8 md:mt-0 max-w-7xl">
       <div className="border p-6 rounded-xl shadow-lg space-y-4">
         <h2 className="text-xl font-semibold">
-          {property.price} CAD <span className="text-sm font-normal text-gray-500">for 2 nights</span>
+          {property.price} CAD <span className="text-sm font-normal text-gray-500">for 1 nights</span>
         </h2>
 
         {/* Date & Guest Picker */}
@@ -84,7 +85,7 @@ const BookingWidget = ({ property }) => {
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 min={getMinDate()}
-                className="w-full text-sm text-black outline-none"
+                className="w-full text-lg text-black outline-none"
               />
             </div>
             <div className="w-1/2 p-3 border-l">
@@ -94,7 +95,7 @@ const BookingWidget = ({ property }) => {
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 min={getMinCheckOutDate()}
-                className="w-full text-sm text-black outline-none"
+                className="w-full text-lg text-black outline-none"
               />
             </div>
           </div>
@@ -110,8 +111,8 @@ const BookingWidget = ({ property }) => {
                 <GuestRow label="Children" subtitle="Ages 2–12" count={guests.children} onDecrease={() => updateGuestCount("children", -1)} onIncrease={() => updateGuestCount("children", 1)} />
                 <GuestRow label="Infants" subtitle="Under 2" count={guests.infants} onDecrease={() => updateGuestCount("infants", -1)} onIncrease={() => updateGuestCount("infants", 1)} />
                 <GuestRow label="Pets" subtitle={<a href="#" className="underline">Bringing a service animal?</a>} count={guests.pets} onDecrease={() => updateGuestCount("pets", -1)} onIncrease={() => updateGuestCount("pets", 1)} />
-                <p className="text-xs text-gray-600">This place has a maximum of 2 guests, not including infants. Pets aren't allowed.</p>
-                <button className="text-sm mt-2 underline text-gray-800" onClick={() => setShowGuestOptions(false)}>Close</button>
+                {/* <p className="text-xs text-gray-600">This place has a maximum of 2 guests, not including infants. 2 Pets aren't allowed.</p> */}
+                <button className="text-lg mt-2 underline font-bold text-gray-800" onClick={() => setShowGuestOptions(false)}>Close</button>
               </div>
             )}
           </div>

@@ -43,10 +43,10 @@ const SearchBar = () => {
     navigate("/hotel-card");
   };
 
-  // Close dropdowns on outside click
   const guestRef = useRef();
   const calendarRef = useRef();
 
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (guestRef.current && !guestRef.current.contains(event.target)) {
@@ -86,11 +86,18 @@ const SearchBar = () => {
             <FaCalendarAlt className="text-gray-600 mr-2" />
             <span className="p-2 text-sm text-gray-800">{formattedDate}</span>
           </div>
+
           {openCalendar && (
-            <div className="absolute z-50 mt-2">
+            <div className="absolute z-50 mt-2 bg-white shadow-lg rounded-lg">
               <DateRange
                 editableDateInputs={true}
-                onChange={(item) => setDateRange([item.selection])}
+                onChange={(item) => {
+                  setDateRange([item.selection]);
+                  const { startDate, endDate } = item.selection;
+                  if (startDate && endDate && startDate.getTime() !== endDate.getTime()) {
+                    setOpenCalendar(false);
+                  }
+                }}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
                 rangeColors={["#f39c0f"]}

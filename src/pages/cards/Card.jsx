@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPropertyCards } from "../../api/Api"; // adjust path as needed
+import { getPropertyCards } from "../../api/Api"; 
 import '../../App.css';
 
 const CardSlider = () => {
