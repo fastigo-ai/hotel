@@ -10,6 +10,8 @@ const BookingDetails = () => {
   useEffect(() => {
     dispatch(getUserBookings());
   }, [dispatch]);
+console.log(bookings);
+console.log(bookings.property);
 
   const formatDate = (dateString) =>
     new Date(dateString).toLocaleDateString("en-IN");
@@ -47,11 +49,11 @@ const BookingDetails = () => {
                     <td className="p-3 font-medium">{index + 1}</td>
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                        <img
+                        {/* <img
                           src={booking.property.image}
                           alt="room"
                           className="w-16 h-12 object-cover rounded"
-                        />
+                        /> */}
                         <div>
                           <div className="font-semibold">{booking.property.name}</div>
                           <div className="text-gray-500 text-xs">

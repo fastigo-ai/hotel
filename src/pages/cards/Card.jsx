@@ -36,9 +36,8 @@ const CardSlider = () => {
             className="min-w-[220px] sm:min-w-[250px] bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200"
           >
             <div className="relative">
-              
               <img
-                src={item.image} // or use item.image if it's a full URL
+                src={item.image}
                 alt={item.title}
                 className="w-full h-40 object-cover"
               />
@@ -52,8 +51,12 @@ const CardSlider = () => {
               <h3 className="font-medium text-sm text-gray-900">
                 {item.title}
               </h3>
+              <p className="text-xs text-gray-500 mb-1">{item.roomType} Room</p>
+              <p className="text-xs text-gray-500 mb-1">
+                {item.isSmokingAllowed ? "Smoking Allowed" : "Non-smoking"}
+              </p>
               <p className="text-sm text-gray-700">
-                {item.price} CAD for 1 nights • ★ {item.rating}
+                {item.price} CAD for 1 night • ★ {item.rating}
               </p>
             </div>
           </Link>
