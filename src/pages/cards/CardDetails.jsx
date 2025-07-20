@@ -14,6 +14,8 @@ const CardDetails = () => {
         const data = await getPropertyDetail(id);
         console.log("Property images:", data.images); // Optional: Debug
         setProperty(data);
+        console.log(data);
+        
       } catch (error) {
         console.error("Error loading property detail:", error);
       } finally {
@@ -56,8 +58,8 @@ const CardDetails = () => {
           Entire rental unit in {property.location}
         </h3>
         <p className="text-gray-600">
-          {property.guest} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
-          {property.bathroom} bathroom
+          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
+          {property.bathroom} bathroom • {property.allowedPets} Pet friendly
         </p>
       </div>
 
