@@ -33,6 +33,7 @@ import Contact from "./pages/footerDetails/Contact";
 import FeedBack from "./pages/footerDetails/FeedBack";
 import Gallery from "./pages/gallery/Gallery";
 import BookingDetails from "./pages/profilePage/BookingDetails";
+import PaymentSuccess from "./pages/payment/PaymentSuccess";
 
 
 
@@ -176,6 +177,11 @@ const router = createBrowserRouter([
       {
         path: "/booking-history",
         element: <BookingDetails />,
+
+      },
+      {
+        path: "/payment-success",
+        element: <PaymentSuccess />,
 
       },
       

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/Logo13.png";
 
 export default function SignInPage() {
+  const [countryCode, setCountryCode] = useState("+91");
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1);
@@ -17,7 +18,7 @@ export default function SignInPage() {
   const handleSendOtp = async () => {
     if (!mobile || mobile.length < 10) return alert("Invalid mobile number.");
     try {
-      await LoginWithOtp(mobile, setIsLoading);
+      await LoginWithOtp(`${countryCode}${mobile}`, setIsLoading);
       setStep(2);
     } catch (err) {
       alert("Failed to send OTP.");
@@ -27,7 +28,7 @@ export default function SignInPage() {
   const handleVerifyOtp = async () => {
     if (!otp || otp.length < 4) return alert("Invalid OTP.");
     try {
-      await VerifyOtp(mobile, otp, setIsLoading, dispatch);
+      await VerifyOtp(`${countryCode}${mobile}`, otp, setIsLoading, dispatch);
       navigate("/");
     } catch (err) {
       alert("OTP verification failed.");
@@ -35,7 +36,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex items-center justify-center  bg-gray-100 px-4 ">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full my-3">
         {/* Company Logo */}
         <div className="flex justify-center mb-6">
@@ -47,14 +48,29 @@ export default function SignInPage() {
         </h2>
 
         <div className="space-y-5">
-          <input
-            type="tel"
-            placeholder="Enter mobile number"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            className="border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-3 w-full rounded-lg text-gray-700"
-            disabled={isLoading || step === 2}
-          />
+          <div className="flex gap-2">
+            <select
+              value={countryCode}
+              onChange={(e) => setCountryCode(e.target.value)}
+              className="border border-gray-300 rounded-lg p-3 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              disabled={isLoading || step === 2}
+            >
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+              {/* Add more as needed */}
+            </select>
+
+            <input
+              type="tel"
+              placeholder="Enter mobile number"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-3 w-full rounded-lg text-gray-700"
+              disabled={isLoading || step === 2}
+            />
+          </div>
 
           {step === 2 && (
             <input
