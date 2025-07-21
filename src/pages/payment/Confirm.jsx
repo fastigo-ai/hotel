@@ -1,6 +1,6 @@
 // Updated Confirm Component with room type logic and manual room quantity
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 const Confirm = () => {
@@ -96,16 +96,19 @@ const Confirm = () => {
 
   // Calculate pricing based on manual room quantity
   const roomsBooked = formData.roomQuantity || 1;
-  const totalCapacity = roomsBooked * maxGuestsPerRoom;
-  const extraPersonsNeeded = Math.max(0, payingGuests - totalCapacity);
-  
-  const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
-  const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
-  const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
-  
-  const subtotal = Math.floor(nightlyPrice * nights * roomsBooked);
-  const tax = Math.floor((subtotal + petFee + smokingFee + extraPersonFee) * 0.12); // 12% tax
-  const total = subtotal + petFee + smokingFee + extraPersonFee + tax;
+const totalCapacity = roomsBooked * maxGuestsPerRoom;
+const extraPersonsNeeded = Math.max(0, payingGuests - totalCapacity);
+
+const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
+const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
+const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
+
+const subtotal = Math.floor(nightlyPrice * nights * roomsBooked);
+const tax = Math.floor((subtotal + petFee + smokingFee + extraPersonFee) * 0.5); 
+const tourismLevy = Math.floor((subtotal + petFee + smokingFee + extraPersonFee) * 0.04);
+
+const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLevy;
+
 
   // Validation function
   const validateForm = () => {
@@ -248,11 +251,15 @@ const Confirm = () => {
         // Regular booking - proceed to payment
         window.location.href = data.url;
       }
+     
 
     } catch (err) {
       console.error("Booking error:", err);
       setError(err.message || "Failed to create booking. Please try again.");
       setLoading(false);
+    }
+    finally{
+      navigate("/Payment-Success")
     }
   };
 
@@ -349,7 +356,7 @@ const Confirm = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Number of Rooms *
+                  Additional occupant *
                 </label>
                 <input
                   type="number"
@@ -364,9 +371,9 @@ const Confirm = () => {
                 {validationErrors.roomQuantity && (
                   <p className="text-red-500 text-xs mt-1">{validationErrors.roomQuantity}</p>
                 )}
-                <p className="text-xs text-blue-600 mt-1">
+                {/* <p className="text-xs text-blue-600 mt-1">
                   Minimum {minRoomsNeeded} room{minRoomsNeeded > 1 ? 's' : ''} needed for {payingGuests} paying guests
-                </p>
+                </p> */}
               </div>
             </div>
             
@@ -503,9 +510,12 @@ const Confirm = () => {
               `Confirm & Pay $${total} CAD`
             )}
           </button>
+          <Link to="/terms">
           <p className="text-sm text-gray-500 mt-2 text-center">
             By clicking confirm & pay, you agree to our terms and conditions
           </p>
+          </Link>
+          
         </div>
       </form>
 
@@ -595,6 +605,10 @@ const Confirm = () => {
               <div className="flex justify-between">
                 <span>Taxes & fees</span>
                 <span className="font-medium text-gray-900">${tax}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Tourism Levy tax</span>
+                <span className="font-medium text-gray-900">${tourismLevy}</span>
               </div>
               <div className="border-t pt-3 flex justify-between text-base font-bold text-gray-900">
                 <span>Total</span>
