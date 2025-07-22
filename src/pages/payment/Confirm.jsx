@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { BASE_URL } from "../../api/Api";
 
 const Confirm = () => {
   const { state } = useLocation();
@@ -168,15 +169,15 @@ const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLev
       navigate('/login');
       return;
     }
-
+  
     if (!validateForm()) {
       setError("Please fix the errors below");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
-
+  
     // Prepare payload matching API expectations exactly
     const payload = {
       propertyId: property?._id,
@@ -211,10 +212,10 @@ const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLev
         petFeePerPet: petFeePerPet,
       },
     };
-
+  
     try {
       const response = await fetch(
-        "https://starfish-app-6yhui.ondigitalocean.app/api/payments/create-checkout-session",
+        `${BASE_URL}/api/payments/create-checkout-session`,
         {
           method: "POST",
           headers: { 
@@ -225,42 +226,51 @@ const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLev
           body: JSON.stringify(payload),
         }
       );
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || "Failed to create checkout session");
       }
-
+  
       // Handle different booking scenarios
       if (data.bookingAction === 'extended') {
         // Show confirmation for booking extension
         if (window.confirm("This will extend your existing booking. Continue to payment?")) {
+          // Redirect to payment gateway - user will return to success/failure page based on payment outcome
           window.location.href = data.url;
         } else {
           setLoading(false);
+          // User cancelled - stay on confirm page
         }
       } else if (data.bookingAction === 'additional_rooms') {
         // Show confirmation for additional rooms
         if (window.confirm("You already have a booking for these dates. This will add additional rooms. Continue to payment?")) {
+          // Redirect to payment gateway - user will return to success/failure page based on payment outcome
           window.location.href = data.url;
         } else {
           setLoading(false);
+          // User cancelled - stay on confirm page
         }
       } else {
         // Regular booking - proceed to payment
+        // Redirect to payment gateway - user will return to success/failure page based on payment outcome
         window.location.href = data.url;
       }
-     
-
+  
+      // Note: No navigation to success page here because:
+      // 1. window.location.href will redirect to payment gateway
+      // 2. Payment gateway will handle success/failure redirects
+      // 3. User will only reach success page after successful payment
+  
     } catch (err) {
       console.error("Booking error:", err);
       setError(err.message || "Failed to create booking. Please try again.");
       setLoading(false);
+      // Stay on confirm page when there's an error
     }
-    finally{
-      navigate("/Payment-Success")
-    }
+    // Removed the finally block with navigate("/Payment-Success") 
+    // because navigation should only happen after successful payment
   };
 
   // Show loading state if user data is still loading

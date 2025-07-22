@@ -155,9 +155,9 @@ const BookingWidget = ({ property }) => {
       </div>
 
       {showSignInModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+        <div className="fixed inset-0  bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 rounded-xl shadow-xl w-full max-w-md">
-            <SignInModal onClose={() => setShowSignInModal(false)} />
+            <SignInModal onClose={() => setShowSignInModal(false)} setShowSignInModal={setShowSignInModal} />
           </div>
         </div>
       )}
