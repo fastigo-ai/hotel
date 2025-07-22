@@ -1,7 +1,7 @@
 import axios from "axios";
 import { signIn } from "../redux/slices/authSlice"
-const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
-// const BASE_URL = "http://localhost:3000";
+ export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
+// export const BASE_URL = "http://localhost:3001";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
@@ -57,7 +57,7 @@ export const getPropertyCards = async () => {
 export const getPropertyDetail = async (id) => {
   try {
     const response = await axios.get(
-      `https://starfish-app-6yhui.ondigitalocean.app/api/property/getPropertyDetail/${id}`
+      `${BASE_URL}/api/property/getPropertyDetail/${id}`
     );
     return response.data;
   } catch (error) {

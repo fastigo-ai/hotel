@@ -5,7 +5,7 @@ import { LoginWithOtp, VerifyOtp } from "../../api/Api";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/Logo13.png";
 
-export default function SignInPage({ setShowSignInModal }) {
+export default function LoginPage() {
   const [countryCode, setCountryCode] = useState("+91");
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
@@ -35,39 +35,13 @@ export default function SignInPage({ setShowSignInModal }) {
     }
   };
 
-  const handleClose = () => {
-    setShowSignInModal(false);
-  };
-
   return (
     <>
       {/* Blurred Backdrop Overlay */}
-      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" onClick={handleClose}></div>
       
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 bg-transparent flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all duration-300 ease-out relative">
-          {/* Close Button */}
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-all duration-200 group"
-            disabled={isLoading}
-          >
-            <svg 
-              className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
+      
+        <div className="bg-white my-10 rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all duration-300 ease-out">
           {/* Modal Header */}
           <div className="text-center pt-8 pb-6 px-6">
             {/* Company Logo */}
@@ -191,7 +165,6 @@ export default function SignInPage({ setShowSignInModal }) {
             </p>
           </div>
         </div>
-      </div>
     </>
   );
 }
