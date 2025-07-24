@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/Logo13.png";
 
 export default function SignInPage({ setShowSignInModal }) {
-  const [countryCode, setCountryCode] = useState("+91");
+  const [countryCode, setCountryCode] = useState("+1");
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1);
