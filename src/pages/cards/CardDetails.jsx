@@ -105,14 +105,10 @@ const CardDetails = () => {
 
           {/* Host Info */}
           <div className="flex items-center gap-4">
-            <img
-              src="https://via.placeholder.com/48"
-              alt="Host"
-              className="rounded-full w-12 h-12"
-            />
+            
             <div>
-              <p className="font-semibold">Hosted by Alice</p>
-              <p className="text-gray-500 text-sm">Superhost • 1 year hosting</p>
+              <p className="font-semibold">Hosted by Plains Motor</p>
+              {/* <p className="text-gray-500 text-sm">Superhost • 1 year hosting</p> */}
             </div>
           </div>
 
