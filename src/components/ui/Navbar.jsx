@@ -51,7 +51,7 @@ export default function ExpediaHeader() {
           </Link>
 
           <div className="flex items-center space-x-1 cursor-pointer">
-            <span className="text-gray-900 font-medium text-sm">CAD</span>
+            {/* <span className="text-gray-900 font-medium text-sm">CAD</span> */}
             <img
               src="https://placehold.co/24x16/flag-us-rectangle.png"
               alt="US Flag"
@@ -89,7 +89,7 @@ export default function ExpediaHeader() {
           <Link to="/get-app" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">
             Get the app
           </Link>
-          <a href="#" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">CAD</a>
+          {/* <a href="#" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">CAD</a> */}
           <Link to="/gallery" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">Gallery</Link>
           <Link to="/contact" onClick={() => setMenuOpen(false)} className="block text-gray-800 text-sm font-medium hover:text-blue-600">Contact</Link>
 

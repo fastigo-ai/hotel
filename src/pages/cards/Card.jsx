@@ -24,9 +24,9 @@ const CardSlider = () => {
   if (loading) return <p className="px-4">Loading properties...</p>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-4 py-6 mt-6">
       <h2 className="text-lg md:text-2xl font-semibold mb-4">
-        Available in Canada this Daily & Weekend
+       Daily,Weekly & Monthly
       </h2>
       <div className="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
         {cards.map((item) => (

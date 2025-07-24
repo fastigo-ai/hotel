@@ -103,11 +103,13 @@ const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
 const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
 const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
 
-const subtotal = Math.floor(nightlyPrice * nights * roomsBooked);
-const tax = Math.floor((subtotal + petFee + smokingFee + extraPersonFee) * 0.5); 
-const tourismLevy = Math.floor((subtotal + petFee + smokingFee + extraPersonFee) * 0.04);
+const subtotal = +(nightlyPrice * nights * roomsBooked).toFixed(2);
+const totalFees = petFee + smokingFee + extraPersonFee;
+const tax = +((subtotal + totalFees) * 0.05).toFixed(2);
+const tourismLevy = +((subtotal + totalFees) * 0.04).toFixed(2);
 
-const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLevy;
+const total = +(subtotal + totalFees + tax + tourismLevy).toFixed(2);
+
 
 
   // Validation function
@@ -603,7 +605,7 @@ const total = subtotal + petFee + smokingFee + extraPersonFee + tax + tourismLev
                 </div>
               )}
               <div className="flex justify-between">
-                <span>Taxes & fees</span>
+                <span>Taxes</span>
                 <span className="font-medium text-gray-900">${tax}</span>
               </div>
               <div className="flex justify-between">

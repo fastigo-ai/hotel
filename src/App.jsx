@@ -180,7 +180,7 @@ const router = createBrowserRouter([
 
       },
       {
-        path: "/payment-success",
+        path: "/Payment-Success",
         element: <PaymentSuccess />,
 
       },
