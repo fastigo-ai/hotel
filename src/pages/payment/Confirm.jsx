@@ -40,7 +40,7 @@ const Confirm = () => {
 
   // Get property pricing details with fallbacks
   const nightlyPrice = price || property?.price || property?.detail?.price || 0;
-  const smokingRoomCharge = property?.detail?.smokingRoomCharge || property?.smokingRoomCharge || 0;
+  const smokingRoomCharge =  0;
   const petFeePerPet = property?.detail?.petFeePerPet || property?.petFeePerPet || 0;
   const extraPersonCharge = property?.detail?.extraPersonCharge || property?.extraPersonCharge || 0;
   const allowedPets = property?.detail?.allowedPets || property?.allowedPets || 0;
@@ -366,14 +366,14 @@ const total = +(subtotal + totalFees + tax + tourismLevy).toFixed(2);
                   Max {maxGuestsPerRoom} guests per room (Children stay free with adults in double rooms)
                 </p>
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium mb-2">
                   Additional occupant *
                 </label>
                 <input
                   type="number"
                   min={minRoomsNeeded}
-                  max="10"
+                  max="0"
                   value={formData.roomQuantity}
                   onChange={(e) => setFormData({ ...formData, roomQuantity: parseInt(e.target.value) || minRoomsNeeded })}
                   className={`px-3 py-2 border rounded-lg w-full ${
@@ -383,10 +383,8 @@ const total = +(subtotal + totalFees + tax + tourismLevy).toFixed(2);
                 {validationErrors.roomQuantity && (
                   <p className="text-red-500 text-xs mt-1">{validationErrors.roomQuantity}</p>
                 )}
-                {/* <p className="text-xs text-blue-600 mt-1">
-                  Minimum {minRoomsNeeded} room{minRoomsNeeded > 1 ? 's' : ''} needed for {payingGuests} paying guests
-                </p> */}
-              </div>
+                
+              </div> */}
             </div>
             
             <div className="mt-3 p-3 bg-white rounded-lg">
@@ -468,7 +466,7 @@ const total = +(subtotal + totalFees + tax + tourismLevy).toFixed(2);
                   }
                   className="w-4 h-4 text-indigo-600"
                 />
-                <span>Bringing Pets? (+${petFeePerPet} per pet)</span>
+                <span>Bringing Pets? (${petFeePerPet} per pet)</span>
               </label>
               {formData.isPetFriendly && (
                 <div>
