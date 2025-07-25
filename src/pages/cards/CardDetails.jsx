@@ -12,10 +12,8 @@ const CardDetails = () => {
     const fetchProperty = async () => {
       try {
         const data = await getPropertyDetail(id);
-        console.log("Property images:", data.images); // Optional: Debug
+        console.log("Property images:", data.images);
         setProperty(data);
-        console.log(data);
-        
       } catch (error) {
         console.error("Error loading property detail:", error);
       } finally {
@@ -58,8 +56,11 @@ const CardDetails = () => {
           Entire rental unit in {property.location}
         </h3>
         <p className="text-gray-600">
-          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
-          {property.bathroom} bathroom • {property.allowedPets} Pet friendly
+          {property.guest} guest{property.guest > 1 ? "s" : ""} •{" "}
+          {property.bedroom} bedroom{property.bedroom > 1 ? "s" : ""} •{" "}
+          {property.bed} bed{property.bed > 1 ? "s" : ""} •{" "}
+          {property.bathroom} bathroom{property.bathroom > 1 ? "s" : ""} •{" "}
+          {property.allowedPets} pet{property.allowedPets > 1 ? "s" : ""} allowed
         </p>
       </div>
 
@@ -68,7 +69,7 @@ const CardDetails = () => {
         {property.images.map((img, i) => (
           <img
             key={i}
-            src={img} // ✅ FIXED: Use full path
+            src={img}
             alt={`property-${i}`}
             className="w-80 h-60 object-cover rounded-xl flex-shrink-0 snap-center"
           />
@@ -105,7 +106,6 @@ const CardDetails = () => {
 
           {/* Host Info */}
           <div className="flex items-center gap-4">
-            
             <div>
               <p className="font-semibold">Hosted by Plains Motor</p>
               {/* <p className="text-gray-500 text-sm">Superhost • 1 year hosting</p> */}
