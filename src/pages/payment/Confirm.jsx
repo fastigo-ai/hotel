@@ -109,7 +109,7 @@ const totalFees = petFee + smokingFee + extraPersonFee;
 const tax = +((subtotal + totalFees) * 0.05).toFixed(2);
 const tourismLevy = +((subtotal + totalFees) * 0.04).toFixed(2);
 
-const total = +(subtotal + totalFees + tax + tourismLevy).toFixed(2);
+const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
 
 
 

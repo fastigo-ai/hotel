@@ -1,7 +1,7 @@
 import axios from "axios";
 import { signIn } from "../redux/slices/authSlice"
- export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
-// export const BASE_URL = "http://localhost:3001";
+//  export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
+export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
@@ -12,6 +12,28 @@ export const LoginWithOtp = async (mobile, setIsLoading) => {
         return response.data;
     } catch (error) {
         console.error("Error sending OTP:", error);
+        throw error;
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+export const AuthenticateWithMobile = async (mobile, setIsLoading, dispatch) => {
+    try {
+        setIsLoading(true);
+        const response = await axios.post(`${BASE_URL}/api/auth/authenticate-with-mobile`, {
+            mobile: mobile,
+        });
+
+    const userData = response.data;
+
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", userData.token);
+
+    dispatch(signIn({ user: userData, token: userData.token }));
+    return userData;
+    } catch (error) {
+        console.error("Error authenticating with mobile:", error);
         throw error;
     } finally {
         setIsLoading(false);
