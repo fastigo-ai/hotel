@@ -56,6 +56,7 @@ export const getUserBookings = createAsyncThunk(
     }
   }
 );
+console.log(getUserBookings);
 
 // Initial structure
 const initialState = {
