@@ -56,11 +56,16 @@ const CardDetails = () => {
           Entire rental unit in {property.location}
         </h3>
         <p className="text-gray-600">
+
+          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
+          {property.bathroom} bathroom • {property.allowedPets} Pet Friendly
+
           {property.guest} guest{property.guest > 1 ? "s" : ""} •{" "}
           {property.bedroom} bedroom{property.bedroom > 1 ? "s" : ""} •{" "}
           {property.bed} bed{property.bed > 1 ? "s" : ""} •{" "}
           {property.bathroom} bathroom{property.bathroom > 1 ? "s" : ""} •{" "}
           {property.allowedPets} pet{property.allowedPets > 1 ? "s" : ""} allowed
+
         </p>
       </div>
 
@@ -119,7 +124,7 @@ const CardDetails = () => {
               ["☕", "Breakfast included"],
               ["❄️", "Air conditioning"],
               ["✔️", "Housekeeping"],
-              ["🐾", "Pet friendly"],
+              ["🐾", "Pet Friendly"],
               ["📶", "Free WiFi"],
               ["🅿️", "Parking included"],
             ].map(([icon, label], index) => (
