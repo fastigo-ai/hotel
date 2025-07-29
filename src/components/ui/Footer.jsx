@@ -23,6 +23,7 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Explore</h4>
           <ul className="mt-4 space-y-2">
+            <li><Link to="https://www.stettler.net/" className="text-blue-600">Town of Stettler</Link></li>
             <li><Link to="/travelGuide" className="text-blue-600">Canada Travel Guide</Link></li>
             <li><Link to="/MotelsInCanada" className="text-blue-600">Motels in Canada</Link></li>
             <li><Link to="/vacationRentals" className="text-blue-600">Vacation Rentals in Canada</Link></li>
