@@ -57,10 +57,9 @@ const CardDetails = () => {
         </h3>
         <p className="text-gray-600">
 
-          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
-<<<<<<< HEAD
+          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •
           {property.bathroom} bathroom • {property.allowedPets} Pet friendly
-=======
+
           {property.bathroom} bathroom • {property.allowedPets} Pet Friendly
 
           {property.guest} guest{property.guest > 1 ? "s" : ""} •{" "}
@@ -69,7 +68,7 @@ const CardDetails = () => {
           {property.bathroom} bathroom{property.bathroom > 1 ? "s" : ""} •{" "}
           {property.allowedPets} pet{property.allowedPets > 1 ? "s" : ""} allowed
 
->>>>>>> 6405346e2324ce7edee6b65d646b0175ae04c315
+
         </p>
       </div>
 
