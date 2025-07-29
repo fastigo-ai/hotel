@@ -59,7 +59,7 @@ const CardDetails = () => {
         </h3>
         <p className="text-gray-600">
           {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
-          {property.bathroom} bathroom • {property.allowedPets} Pet Friendly
+          {property.bathroom} bathroom • {property.allowedPets} Pet friendly
         </p>
       </div>
 
@@ -119,7 +119,7 @@ const CardDetails = () => {
               ["☕", "Breakfast included"],
               ["❄️", "Air conditioning"],
               ["✔️", "Housekeeping"],
-              ["🐾", "Pet Friendly"],
+              ["🐾", "Pet friendly"],
               ["📶", "Free WiFi"],
               ["🅿️", "Parking included"],
             ].map(([icon, label], index) => (
