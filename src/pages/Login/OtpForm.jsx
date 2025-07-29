@@ -5,9 +5,15 @@ import { AuthenticateWithMobile } from "../../api/Api"; // Updated API call
 import logo from "../../assets/logo/Logo13.png";
 
 export default function SignInPage({ setShowSignInModal }) {
-    const [countryCode, setCountryCode] = useState("+91"); // Default to India
-    const [mobile, setMobile] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+
+  const [countryCode, setCountryCode] = useState("+1");
+  const [mobile, setMobile] = useState("");
+  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+   
+
 
     const dispatch = useDispatch();
 

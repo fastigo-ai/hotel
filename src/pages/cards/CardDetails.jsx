@@ -57,7 +57,9 @@ const CardDetails = () => {
         </h3>
         <p className="text-gray-600">
 
-          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •{" "}
+          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •
+          {property.bathroom} bathroom • {property.allowedPets} Pet friendly
+
           {property.bathroom} bathroom • {property.allowedPets} Pet Friendly
 
           {property.guest} guest{property.guest > 1 ? "s" : ""} •{" "}
@@ -65,6 +67,7 @@ const CardDetails = () => {
           {property.bed} bed{property.bed > 1 ? "s" : ""} •{" "}
           {property.bathroom} bathroom{property.bathroom > 1 ? "s" : ""} •{" "}
           {property.allowedPets} pet{property.allowedPets > 1 ? "s" : ""} allowed
+
 
         </p>
       </div>
@@ -124,7 +127,7 @@ const CardDetails = () => {
               ["☕", "Breakfast included"],
               ["❄️", "Air conditioning"],
               ["✔️", "Housekeeping"],
-              ["🐾", "Pet Friendly"],
+              ["🐾", "Pet friendly"],
               ["📶", "Free WiFi"],
               ["🅿️", "Parking included"],
             ].map(([icon, label], index) => (
