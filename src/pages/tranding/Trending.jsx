@@ -20,7 +20,7 @@ const destinations = {
   ],
   bottom1: [
     { name: "Stettler, Alberta", flag: "CA", image: Image3 },
-    { name: "Stettler Falls", flag: "🇨🇦", image: Image4 },
+    { name: "Stettler Alberta", flag: "🇨🇦", image: Image4 },
     { name: "Stettler, Alberta", flag: "🇨🇦", image: Image5 },
   ],
   top2: [
@@ -29,7 +29,7 @@ const destinations = {
   ],
   bottom2: [
     { name: "Stettler, Alberta", flag: "CA", image: Image8 },
-    { name: "Stettler Falls", flag: "🇨🇦", image: Image9 },
+    { name: "Stettler Alberta", flag: "🇨🇦", image: Image9 },
     { name: "Stettler, Alberta", flag: "🇨🇦", image: Image10 },
   ],
 };

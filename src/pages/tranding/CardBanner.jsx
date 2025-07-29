@@ -41,8 +41,8 @@ const CardBanner = () => {
   };
 
   const banners = [
-    { to: "/carddetails/687df53198e870a5b872f99d", image: Banner },
-    { to: "/carddetails/687931241db1a65b32f49a65", image: Banner1 },
+    { to: "/carddetails/6883b81d2c40d0dbe02ecf97", image: Banner },
+    { to: "/carddetails/6883c0662c40d0dbe02ed022", image: Banner1 },
     { to: "/hotel-card", image: Daily },
     { to: "/hotel-card", image: monthly },
     { to: "/hotel-card", image: weekly },

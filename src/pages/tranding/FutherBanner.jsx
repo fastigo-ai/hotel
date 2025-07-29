@@ -2,7 +2,7 @@ import React from 'react';
 import Image from '../../assets/card Image/no1.png';
 import QR from '../../assets/logo/qrcode.png';
 import '../../App.css'
-const ExpediaCard = () => {
+const FutherBanner = () => {
   return (
     <div className="flex flex-col md:flex-row p-6 bg-white rounded-lg  max-w-7xl mx-auto">
       {/* Image Section */}
@@ -18,16 +18,16 @@ const ExpediaCard = () => {
       <div className="w-full md:w-1/2 p-4 flex flex-col justify-center">
         <h2 className="text-2xl font-bold mb-2">Go further with the <span className="Text">P</span>lains <span className="Text-M">M</span>otors <span className="Text-o">I</span>NN</h2>
         <p className="text-gray-700 mb-4">
-          Save on select Room and earn OneKeyCash on bookings in the app. Our app deals help you to save on trips so you can travel more and manage it all on the go.
+          Our Website deals help you to save on trips so you can travel more and manage it all on the go.
         </p>
         <p className="text-gray-700 mb-4">
-          Scan the QR code with your device camera and download our app
+          Scan the QR code with your device camera to Visit Our Website.
         </p>
         <div className="flex justify-start">
           <img
             src={QR}
             alt="QR Code"
-            className="w-24 h-24 object-contain"
+            className="w-28 h-28 object-contain"
           />
         </div>
       </div>
@@ -35,4 +35,4 @@ const ExpediaCard = () => {
   );
 };
 
-export default ExpediaCard;
+export default FutherBanner;
