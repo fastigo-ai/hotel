@@ -57,10 +57,7 @@ const CardDetails = () => {
         </h3>
         <p className="text-gray-600">
 
-          {property.defaultAllowedPersons} guests • {property.bedroom} bedroom • {property.bed} bed •
-          {property.bathroom} bathroom • {property.allowedPets} Pet friendly
-
-          {property.bathroom} bathroom • {property.allowedPets} Pet Friendly
+          
 
           {property.guest} guest{property.guest > 1 ? "s" : ""} •{" "}
           {property.bedroom} bedroom{property.bedroom > 1 ? "s" : ""} •{" "}
@@ -124,12 +121,14 @@ const CardDetails = () => {
           <div className="space-y-4 border-t pt-4">
             <h1 className="text-xl font-bold mb-1">About this property</h1>
             {[
+              ["📺", "TV included"],
               ["☕", "Breakfast included"],
               ["❄️", "Air conditioning"],
               ["✔️", "Housekeeping"],
               ["🐾", "Pet friendly"],
               ["📶", "Free WiFi"],
-              ["🅿️", "Parking included"],
+              ["🅿️", "Parking included "],
+              ["🅿️", "Semi truck trailer parking avaliable"],
             ].map(([icon, label], index) => (
               <div key={index} className="flex items-center gap-4">
                 <span role="img" className="text-xl">
