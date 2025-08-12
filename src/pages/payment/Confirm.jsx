@@ -343,6 +343,21 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
               <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
             )}
           </div>
+          <div className="mt-4">
+  <input
+    type="email"
+    placeholder="Email *"
+    required
+    value={formData.email}
+    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+    className={`px-4 py-3 border rounded-xl w-full ${
+      validationErrors.email ? 'border-red-500' : 'border-gray-300'
+    }`}
+  />
+  {validationErrors.email && (
+    <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+  )}
+</div>
 
           <div className="mt-4">
             <textarea
@@ -366,25 +381,7 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
                   Max {maxGuestsPerRoom} guests per room (Children stay free with adults in double rooms)
                 </p>
               </div>
-              {/* <div>
-                <label className="block text-sm font-medium mb-2">
-                  Additional occupant *
-                </label>
-                <input
-                  type="number"
-                  min={minRoomsNeeded}
-                  max="0"
-                  value={formData.roomQuantity}
-                  onChange={(e) => setFormData({ ...formData, roomQuantity: parseInt(e.target.value) || minRoomsNeeded })}
-                  className={`px-3 py-2 border rounded-lg w-full ${
-                    validationErrors.roomQuantity ? 'border-red-500' : 'border-blue-300'
-                  }`}
-                />
-                {validationErrors.roomQuantity && (
-                  <p className="text-red-500 text-xs mt-1">{validationErrors.roomQuantity}</p>
-                )}
-                
-              </div> */}
+              
             </div>
             
             <div className="mt-3 p-3 bg-white rounded-lg">
