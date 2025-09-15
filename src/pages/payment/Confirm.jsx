@@ -1,4 +1,4 @@
-// Updated Confirm Component with room type logic and manual room quantity
+// Updated Confirm Component with email field, room type logic, and manual room quantity
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -60,6 +60,7 @@ const Confirm = () => {
   const [formData, setFormData] = useState({
     firstname: user?.user?.firstname || user?.firstname || "",
     lastname: user?.user?.lastname || user?.lastname || "",
+    email: user?.user?.email || user?.email || "",
     phone: user?.user?.mobile || user?.mobile || "",
     specialRequest: "",
     isSmokingAllowed: false,
@@ -80,6 +81,7 @@ const Confirm = () => {
         ...prev,
         firstname: prev.firstname || user?.user?.firstname || user?.firstname || "",
         lastname: prev.lastname || user?.user?.lastname || user?.lastname || "",
+        email: prev.email || user?.user?.email || user?.email || "",
         phone: prev.phone || user?.user?.mobile || user?.mobile || "",
       }));
     }
@@ -97,21 +99,19 @@ const Confirm = () => {
 
   // Calculate pricing based on manual room quantity
   const roomsBooked = formData.roomQuantity || 1;
-const totalCapacity = roomsBooked * maxGuestsPerRoom;
-const extraPersonsNeeded = Math.max(0, payingGuests - totalCapacity);
+  const totalCapacity = roomsBooked * maxGuestsPerRoom;
+  const extraPersonsNeeded = Math.max(0, payingGuests - totalCapacity);
 
-const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
-const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
-const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
+  const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
+  const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
+  const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
 
-const subtotal = +(nightlyPrice * nights * roomsBooked).toFixed(2);
-const totalFees = petFee + smokingFee + extraPersonFee;
-const tax = +Math.ceil((subtotal + totalFees) * 0.05).toFixed(2);
-const tourismLevy = +Math.ceil((subtotal + totalFees) * 0.04).toFixed(2);
+  const subtotal = +(nightlyPrice * nights * roomsBooked).toFixed(2);
+  const totalFees = petFee + smokingFee + extraPersonFee;
+  const tax = +Math.ceil((subtotal + totalFees) * 0.05).toFixed(2);
+  const tourismLevy = +Math.ceil((subtotal + totalFees) * 0.04).toFixed(2);
 
-const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
-
-
+  const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
 
   // Validation function
   const validateForm = () => {
@@ -123,6 +123,12 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
 
     if (!formData.lastname.trim()) {
       errors.lastname = "Last name is required";
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Please enter a valid email address";
     }
 
     if (!formData.phone.trim()) {
@@ -193,6 +199,7 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
       user: {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
+        email: formData.email.trim(),
         phone: formData.phone.trim(),
       },
       guests: {
@@ -222,7 +229,6 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
           method: "POST",
           headers: { 
             "Content-Type": "application/json",
-            // Add authorization header if you have tokens
             ...(user?.token && { "Authorization": `Bearer ${user.token}` })
           },
           body: JSON.stringify(payload),
@@ -235,47 +241,29 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
         throw new Error(data.message || "Failed to create checkout session");
       }
   
-      // Handle different booking scenarios
       if (data.bookingAction === 'extended') {
-        // Show confirmation for booking extension
         if (window.confirm("This will extend your existing booking. Continue to payment?")) {
-          // Redirect to payment gateway - user will return to success/failure page based on payment outcome
           window.location.href = data.url;
         } else {
           setLoading(false);
-          // User cancelled - stay on confirm page
         }
       } else if (data.bookingAction === 'additional_rooms') {
-        // Show confirmation for additional rooms
         if (window.confirm("You already have a booking for these dates. This will add additional rooms. Continue to payment?")) {
-          // Redirect to payment gateway - user will return to success/failure page based on payment outcome
           window.location.href = data.url;
         } else {
           setLoading(false);
-          // User cancelled - stay on confirm page
         }
       } else {
-        // Regular booking - proceed to payment
-        // Redirect to payment gateway - user will return to success/failure page based on payment outcome
         window.location.href = data.url;
       }
-  
-      // Note: No navigation to success page here because:
-      // 1. window.location.href will redirect to payment gateway
-      // 2. Payment gateway will handle success/failure redirects
-      // 3. User will only reach success page after successful payment
   
     } catch (err) {
       console.error("Booking error:", err);
       setError(err.message || "Failed to create booking. Please try again.");
       setLoading(false);
-      // Stay on confirm page when there's an error
     }
-    // Removed the finally block with navigate("/Payment-Success") 
-    // because navigation should only happen after successful payment
   };
 
-  // Show loading state if user data is still loading
   if (!user) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-10 flex items-center justify-center">
@@ -345,6 +333,22 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
           </div>
 
           <div className="mt-4">
+            <input
+              type="email"
+              placeholder="Email Address *"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className={`px-4 py-3 border rounded-xl w-full ${
+                validationErrors.email ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {validationErrors.email && (
+              <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+            )}
+          </div>
+
+          <div className="mt-4">
             <textarea
               rows="4"
               placeholder="Any special requests (optional)"
@@ -366,25 +370,6 @@ const total = Math.ceil(subtotal + totalFees + tax + tourismLevy);
                   Max {maxGuestsPerRoom} guests per room (Children stay free with adults in double rooms)
                 </p>
               </div>
-              {/* <div>
-                <label className="block text-sm font-medium mb-2">
-                  Additional occupant *
-                </label>
-                <input
-                  type="number"
-                  min={minRoomsNeeded}
-                  max="0"
-                  value={formData.roomQuantity}
-                  onChange={(e) => setFormData({ ...formData, roomQuantity: parseInt(e.target.value) || minRoomsNeeded })}
-                  className={`px-3 py-2 border rounded-lg w-full ${
-                    validationErrors.roomQuantity ? 'border-red-500' : 'border-blue-300'
-                  }`}
-                />
-                {validationErrors.roomQuantity && (
-                  <p className="text-red-500 text-xs mt-1">{validationErrors.roomQuantity}</p>
-                )}
-                
-              </div> */}
             </div>
             
             <div className="mt-3 p-3 bg-white rounded-lg">
