@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPropertyCards } from "../../api/Api"; 
+import { getPropertyCards } from "../../api/Api";
+
 import '../../App.css';
 
 const CardSlider = () => {
@@ -23,44 +24,78 @@ const CardSlider = () => {
 
   if (loading) return <p className="px-4">Loading properties...</p>;
 
+  const renderCard = (item) => {
+    const cardContent = (
+      <div className={`min-w-[220px] sm:min-w-[250px] bg-white rounded-xl shadow-sm overflow-hidden transition-shadow duration-200 ${
+        item.inStock ? 'hover:shadow-md cursor-pointer' : 'opacity-60 cursor-not-allowed'
+      }`}>
+        {console.log(item, "this is my item")}
+        <div className="relative">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-40 object-cover"
+          />
+          {item.badge && (
+            <div className="absolute top-2 left-2 bg-white px-2 py-1 rounded-full text-xs font-semibold shadow">
+              {item.badge}
+            </div>
+          )}
+          {!item.inStock && (
+            <div className="absolute inset-0  flex items-center justify-center">
+              <div className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-semibold">
+                Currently Not Available
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="p-3">
+          <h3 className="font-medium text-sm text-gray-900">
+            {item.title}
+          </h3>
+          <p className="text-xs text-gray-500 mb-1">{item.roomType} Room</p>
+          <p className="text-xs text-gray-500 mb-1">
+            {item.isSmokingAllowed ? "Smoking Allowed" : "Non-smoking"}
+          </p>
+          <p className="text-sm text-gray-700">
+            {item.price} CAD for 1 night • ★ {item.rating}
+          </p>
+          {!item.inStock && (
+            <p className="text-xs text-red-600 font-semibold mt-1">
+              Out of Stock
+            </p>
+          )}
+        </div>
+      </div>
+    );
+
+    // If item is in stock, wrap with Link, otherwise return just the card
+    if (item.inStock) {
+      return (
+        <Link
+          to={`/carddetails/${item._id}`}
+          key={item._id}
+          className="block"
+        >
+          {cardContent}
+        </Link>
+      );
+    } else {
+      return (
+        <div key={item._id} className="block">
+          {cardContent}
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 mt-6">
       <h2 className="text-lg md:text-2xl font-semibold mb-4">
-       Daily,Weekly & Monthly
+        Daily,Weekly & Monthly
       </h2>
       <div className="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
-        {cards.map((item) => (
-          <Link
-            to={`/carddetails/${item._id}`}
-            key={item._id}
-            className="min-w-[220px] sm:min-w-[250px] bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200"
-          >
-            <div className="relative">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-40 object-cover"
-              />
-              {item.badge && (
-                <div className="absolute top-2 left-2 bg-white px-2 py-1 rounded-full text-xs font-semibold shadow">
-                  {item.badge}
-                </div>
-              )}
-            </div>
-            <div className="p-3">
-              <h3 className="font-medium text-sm text-gray-900">
-                {item.title}
-              </h3>
-              <p className="text-xs text-gray-500 mb-1">{item.roomType} Room</p>
-              <p className="text-xs text-gray-500 mb-1">
-                {item.isSmokingAllowed ? "Smoking Allowed" : "Non-smoking"}
-              </p>
-              <p className="text-sm text-gray-700">
-                {item.price} CAD for 1 night • ★ {item.rating}
-              </p>
-            </div>
-          </Link>
-        ))}
+        {cards.map((item) => renderCard(item))}
       </div>
     </div>
   );
