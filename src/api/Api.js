@@ -3,8 +3,8 @@ import { signIn } from "../redux/slices/authSlice"
 //  export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
-// export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
+// export const BASE_URL = "http://localhost:3000";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
