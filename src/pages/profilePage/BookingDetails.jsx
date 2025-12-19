@@ -181,7 +181,7 @@ const BookingDetails = () => {
                     <div>
                       <div className="font-semibold">{property.name}</div>
                       <div className="text-xs text-gray-500">
-                        ${property.price} / night
+                        ${property.price} / Night
                       </div>
                     </div>
                   </td>
