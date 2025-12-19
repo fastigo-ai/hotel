@@ -9,10 +9,11 @@ const Confirm = () => {
   const navigate = useNavigate();
 
   const { property, checkIn, checkOut, guests = {}, price } = state || {};
-  
+
   // Get user from localStorage with better error handling
   const [user, setUser] = useState(null);
-  
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
+
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -22,14 +23,14 @@ const Confirm = () => {
     } catch (error) {
       console.error("Error parsing user data:", error);
       // Redirect to login if user data is invalid
-      navigate('/login');
+      navigate("/login");
     }
   }, [navigate]);
 
   // Redirect if no property data
   useEffect(() => {
     if (!property || !checkIn || !checkOut) {
-      navigate('/');
+      navigate("/");
     }
   }, [property, checkIn, checkOut, navigate]);
 
@@ -40,19 +41,26 @@ const Confirm = () => {
 
   // Get property pricing details with fallbacks
   const nightlyPrice = price || property?.price || property?.detail?.price || 0;
-  const smokingRoomCharge =  0;
-  const petFeePerPet = property?.detail?.petFeePerPet || property?.petFeePerPet || 0;
-  const extraPersonCharge = property?.detail?.extraPersonCharge || property?.extraPersonCharge || 0;
-  const allowedPets = property?.detail?.allowedPets || property?.allowedPets || 0;
-  
+  const smokingRoomCharge = 0;
+  const petFeePerPet =
+    property?.detail?.petFeePerPet || property?.petFeePerPet || 0;
+  const extraPersonCharge =
+    property?.detail?.extraPersonCharge || property?.extraPersonCharge || 0;
+  const allowedPets =
+    property?.detail?.allowedPets || property?.allowedPets || 0;
+
   // Room type logic - determine if single or double room
   const roomType = property?.detail?.roomType || property?.roomType || "double";
-  const isDoubleRoom = roomType.toLowerCase().includes('double') || roomType.toLowerCase().includes('twin') || roomType.toLowerCase().includes('quad');
+  const isDoubleRoom =
+    roomType.toLowerCase().includes("double") ||
+    roomType.toLowerCase().includes("twin") ||
+    roomType.toLowerCase().includes("quad");
   const maxGuestsPerRoom = isDoubleRoom ? 4 : 2; // Double room: 4 guests, Single room: 2 guests
-  
+
   // Calculate guests (excluding children as they're free)
   const payingGuests = (guests.adults || 0) + (guests.infants || 0); // Children are free
-  const totalGuests = (guests.adults || 0) + (guests.children || 0) + (guests.infants || 0); // Total for display
+  const totalGuests =
+    (guests.adults || 0) + (guests.children || 0) + (guests.infants || 0); // Total for display
 
   // Calculate minimum rooms needed based on paying guests
   const minRoomsNeeded = Math.ceil(payingGuests / maxGuestsPerRoom);
@@ -77,9 +85,10 @@ const Confirm = () => {
   // Update form when user data loads
   useEffect(() => {
     if (user) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        firstname: prev.firstname || user?.user?.firstname || user?.firstname || "",
+        firstname:
+          prev.firstname || user?.user?.firstname || user?.firstname || "",
         lastname: prev.lastname || user?.user?.lastname || user?.lastname || "",
         email: prev.email || user?.user?.email || user?.email || "",
         phone: prev.phone || user?.user?.mobile || user?.mobile || "",
@@ -91,7 +100,7 @@ const Confirm = () => {
   useEffect(() => {
     const newMinRooms = Math.ceil(payingGuests / maxGuestsPerRoom);
     if (formData.roomQuantity < newMinRooms) {
-      setFormData(prev => ({ ...prev, roomQuantity: newMinRooms }));
+      setFormData((prev) => ({ ...prev, roomQuantity: newMinRooms }));
     }
   }, [payingGuests, maxGuestsPerRoom]);
 
@@ -102,9 +111,12 @@ const Confirm = () => {
   const totalCapacity = roomsBooked * maxGuestsPerRoom;
   const extraPersonsNeeded = Math.max(0, payingGuests - totalCapacity);
 
-  const petFee = formData.isPetFriendly ? (formData.pets || 0) * petFeePerPet : 0;
+  const petFee = formData.isPetFriendly
+    ? (formData.pets || 0) * petFeePerPet
+    : 0;
   const smokingFee = formData.isSmokingAllowed ? smokingRoomCharge : 0;
-  const extraPersonFee = (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
+  const extraPersonFee =
+    (formData.extraPersons + extraPersonsNeeded) * extraPersonCharge;
 
   const subtotal = +(nightlyPrice * nights * roomsBooked).toFixed(2);
   const totalFees = petFee + smokingFee + extraPersonFee;
@@ -139,7 +151,9 @@ const Confirm = () => {
 
     // Validate room quantity
     if (formData.roomQuantity < minRoomsNeeded) {
-      errors.roomQuantity = `Minimum ${minRoomsNeeded} room${minRoomsNeeded > 1 ? 's' : ''} required for ${payingGuests} paying guests`;
+      errors.roomQuantity = `Minimum ${minRoomsNeeded} room${
+        minRoomsNeeded > 1 ? "s" : ""
+      } required for ${payingGuests} paying guests`;
     }
 
     if (formData.roomQuantity <= 0) {
@@ -171,21 +185,21 @@ const Confirm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!user?.user?.id && !user?.id) {
       setError("User authentication required. Please log in again.");
-      navigate('/login');
+      navigate("/login");
       return;
     }
-  
+
     if (!validateForm()) {
       setError("Please fix the errors below");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+
     // Prepare payload matching API expectations exactly
     const payload = {
       propertyId: property?._id,
@@ -195,6 +209,7 @@ const Confirm = () => {
       totalStay: nights,
       totalAmount: total.toString(),
       currency: "cad",
+      paymentMethod,
       specialRequest: formData.specialRequest || "",
       user: {
         firstname: formData.firstname.trim(),
@@ -206,7 +221,7 @@ const Confirm = () => {
         adults: guests.adults || 0,
         children: guests.children || 0,
         infants: guests.infants || 0,
-        pets: formData.isPetFriendly ? (formData.pets || 0) : 0,
+        pets: formData.isPetFriendly ? formData.pets || 0 : 0,
       },
       roomDetails: {
         roomType: roomType,
@@ -217,46 +232,54 @@ const Confirm = () => {
         isSmokingAllowed: formData.isSmokingAllowed,
         smokingRoomCharge: smokingRoomCharge,
         isPetFriendly: formData.isPetFriendly,
-        pets: formData.isPetFriendly ? (formData.pets || 0) : 0,
+        pets: formData.isPetFriendly ? formData.pets || 0 : 0,
         petFeePerPet: petFeePerPet,
       },
     };
-  
+
     try {
       const response = await fetch(
         `${BASE_URL}/api/payments/create-checkout-session`,
         {
           method: "POST",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
-            ...(user?.token && { "Authorization": `Bearer ${user.token}` })
+            ...(user?.token && { Authorization: `Bearer ${user.token}` }),
           },
           body: JSON.stringify(payload),
         }
       );
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.message || "Failed to create checkout session");
       }
-  
-      if (data.bookingAction === 'extended') {
-        if (window.confirm("This will extend your existing booking. Continue to payment?")) {
+
+      if (data.bookingAction === "extended") {
+        if (
+          window.confirm(
+            "This will extend your existing booking. Continue to payment?"
+          )
+        ) {
           window.location.href = data.url;
         } else {
           setLoading(false);
         }
-      } else if (data.bookingAction === 'additional_rooms') {
-        if (window.confirm("You already have a booking for these dates. This will add additional rooms. Continue to payment?")) {
+      } else if (data.bookingAction === "additional_rooms") {
+        if (
+          window.confirm(
+            "You already have a booking for these dates. This will add additional rooms. Continue to payment?"
+          )
+        ) {
           window.location.href = data.url;
+
         } else {
           setLoading(false);
         }
       } else {
         window.location.href = data.url;
       }
-  
     } catch (err) {
       console.error("Booking error:", err);
       setError(err.message || "Failed to create booking. Please try again.");
@@ -280,7 +303,9 @@ const Confirm = () => {
       {/* FORM SECTION */}
       <form onSubmit={handleSubmit} className="space-y-8 lg:col-span-2">
         <div className="bg-white rounded-2xl shadow-sm border p-6">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">Guest Details</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Guest Details
+          </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -289,29 +314,41 @@ const Confirm = () => {
                 placeholder="First Name *"
                 required
                 value={formData.firstname}
-                onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstname: e.target.value })
+                }
                 className={`px-4 py-3 border rounded-xl w-full ${
-                  validationErrors.firstname ? 'border-red-500' : 'border-gray-300'
+                  validationErrors.firstname
+                    ? "border-red-500"
+                    : "border-gray-300"
                 }`}
               />
               {validationErrors.firstname && (
-                <p className="text-red-500 text-sm mt-1">{validationErrors.firstname}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {validationErrors.firstname}
+                </p>
               )}
             </div>
-            
+
             <div>
               <input
                 type="text"
                 placeholder="Last Name *"
                 required
                 value={formData.lastname}
-                onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastname: e.target.value })
+                }
                 className={`px-4 py-3 border rounded-xl w-full ${
-                  validationErrors.lastname ? 'border-red-500' : 'border-gray-300'
+                  validationErrors.lastname
+                    ? "border-red-500"
+                    : "border-gray-300"
                 }`}
               />
               {validationErrors.lastname && (
-                <p className="text-red-500 text-sm mt-1">{validationErrors.lastname}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {validationErrors.lastname}
+                </p>
               )}
             </div>
           </div>
@@ -322,13 +359,17 @@ const Confirm = () => {
               placeholder="Phone Number *"
               required
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
               className={`px-4 py-3 border rounded-xl w-full ${
-                validationErrors.phone ? 'border-red-500' : 'border-gray-300'
+                validationErrors.phone ? "border-red-500" : "border-gray-300"
               }`}
             />
             {validationErrors.phone && (
-              <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {validationErrors.phone}
+              </p>
             )}
           </div>
 
@@ -338,13 +379,17 @@ const Confirm = () => {
               placeholder="Email Address *"
               required
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               className={`px-4 py-3 border rounded-xl w-full ${
-                validationErrors.email ? 'border-red-500' : 'border-gray-300'
+                validationErrors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
             {validationErrors.email && (
-              <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {validationErrors.email}
+              </p>
             )}
           </div>
 
@@ -353,7 +398,9 @@ const Confirm = () => {
               rows="4"
               placeholder="Any special requests (optional)"
               value={formData.specialRequest}
-              onChange={(e) => setFormData({ ...formData, specialRequest: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, specialRequest: e.target.value })
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-xl resize-none"
             />
           </div>
@@ -364,14 +411,16 @@ const Confirm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Room Type: <span className="capitalize font-semibold">{roomType}</span>
+                  Room Type:{" "}
+                  <span className="capitalize font-semibold">{roomType}</span>
                 </label>
                 <p className="text-xs text-blue-600 mb-3">
-                  Max {maxGuestsPerRoom} guests per room (Children stay free with adults in double rooms)
+                  Max {maxGuestsPerRoom} guests per room (Children stay free
+                  with adults in double rooms)
                 </p>
               </div>
             </div>
-            
+
             <div className="mt-3 p-3 bg-white rounded-lg">
               <div className="text-sm text-gray-700">
                 <div className="flex justify-between mb-1">
@@ -383,7 +432,9 @@ const Confirm = () => {
                   <span className="font-medium">{guests.children || 0}</span>
                 </div>
                 <div className="flex justify-between mb-1">
-                  <span>Total Capacity ({roomsBooked} × {maxGuestsPerRoom}):</span>
+                  <span>
+                    Total Capacity ({roomsBooked} × {maxGuestsPerRoom}):
+                  </span>
                   <span className="font-medium">{totalCapacity}</span>
                 </div>
                 {extraPersonsNeeded > 0 && (
@@ -399,24 +450,40 @@ const Confirm = () => {
           {/* Extra Persons */}
           {(payingGuests > totalCapacity || extraPersonsNeeded > 0) && (
             <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-              <h4 className="font-semibold text-yellow-800 mb-2">Extra Person Charge</h4>
+              <h4 className="font-semibold text-yellow-800 mb-2">
+                Extra Person Charge
+              </h4>
               <p className="text-sm text-yellow-700 mb-3">
-                Your party exceeds the room capacity. {extraPersonsNeeded > 0 && `${extraPersonsNeeded} extra person${extraPersonsNeeded > 1 ? 's' : ''} required.`}
+                Your party exceeds the room capacity.{" "}
+                {extraPersonsNeeded > 0 &&
+                  `${extraPersonsNeeded} extra person${
+                    extraPersonsNeeded > 1 ? "s" : ""
+                  } required.`}
               </p>
               <label className="block">
-                <span className="text-sm font-medium">Additional extra persons (+${extraPersonCharge} per person per night):</span>
+                <span className="text-sm font-medium">
+                  Additional extra persons (+${extraPersonCharge} per person per
+                  night):
+                </span>
                 <input
                   type="number"
                   min="0"
                   max="10"
                   value={formData.extraPersons}
-                  onChange={(e) => setFormData({ ...formData, extraPersons: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      extraPersons: parseInt(e.target.value) || 0,
+                    })
+                  }
                   className="mt-1 px-3 py-2 border rounded-lg w-full max-w-xs"
                 />
               </label>
               {extraPersonsNeeded > 0 && (
                 <p className="text-xs text-orange-600 mt-2">
-                  Note: {extraPersonsNeeded} extra person{extraPersonsNeeded > 1 ? 's' : ''} will be automatically charged
+                  Note: {extraPersonsNeeded} extra person
+                  {extraPersonsNeeded > 1 ? "s" : ""} will be automatically
+                  charged
                 </p>
               )}
             </div>
@@ -430,7 +497,10 @@ const Confirm = () => {
                   type="checkbox"
                   checked={formData.isSmokingAllowed}
                   onChange={(e) =>
-                    setFormData({ ...formData, isSmokingAllowed: e.target.checked })
+                    setFormData({
+                      ...formData,
+                      isSmokingAllowed: e.target.checked,
+                    })
                   }
                   className="w-4 h-4 text-indigo-600"
                 />
@@ -447,7 +517,11 @@ const Confirm = () => {
                   type="checkbox"
                   checked={formData.isPetFriendly}
                   onChange={(e) =>
-                    setFormData({ ...formData, isPetFriendly: e.target.checked, pets: e.target.checked ? 1 : 0 })
+                    setFormData({
+                      ...formData,
+                      isPetFriendly: e.target.checked,
+                      pets: e.target.checked ? 1 : 0,
+                    })
                   }
                   className="w-4 h-4 text-indigo-600"
                 />
@@ -462,16 +536,25 @@ const Confirm = () => {
                     placeholder="Number of Pets"
                     value={formData.pets || ""}
                     onChange={(e) =>
-                      setFormData({ ...formData, pets: parseInt(e.target.value) || 0 })
+                      setFormData({
+                        ...formData,
+                        pets: parseInt(e.target.value) || 0,
+                      })
                     }
                     className={`px-4 py-2 border rounded-xl w-full max-w-xs ${
-                      validationErrors.pets ? 'border-red-500' : 'border-gray-300'
+                      validationErrors.pets
+                        ? "border-red-500"
+                        : "border-gray-300"
                     }`}
                   />
                   {validationErrors.pets && (
-                    <p className="text-red-500 text-sm mt-1">{validationErrors.pets}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {validationErrors.pets}
+                    </p>
                   )}
-                  <p className="text-sm text-gray-600 mt-1">Maximum {allowedPets} pets allowed</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Maximum {allowedPets} pets allowed
+                  </p>
                 </div>
               )}
             </div>
@@ -491,26 +574,56 @@ const Confirm = () => {
         )}
 
         <div className="bg-white rounded-2xl shadow-sm border p-6">
+          <div className="mt-6 bg-white rounded-2xl shadow-sm border p-6 mb-6">
+            <h3 className="text-lg font-bold mb-4">Payment Method</h3>
+
+            <label className="flex items-center gap-3 mb-3">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="stripe"
+                checked={paymentMethod === "stripe"}
+                onChange={() => setPaymentMethod("stripe")}
+              />
+              <span>Pay Online (Card)</span>
+            </label>
+
+            <label className="flex items-center gap-3">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cod"
+                checked={paymentMethod === "cod"}
+                onChange={() => setPaymentMethod("cod")}
+              />
+              <span>Pay at Hotel (Cash)</span>
+            </label>
+
+            {paymentMethod === "cod" && (
+              <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                <p className="text-sm text-yellow-800">
+                  💵 You will pay <strong>${total} CAD</strong> directly at the
+                  hotel during check-in.
+                </p>
+              </div>
+            )}
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-xl"
           >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Processing...
-              </div>
-            ) : (
-              `Confirm & Pay $${total} CAD`
-            )}
+            {loading
+              ? "Processing..."
+              : paymentMethod === "cod"
+              ? `Confirm Booking – Pay $${total} at Hotel`
+              : `Confirm & Pay $${total} CAD`}
           </button>
           <Link to="/terms">
-          <p className="text-sm text-gray-500 mt-2 text-center">
-            By clicking confirm & pay, you agree to our terms and conditions
-          </p>
+            <p className="text-sm text-gray-500 mt-2 text-center">
+              By clicking confirm & pay, you agree to our terms and conditions
+            </p>
           </Link>
-          
         </div>
       </form>
 
@@ -524,7 +637,8 @@ const Confirm = () => {
                 alt="Property"
                 className="w-24 h-24 rounded-xl object-cover"
                 onError={(e) => {
-                  e.target.src = 'https://via.placeholder.com/96x96?text=No+Image';
+                  e.target.src =
+                    "https://via.placeholder.com/96x96?text=No+Image";
                 }}
               />
               <div>
@@ -532,14 +646,23 @@ const Confirm = () => {
                   {property?.title || property?.name}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {property?.location?.city || property?.city}, {property?.location?.country || property?.country}
+                  {property?.location?.city || property?.city},{" "}
+                  {property?.location?.country || property?.country}
                 </p>
                 <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
-                  <span className="text-sm font-semibold">{property?.rating || 'N/A'}</span>
-                  <span className="text-sm text-gray-500">({property?.reviews || 0} reviews)</span>
+                  <span className="text-sm font-semibold">
+                    {property?.rating || "N/A"}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    ({property?.reviews || 0} reviews)
+                  </span>
                 </div>
               </div>
             </div>
@@ -547,26 +670,33 @@ const Confirm = () => {
             <div className="space-y-3 border-t pt-4 text-sm text-gray-700">
               <div className="flex justify-between">
                 <span>Check-in</span>
-                <span className="font-medium text-gray-900">{formatDate(checkIn)}</span>
+                <span className="font-medium text-gray-900">
+                  {formatDate(checkIn)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Check-out</span>
-                <span className="font-medium text-gray-900">{formatDate(checkOut)}</span>
+                <span className="font-medium text-gray-900">
+                  {formatDate(checkOut)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Total Guests</span>
                 <span className="font-medium text-gray-900">
-                  {totalGuests} guest{totalGuests !== 1 ? 's' : ''} ({payingGuests} paying)
+                  {totalGuests} guest{totalGuests !== 1 ? "s" : ""} (
+                  {payingGuests} paying)
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Room Type</span>
-                <span className="font-medium text-gray-900 capitalize">{roomType}</span>
+                <span className="font-medium text-gray-900 capitalize">
+                  {roomType}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Rooms</span>
                 <span className="font-medium text-gray-900">
-                  {roomsBooked} room{roomsBooked !== 1 ? 's' : ''}
+                  {roomsBooked} room{roomsBooked !== 1 ? "s" : ""}
                 </span>
               </div>
             </div>
@@ -576,24 +706,37 @@ const Confirm = () => {
             <h4 className="font-bold text-lg mb-4">Price breakdown</h4>
             <div className="space-y-2 text-sm text-gray-700">
               <div className="flex justify-between">
-                <span>${nightlyPrice} × {nights} night{nights > 1 ? "s" : ""} × {roomsBooked} room{roomsBooked > 1 ? "s" : ""}</span>
+                <span>
+                  ${nightlyPrice} × {nights} night{nights > 1 ? "s" : ""} ×{" "}
+                  {roomsBooked} room{roomsBooked > 1 ? "s" : ""}
+                </span>
                 <span className="font-medium text-gray-900">${subtotal}</span>
               </div>
               {extraPersonFee > 0 && (
                 <div className="flex justify-between">
-                  <span>Extra person charge ({formData.extraPersons + extraPersonsNeeded} × ${extraPersonCharge})</span>
-                  <span className="font-medium text-gray-900">${extraPersonFee}</span>
+                  <span>
+                    Extra person charge (
+                    {formData.extraPersons + extraPersonsNeeded} × $
+                    {extraPersonCharge})
+                  </span>
+                  <span className="font-medium text-gray-900">
+                    ${extraPersonFee}
+                  </span>
                 </div>
               )}
               {smokingFee > 0 && (
                 <div className="flex justify-between">
                   <span>Smoking room charge</span>
-                  <span className="font-medium text-gray-900">${smokingFee}</span>
+                  <span className="font-medium text-gray-900">
+                    ${smokingFee}
+                  </span>
                 </div>
               )}
               {petFee > 0 && (
                 <div className="flex justify-between">
-                  <span>Pet fee ({formData.pets} × ${petFeePerPet})</span>
+                  <span>
+                    Pet fee ({formData.pets} × ${petFeePerPet})
+                  </span>
                   <span className="font-medium text-gray-900">${petFee}</span>
                 </div>
               )}
@@ -603,7 +746,9 @@ const Confirm = () => {
               </div>
               <div className="flex justify-between">
                 <span>Tourism Levy tax</span>
-                <span className="font-medium text-gray-900">${tourismLevy}</span>
+                <span className="font-medium text-gray-900">
+                  ${tourismLevy}
+                </span>
               </div>
               <div className="border-t pt-3 flex justify-between text-base font-bold text-gray-900">
                 <span>Total</span>

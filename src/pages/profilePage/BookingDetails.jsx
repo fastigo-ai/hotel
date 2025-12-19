@@ -1,51 +1,64 @@
 import React, { useEffect } from "react";
-import { FaTrash, FaHome, FaCalendar, FaUsers, FaDollarSign } from "react-icons/fa";
+import {
+  FaTrash,
+  FaHome,
+  FaCalendar,
+  FaUsers,
+  FaDollarSign,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserBookings } from "../../redux/slices/bookingSlice";
+import { cancelBooking } from "../../api/Api/";
+
+/* ===============================
+   BookingDetails Component
+================================= */
 
 const BookingDetails = () => {
   const dispatch = useDispatch();
-  const { bookings = [], loading, error } = useSelector((state) => state.booking);
+  const {
+    bookings = [],
+    loading,
+    error,
+  } = useSelector((state) => state.booking);
 
+  /* ===============================
+     Fetch bookings
+  ================================= */
   useEffect(() => {
     dispatch(getUserBookings());
   }, [dispatch]);
 
-  console.log("Bookings:", bookings);
-  console.log("First booking property:", bookings[0]?.property);
+  /* ===============================
+     Helpers
+  ================================= */
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    try {
-      return new Date(dateString).toLocaleDateString("en-IN");
-    } catch (error) {
-      return "Invalid Date";
-    }
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleDateString("en-IN");
   };
 
-  // Helper function to safely get property data
   const getPropertyData = (booking) => {
     const property = booking?.property || booking?.propertyId;
     return {
-      name: property?.name || property?.title || "Property Name Not Available",
+      id: property?._id,
+      name: property?.name || property?.title || "Property",
       price: property?.price || property?.detail?.price || 0,
-      image: property?.image || property?.images?.[0] || property?.detail?.images?.[0] || null,
-      location: property?.location || property?.city || "Location Not Available"
+      image:
+        property?.image ||
+        property?.images?.[0] ||
+        property?.detail?.images?.[0],
+      location: property?.location || property?.city || "",
     };
   };
 
-  // Helper function to get booking status with fallback
-  const getBookingStatus = (booking) => {
-    return booking?.bookingStatus || booking?.status || "unknown";
-  };
+  const getStatus = (booking) =>
+    booking?.bookingStatus || booking?.status || "unknown";
 
-  // Helper function to get status styling
-  const getStatusStyle = (status) => {
-    const statusLower = status.toLowerCase();
-    switch (statusLower) {
-      case "booked":
+  const statusStyle = (status) => {
+    switch (status.toLowerCase()) {
       case "confirmed":
-      case "active":
+      case "booked":
         return "bg-green-500 text-white";
       case "pending":
         return "bg-yellow-500 text-white";
@@ -58,160 +71,156 @@ const BookingDetails = () => {
     }
   };
 
-  // Loading state
+  /* ===============================
+     Cancel booking
+  ================================= */
+
+  const handleCancelBooking = async (booking) => {
+    const confirm = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
+    if (!confirm) return;
+
+    try {
+      const payload = {
+        bookingId: booking._id,
+        orderId: booking.orderId?._id || booking.orderId,
+        propertyId:
+          booking.property?._id ||
+          booking.propertyId?._id ||
+          booking.propertyId,
+      };
+
+      console.log("Cancel payload:", payload);
+
+      await cancelBooking(payload);
+      dispatch(getUserBookings());
+    } catch (err) {
+      console.error("Cancel failed:", err);
+      alert("Failed to cancel booking");
+    }
+  };
+
+  /* ===============================
+     Loading / Error / Empty
+  ================================= */
+
   if (loading) {
     return (
-      <div className="p-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-center text-gray-600 text-lg">Loading your bookings...</p>
-          <p className="text-center text-gray-400 text-sm mt-2">This may take a moment</p>
-        </div>
+      <div className="flex justify-center py-16">
+        <div className="animate-spin h-12 w-12 border-b-2 border-blue-600 rounded-full" />
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <div className="p-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg max-w-md">
-            <div className="flex items-center">
-              <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              <div>
-                <h3 className="font-semibold">Error loading bookings</h3>
-                <p className="text-sm">{error}</p>
-              </div>
-            </div>
-            <button
-              onClick={() => dispatch(getUserBookings())}
-              className="mt-3 bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
+      <div className="text-center text-red-600 py-12">
+        {error}
+        <br />
+        <button
+          onClick={() => dispatch(getUserBookings())}
+          className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+        >
+          Retry
+        </button>
       </div>
     );
   }
 
-  // Empty state
-  if (!bookings || bookings.length === 0) {
+  if (!bookings.length) {
     return (
-      <div className="p-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="bg-gray-100 rounded-full p-6 mb-4">
-            <FaHome className="w-12 h-12 text-gray-400" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">No Bookings Yet</h3>
-          <p className="text-gray-500 text-center max-w-md mb-6">
-            You haven't made any bookings yet. When you do, they'll appear here so you can track your reservations.
-          </p>
-          <button
-            onClick={() => window.location.href = '/'}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Browse Properties
-          </button>
-        </div>
+      <div className="text-center py-16">
+        <FaHome className="mx-auto text-5xl text-gray-400 mb-4" />
+        <h3 className="text-xl font-semibold">No bookings found</h3>
       </div>
     );
   }
+
+  /* ===============================
+     Render
+  ================================= */
 
   return (
     <div className="p-4">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">My Bookings</h2>
-        <p className="text-gray-600">Manage and view your property reservations</p>
-      </div>
+      <h2 className="text-2xl font-bold mb-6">My Bookings</h2>
 
-      {/* Desktop Table */}
+      {/* ================= Desktop ================= */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-          <thead>
-            <tr className="bg-gray-800 text-white text-left text-sm">
-              <th className="p-4">#</th>
-              <th className="p-4">Property</th>
-              <th className="p-4">Dates</th>
-              <th className="p-4">Guests</th>
-              <th className="p-4">Amount</th>
-              <th className="p-4">Status</th>
+        <table className="w-full border">
+          <thead className="bg-gray-800 text-white">
+            <tr>
+              <th className="p-3">#</th>
+              <th className="p-3">Property</th>
+              <th className="p-3">Dates</th>
+              <th className="p-3">Guests</th>
+              <th className="p-3">Amount</th>
+              <th className="p-3">Status</th>
+              <th className="p-3">Action</th>
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking, index) => {
-              const propertyData = getPropertyData(booking);
-              const status = getBookingStatus(booking);
-              
+            {bookings.map((booking, i) => {
+              const property = getPropertyData(booking);
+              const status = getStatus(booking);
+
               return (
-                <tr
-                  key={booking._id || index}
-                  className="bg-white border-t border-gray-200 text-sm hover:bg-gray-50 transition-colors"
-                >
-                  <td className="p-4 font-medium">{index + 1}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {propertyData.image ? (
-                        <img
-                          src={propertyData.image}
-                          alt="property"
-                          className="w-16 h-12 object-cover rounded"
-                          onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/64x48?text=No+Image';
-                          }}
-                        />
-                      ) : (
-                        <div className="w-16 h-12 bg-gray-200 rounded flex items-center justify-center">
-                          <FaHome className="text-gray-400 w-4 h-4" />
-                        </div>
-                      )}
-                      <div>
-                        <div className="font-semibold text-gray-900">{propertyData.name}</div>
-                        <div className="text-gray-500 text-xs">
-                          ${propertyData.price} / night
-                        </div>
-                        {propertyData.location && (
-                          <div className="text-gray-400 text-xs">
-                            {propertyData.location}
-                          </div>
-                        )}
+                <tr key={booking._id} className="border-t">
+                  <td className="p-3">{i + 1}</td>
+
+                  <td className="p-3 flex gap-3 items-center">
+                    {property.image ? (
+                      <img
+                        src={property.image}
+                        alt="property"
+                        className="w-16 h-12 object-cover rounded"
+                      />
+                    ) : (
+                      <FaHome className="text-gray-400" />
+                    )}
+                    <div>
+                      <div className="font-semibold">{property.name}</div>
+                      <div className="text-xs text-gray-500">
+                        ${property.price} / night
                       </div>
                     </div>
                   </td>
-                  <td className="p-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1">
-                        <FaCalendar className="w-3 h-3 text-green-500" />
-                        <span className="text-xs">In: {formatDate(booking.checkInDate)}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <FaCalendar className="w-3 h-3 text-red-500" />
-                        <span className="text-xs">Out: {formatDate(booking.checkOutDate)}</span>
-                      </div>
-                    </div>
+
+                  <td className="p-3 text-xs">
+                    <div>In: {formatDate(booking.checkInDate)}</div>
+                    <div>Out: {formatDate(booking.checkOutDate)}</div>
                   </td>
-                  <td className="p-4">
-                    <div className="space-y-1 text-xs">
-                      <div><strong>Adults:</strong> {booking.guests?.adults || 0}</div>
-                      <div><strong>Children:</strong> {booking.guests?.children || 0}</div>
-                      {booking.guests?.pets > 0 && (
-                        <div><strong>Pets:</strong> {booking.guests.pets}</div>
-                      )}
-                    </div>
+
+                  <td className="p-3 text-xs">
+                    {booking.guests?.adults || 0} Adults,
+                    {booking.guests?.children || 0} Children
                   </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1">
-                      <FaDollarSign className="w-3 h-3 text-green-500" />
-                      <span className="font-semibold">{booking.totalAmount || 0} CAD</span>
-                    </div>
+
+                  <td className="p-3 font-semibold">
+                    {booking.totalAmount} CAD
                   </td>
-                  <td className="p-4">
-                    <span className={`text-xs font-semibold px-3 py-1 rounded-full capitalize ${getStatusStyle(status)}`}>
+
+                  <td className="p-3">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs capitalize ${statusStyle(
+                        status
+                      )}`}
+                    >
                       {status}
                     </span>
+                  </td>
+
+                  <td className="p-3">
+                    {status !== "cancelled" ? (
+                      <button
+                        onClick={() => handleCancelBooking(booking)}
+                        className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded hover:bg-red-600 hover:text-white transition"
+                      >
+                        Cancel Booking
+                      </button>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
                   </td>
                 </tr>
               );
@@ -220,59 +229,64 @@ const BookingDetails = () => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
+      {/* ================= Mobile ================= */}
       <div className="md:hidden space-y-4">
-        {bookings.map((booking, index) => {
-          const propertyData = getPropertyData(booking);
-          const status = getBookingStatus(booking);
-          
+        {bookings.map((booking) => {
+          const property = getPropertyData(booking);
+          const status = getStatus(booking);
+          console.log("Rendering booking:", booking);
+
           return (
-            <div key={booking._id || index} className="bg-white shadow-md rounded-lg p-4 border">
-              <div className="flex gap-3 mb-3">
-                {propertyData.image ? (
+            <div key={booking._id} className="border rounded-lg p-4 shadow">
+              <div className="flex gap-3 mb-2">
+                {property.image ? (
                   <img
-                    src={propertyData.image}
+                    src={property.image}
                     alt="property"
-                    className="w-24 h-20 object-cover rounded"
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/96x80?text=No+Image';
-                    }}
+                    className="w-24 h-20 rounded object-cover"
                   />
                 ) : (
-                  <div className="w-24 h-20 bg-gray-200 rounded flex items-center justify-center">
-                    <FaHome className="text-gray-400 w-6 h-6" />
-                  </div>
+                  <FaHome className="text-gray-400 text-3xl" />
                 )}
-                <div className="flex-1">
-                  <div className="font-semibold text-gray-900">{propertyData.name}</div>
-                  <div className="text-xs text-gray-500">${propertyData.price} / night</div>
-                  {propertyData.location && (
-                    <div className="text-xs text-gray-400">{propertyData.location}</div>
-                  )}
-                  <span className={`inline-block text-xs font-semibold px-2 py-1 rounded-full capitalize mt-1 ${getStatusStyle(status)}`}>
+                <div>
+                  <div className="font-semibold">{property.name}</div>
+                  <div className="text-xs text-gray-500">
+                    ${property.price} / night
+                  </div>
+                  <span
+                    className={`inline-block mt-1 px-2 py-1 text-xs rounded-full ${statusStyle(
+                      status
+                    )}`}
+                  >
                     {status}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <FaCalendar className="w-3 h-3 text-blue-500" />
-                  <span><strong>Check-in:</strong> {formatDate(booking.checkInDate)}</span>
+              <div className="text-sm space-y-1">
+                <div>
+                  <FaCalendar className="inline mr-1" />
+                  {formatDate(booking.checkInDate)} →{" "}
+                  {formatDate(booking.checkOutDate)}
                 </div>
-                <div className="flex items-center gap-2">
-                  <FaCalendar className="w-3 h-3 text-blue-500" />
-                  <span><strong>Check-out:</strong> {formatDate(booking.checkOutDate)}</span>
+                <div>
+                  <FaUsers className="inline mr-1" />
+                  {booking.guests?.adults || 0} Adults
                 </div>
-                <div className="flex items-center gap-2">
-                  <FaUsers className="w-3 h-3 text-green-500" />
-                  <span><strong>Guests:</strong> {booking.guests?.adults || 0} Adults, {booking.guests?.children || 0} Children{booking.guests?.pets > 0 ? `, ${booking.guests.pets} Pets` : ''}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FaDollarSign className="w-3 h-3 text-green-500" />
-                  <span><strong>Total:</strong> {booking.totalAmount || 0} CAD</span>
+                <div>
+                  <FaDollarSign className="inline mr-1" />
+                  {booking.totalAmount} CAD
                 </div>
               </div>
+
+              {status !== "cancelled" && (
+                <button
+                  onClick={() => handleCancelBooking(booking)}
+                  className="mt-3 text-red-600 flex items-center gap-1"
+                >
+                  <FaTrash /> Cancel Booking
+                </button>
+              )}
             </div>
           );
         })}

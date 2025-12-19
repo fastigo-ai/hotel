@@ -3,7 +3,8 @@ import { signIn } from "../redux/slices/authSlice"
 //  export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
-export const BASE_URL = "https://whale-app-oiglt.ondigitalocean.app";
+// export const BASE_URL = "https://whale-app-oiglt.ondigitalocean.app/";
+export const BASE_URL = "http://localhost:3000";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
@@ -104,4 +105,20 @@ export const fetchUserBookings = async () => {
   );
 
   return response.data.bookings;
+};
+
+export const cancelBooking = async ({ orderId, bookingId, propertyId }) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+
+  const response = await axios.post(
+    `${BASE_URL}/api/payments/cancel-booking`,
+    { orderId, bookingId, propertyId },
+    config
+  );
+
+  return response.data;
 };
