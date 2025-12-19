@@ -165,37 +165,23 @@ const BookingDetails = () => {
               const status = getStatus(booking);
 
               return (
-                <tr
-                  key={booking._id || index}
-                  className="bg-white border-t border-gray-200 text-sm hover:bg-gray-50 transition-colors"
-                >
-                  <td className="p-4 font-medium">{index + 1}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {propertyData.image ? (
-                        <img
-                          src={propertyData.image}
-                          alt="property"
-                          className="w-16 h-12 object-cover rounded"
-                          onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/64x48?text=No+Image';
-                          }}
-                        />
-                      ) : (
-                        <div className="w-16 h-12 bg-gray-200 rounded flex items-center justify-center">
-                          <FaHome className="text-gray-400 w-4 h-4" />
-                        </div>
-                      )}
-                      <div>
-                        <div className="font-semibold text-gray-900">{propertyData.name}</div>
-                        <div className="text-gray-500 text-xs">
-                          ${propertyData.price} / night
-                        </div>
-                        {propertyData.location && (
-                          <div className="text-gray-400 text-xs">
-                            {propertyData.location}
-                          </div>
-                        )}
+                <tr key={booking._id} className="border-t">
+                  <td className="p-3">{i + 1}</td>
+
+                  <td className="p-3 flex gap-3 items-center">
+                    {property.image ? (
+                      <img
+                        src={property.image}
+                        alt="property"
+                        className="w-16 h-12 object-cover rounded"
+                      />
+                    ) : (
+                      <FaHome className="text-gray-400" />
+                    )}
+                    <div>
+                      <div className="font-semibold">{property.name}</div>
+                      <div className="text-xs text-gray-500">
+                        ${property.price} / night
                       </div>
                     </div>
                   </td>
@@ -292,6 +278,15 @@ const BookingDetails = () => {
                   {booking.totalAmount} CAD
                 </div>
               </div>
+
+              {status !== "cancelled" && (
+                <button
+                  onClick={() => handleCancelBooking(booking)}
+                  className="mt-3 text-red-600 flex items-center gap-1"
+                >
+                  <FaTrash /> Cancel Booking
+                </button>
+              )}
             </div>
           );
         })}

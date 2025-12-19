@@ -602,7 +602,7 @@ const Confirm = () => {
             {paymentMethod === "cod" && (
               <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
                 <p className="text-sm text-yellow-800">
-                  💵 You will pay <strong>${total} CAD</strong> Directly at the
+                  💵 You will pay <strong>${total} CAD</strong> directly at the
                   hotel during check-in.
                 </p>
               </div>
