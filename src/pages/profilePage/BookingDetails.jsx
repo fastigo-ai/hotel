@@ -282,7 +282,7 @@ const BookingDetails = () => {
               {status !== "cancelled" && (
                 <button
                   onClick={() => handleCancelBooking(booking)}
-                  className="mt-3 text-red-600 flex items-center gap-1"
+                  className="mt-3 text-red-600     flex items-center gap-1"
                 >
                   <FaTrash /> Cancel Booking
                 </button>
