@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getPropertyCards } from '../../api/Api'; // Make sure this path is correct
+import { getPropertyCards } from '../../api/Api';
 
 const HotelCard = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const HotelCard = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await getPropertyCards(); // Fetch from API
+        const response = await getPropertyCards();
         setData(response);
       } catch (error) {
         console.error('Failed to fetch hotel cards:', error);
@@ -25,44 +25,86 @@ const HotelCard = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item) => (
-        <div
-          key={item._id} // Use _id if coming from MongoDB or similar
-          onClick={() => navigate(`/carddetails/${item._id}`)}
-          className="cursor-pointer flex flex-col bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl hover:scale-[1.02] transition duration-300 ease-in-out"
-        >
-          <img src={item.image} alt={item.title} className="w-full h-48 object-cover rounded-t-xl" />
+      {data.map((item) => {
+        const isAvailable = item.inStock;
 
-          <div className="p-4 flex flex-col justify-between h-full">
-            <div className="flex justify-between items-start mb-2">
-              <h2 className="text-lg font-semibold text-black leading-snug">{item.title}</h2>
+        return (
+          <div
+            key={item._id}
+            onClick={() => {
+              if (isAvailable) {
+                navigate(`/carddetails/${item._id}`);
+              }
+            }}
+            className={`relative flex flex-col bg-white rounded-xl border border-gray-200 shadow-md transition duration-300 ease-in-out
+              ${
+                isAvailable
+                  ? 'cursor-pointer hover:shadow-xl hover:scale-[1.02]'
+                  : 'opacity-60 cursor-not-allowed'
+              }`}
+          >
+            {/* Image */}
+            <div className="relative">
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+
+              {/* Badge */}
               {item.badge && (
-                <span className="bg-yellow-100 text-yellow-700 px-2 py-1 text-xs rounded-lg ml-2">
+                <span className="absolute top-2 left-2 bg-yellow-100 text-yellow-700 px-2 py-1 text-xs rounded-lg">
                   {item.badge}
                 </span>
               )}
+
+              {/* Not Available Overlay */}
+              {!isAvailable && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-t-xl">
+                  <span className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                    Currently Not Available
+                  </span>
+                </div>
+              )}
             </div>
 
-            <p className="text-sm text-black">Classic Triple Room • 1 queen bed</p>
-
-            <ul className="text-sm text-black space-y-1 my-2">
-              <li>✔ Free cancellation</li>
-              <li>✔ No prepayment needed</li>
-            </ul>
-
-            <div className="flex justify-between items-center mt-2">
+            {/* Content */}
+            <div className="p-4 flex flex-col justify-between h-full">
               <div>
-                <p className="text-lg font-bold text-black">
-                  {item.price} CAD <span className="text-sm text-gray-500">+ taxes</span>
+                <h2 className="text-lg font-semibold text-black">
+                  {item.title}
+                </h2>
+
+                <p className="text-sm text-black mt-1">
+                  Classic Triple Room • 1 queen bed
                 </p>
+
+                <ul className="text-sm text-black space-y-1 my-2">
+                  <li>✔ Free cancellation</li>
+                  <li>✔ No prepayment needed</li>
+                </ul>
               </div>
-              <div className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full">
-                ★ {item.rating}
+
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-lg font-bold text-black">
+                  {item.price} CAD{' '}
+                  <span className="text-sm text-gray-500">+ taxes</span>
+                </p>
+
+                <div className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full">
+                  ★ {item.rating}
+                </div>
               </div>
+
+              {!isAvailable && (
+                <p className="text-xs text-red-600 font-semibold mt-2">
+                  Out of Stock
+                </p>
+              )}
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
