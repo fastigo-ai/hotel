@@ -596,7 +596,7 @@ const Confirm = () => {
                 checked={paymentMethod === "cod"}
                 onChange={() => setPaymentMethod("cod")}
               />
-              <span>Pay at Hotel (Cash)</span>
+              <span>Pay at Desk (Cash)</span>
             </label>
 
             {paymentMethod === "cod" && (
