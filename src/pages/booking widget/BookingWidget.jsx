@@ -14,7 +14,6 @@ import { DateTime } from "luxon";
 
 const TIME_ZONE = "America/Toronto";
 
-// Format date → Toronto time, keep local date to avoid off-by-one
 const formatToCAD = (date) => {
   if (!date) return "";
   return DateTime.fromJSDate(date)
@@ -22,7 +21,6 @@ const formatToCAD = (date) => {
     .toFormat("MMM dd, yyyy");
 };
 
-// Convert date → UTC ISO for backend (midnight Toronto)
 const toISOStringDateOnly = (date) => {
   if (!date) return "";
   const dt = DateTime.fromJSDate(date)
@@ -42,7 +40,8 @@ const BookingWidget = ({ property }) => {
   const [pendingReservation, setPendingReservation] = useState(null);
   const [openCalendar, setOpenCalendar] = useState(false);
 
-  const calendarRef = useRef();
+  const calendarRef = useRef(null);
+  const guestRef = useRef(null); // ⭐ NEW
 
   const [dateRange, setDateRange] = useState([
     {
@@ -62,7 +61,7 @@ const BookingWidget = ({ property }) => {
     pets: 0,
   });
 
-  // Convert selected dates → UTC ISO for backend
+  // Convert selected dates → UTC ISO
   useEffect(() => {
     const { startDate, endDate } = dateRange[0];
     if (startDate && endDate) {
@@ -71,7 +70,7 @@ const BookingWidget = ({ property }) => {
     }
   }, [dateRange]);
 
-  // Close calendar on outside click
+  // 📅 Calendar outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -80,6 +79,18 @@ const BookingWidget = ({ property }) => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // 👥 Guests outside click ⭐
+  useEffect(() => {
+    const handleGuestOutsideClick = (event) => {
+      if (guestRef.current && !guestRef.current.contains(event.target)) {
+        setShowGuestOptions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleGuestOutsideClick);
+    return () =>
+      document.removeEventListener("mousedown", handleGuestOutsideClick);
   }, []);
 
   const updateGuestCount = (type, delta) => {
@@ -158,14 +169,15 @@ const BookingWidget = ({ property }) => {
         {/* 📅 Date Picker */}
         <div className="relative" ref={calendarRef}>
           <label className="text-sm text-gray-600">Dates</label>
-
           <div
             className="flex items-center border rounded-md mt-2 px-2 py-2 bg-white cursor-pointer"
-            onClick={() => setOpenCalendar(!openCalendar)}
+            onClick={() => setOpenCalendar((prev) => !prev)}
           >
             <FaCalendarAlt className="text-gray-600 mr-2" />
             <span className="text-sm text-gray-800">
-              {`${formatToCAD(dateRange[0].startDate)} - ${formatToCAD(dateRange[0].endDate)}`}
+              {`${formatToCAD(dateRange[0].startDate)} - ${formatToCAD(
+                dateRange[0].endDate
+              )}`}
             </span>
           </div>
 
@@ -185,19 +197,29 @@ const BookingWidget = ({ property }) => {
 
         {/* 👥 Guests */}
         <div
-          className="p-3 relative cursor-pointer border rounded-lg"
-          onClick={() => setShowGuestOptions(!showGuestOptions)}
+          ref={guestRef}
+          className="p-3 relative border rounded-lg"
         >
-          <p className="text-xs font-semibold text-gray-600 uppercase">Guests</p>
-          <p className="text-sm">
-            {guests.adults} adult{guests.adults !== 1 ? "s" : ""}
-            {guests.children > 0 && `, ${guests.children} children`}
-            {guests.infants > 0 && `, ${guests.infants} infants`}
-            {guests.pets > 0 && `, ${guests.pets} pets`}
-          </p>
+          <div
+            className="cursor-pointer"
+            onClick={() => setShowGuestOptions((prev) => !prev)}
+          >
+            <p className="text-xs font-semibold text-gray-600 uppercase">
+              Guests
+            </p>
+            <p className="text-sm">
+              {guests.adults} adult{guests.adults !== 1 ? "s" : ""}
+              {guests.children > 0 && `, ${guests.children} children`}
+              {guests.infants > 0 && `, ${guests.infants} infants`}
+              {guests.pets > 0 && `, ${guests.pets} pets`}
+            </p>
+          </div>
 
           {showGuestOptions && (
-            <div className="absolute z-10 top-full left-0 w-full bg-white border rounded-lg shadow-lg p-4 mt-1 space-y-4">
+            <div
+              className="absolute z-10 top-full left-0 w-full bg-white border rounded-lg shadow-lg p-4 mt-1 space-y-4"
+              onClick={(e) => e.stopPropagation()}
+            >
               <GuestRow
                 label="Adults"
                 subtitle="Age 13+"
@@ -249,7 +271,9 @@ const BookingWidget = ({ property }) => {
         </p>
       </div>
 
-      {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />}
+      {showSignInModal && (
+        <SignInModal onClose={() => setShowSignInModal(false)} />
+      )}
     </div>
   );
 };
