@@ -125,7 +125,7 @@ const CardDetails = () => {
               ["☕", "Breakfast included"],
               ["❄️", "Air conditioning"],
               ["✔️", "Housekeeping"],
-              ["🐾", "Pet friendly"],
+             
               ["📶", "Free WiFi"],
               ["🅿️", "Parking included "],
               ["🅿️", "Semi truck trailer parking avaliable"],
