@@ -37,8 +37,8 @@ export default function LoginPage() {
       );
       navigate("/");
     } catch (err) {
-      console.error("Authentication failed:", err);
-      alert("Authentication failed. Please try again.");
+      // console.error("Authentication failed:", err);
+      alert("");
     } finally {
       setIsLoading(false);
     }

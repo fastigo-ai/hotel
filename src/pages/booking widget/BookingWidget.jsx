@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectIsAuthenticated, selectUser } from "../../redux/slices/authSlice";
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from "../../redux/slices/authSlice";
 import { DateRange } from "react-date-range";
 import { FaCalendarAlt } from "react-icons/fa";
 import SignInModal from "../Login/OtpForm";
@@ -14,26 +17,21 @@ import { DateTime } from "luxon";
 
 const TIME_ZONE = "America/Toronto";
 
-const formatToCAD = (date) => {
-  if (!date) return "";
-  return DateTime.fromJSDate(date)
+const formatToCAD = (date) =>
+  DateTime.fromJSDate(date)
     .setZone(TIME_ZONE, { keepLocalTime: true })
     .toFormat("MMM dd, yyyy");
-};
 
-const toISOStringDateOnly = (date) => {
-  if (!date) return "";
-  const dt = DateTime.fromJSDate(date)
+const toISOStringDateOnly = (date) =>
+  DateTime.fromJSDate(date)
     .setZone(TIME_ZONE, { keepLocalTime: true })
     .startOf("day")
-    .toUTC();
-  return dt.toISO();
-};
+    .toUTC()
+    .toISO();
 
 const BookingWidget = ({ property }) => {
   const navigate = useNavigate();
   const isSignedIn = useSelector(selectIsAuthenticated);
-  const user = useSelector(selectUser);
 
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
@@ -41,7 +39,7 @@ const BookingWidget = ({ property }) => {
   const [openCalendar, setOpenCalendar] = useState(false);
 
   const calendarRef = useRef(null);
-  const guestRef = useRef(null); // ⭐ NEW
+  const guestRef = useRef(null);
 
   const [dateRange, setDateRange] = useState([
     {
@@ -54,83 +52,85 @@ const BookingWidget = ({ property }) => {
   const [checkInUTC, setCheckInUTC] = useState("");
   const [checkOutUTC, setCheckOutUTC] = useState("");
 
+  // 🔒 Guest rules
   const [guests, setGuests] = useState({
     adults: 1,
-    children: 0,
-    infants: 0,
-    pets: 0,
+    children: 0, // max 2
+    infants: 0,  // fixed
+    pets: 0,     // fixed
   });
 
-  // Convert selected dates → UTC ISO
   useEffect(() => {
     const { startDate, endDate } = dateRange[0];
-    if (startDate && endDate) {
-      setCheckInUTC(toISOStringDateOnly(startDate));
-      setCheckOutUTC(toISOStringDateOnly(endDate));
-    }
+    setCheckInUTC(toISOStringDateOnly(startDate));
+    setCheckOutUTC(toISOStringDateOnly(endDate));
   }, [dateRange]);
 
-  // 📅 Calendar outside click
+  // Outside clicks
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+    const handler = (e) => {
+      if (calendarRef.current && !calendarRef.current.contains(e.target)) {
         setOpenCalendar(false);
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // 👥 Guests outside click ⭐
-  useEffect(() => {
-    const handleGuestOutsideClick = (event) => {
-      if (guestRef.current && !guestRef.current.contains(event.target)) {
+      if (guestRef.current && !guestRef.current.contains(e.target)) {
         setShowGuestOptions(false);
       }
     };
-    document.addEventListener("mousedown", handleGuestOutsideClick);
-    return () =>
-      document.removeEventListener("mousedown", handleGuestOutsideClick);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  // ✅ Adults & Children logic
   const updateGuestCount = (type, delta) => {
     setGuests((prev) => {
-      const newValue = prev[type] + delta;
-
       if (type === "adults") {
-        const total = newValue + prev.children;
+        const newAdults = prev.adults + delta;
+        if (newAdults < 1) return prev;
+
+        const total = newAdults + prev.children;
         if (total > property.defaultAllowedPersons) return prev;
+
+        return { ...prev, adults: newAdults };
       }
 
-      if (type === "pets" && newValue > property.allowedPets) return prev;
+      if (type === "children") {
+        const newChildren = prev.children + delta;
+        if (newChildren < 0 || newChildren > 2) return prev;
 
-      return {
-        ...prev,
-        [type]: Math.max(0, newValue),
-      };
+        const total = prev.adults + newChildren;
+        if (total > property.defaultAllowedPersons) return prev;
+
+        return { ...prev, children: newChildren };
+      }
+
+      return prev;
     });
   };
 
   const handleReserve = () => {
-    if (!checkInUTC || !checkOutUTC) return;
-
     const nights = Math.max(
       1,
-      differenceInCalendarDays(new Date(checkOutUTC), new Date(checkInUTC))
+      differenceInCalendarDays(
+        new Date(checkOutUTC),
+        new Date(checkInUTC)
+      )
     );
 
     const subtotal = property.price * nights;
-    const petFee = guests.pets * (property.petFeePerPet || 0);
-    const tax = Math.floor((subtotal + petFee) * 0.1);
-    const total = subtotal + petFee + tax;
+    const tax = Math.floor(subtotal * 0.1);
+    const total = subtotal + tax;
 
     const bookingState = {
       property,
       checkIn: checkInUTC,
       checkOut: checkOutUTC,
-      guests,
+      guests: {
+        adults: guests.adults,
+        children: guests.children, // <= 2 guaranteed
+        infants: 0,
+        pets: 0,
+      },
       subtotal,
-      petFee,
       tax,
       total,
     };
@@ -151,75 +151,49 @@ const BookingWidget = ({ property }) => {
     }
   }, [isSignedIn, pendingReservation, navigate]);
 
-  const petFee = guests.pets * (property.petFeePerPet || 0);
-  const totalPrice = property.price + petFee;
-
   return (
-    <div className="md:w-1/3 mt-8 md:mt-0 max-w-7xl">
-      <div className="border p-6 rounded-xl shadow-lg space-y-4 bg-white">
+    <div className="md:w-1/3 mt-8 md:mt-0">
+      <div className="border p-6 rounded-xl shadow-lg bg-white space-y-4">
         <h2 className="text-xl font-semibold">
-          {totalPrice} CAD{" "}
-          <span className="text-sm font-normal text-gray-500">
-            {guests.pets > 0
-              ? `(includes ${petFee} CAD for pets)`
-              : "for 1 night"}
-          </span>
+          {property.price} CAD
+          <span className="text-sm text-gray-500"> / night</span>
         </h2>
 
-        {/* 📅 Date Picker */}
-        <div className="relative" ref={calendarRef}>
+        {/* Dates */}
+        <div ref={calendarRef} className="relative">
           <label className="text-sm text-gray-600">Dates</label>
           <div
-            className="flex items-center border rounded-md mt-2 px-2 py-2 bg-white cursor-pointer"
-            onClick={() => setOpenCalendar((prev) => !prev)}
+            className="flex items-center border rounded-md px-2 py-2 cursor-pointer"
+            onClick={() => setOpenCalendar(!openCalendar)}
           >
-            <FaCalendarAlt className="text-gray-600 mr-2" />
-            <span className="text-sm text-gray-800">
-              {`${formatToCAD(dateRange[0].startDate)} - ${formatToCAD(
-                dateRange[0].endDate
-              )}`}
-            </span>
+            <FaCalendarAlt className="mr-2" />
+            {formatToCAD(dateRange[0].startDate)} -{" "}
+            {formatToCAD(dateRange[0].endDate)}
           </div>
 
           {openCalendar && (
-            <div className="absolute z-50 mt-2 bg-white shadow-lg rounded-lg">
+            <div className="absolute z-50 mt-2 bg-white shadow rounded">
               <DateRange
-                editableDateInputs
-                onChange={(item) => setDateRange([item.selection])}
-                moveRangeOnFirstSelection={false}
                 ranges={dateRange}
+                onChange={(item) => setDateRange([item.selection])}
                 minDate={new Date()}
-                rangeColors={["#2563eb"]}
               />
             </div>
           )}
         </div>
 
-        {/* 👥 Guests */}
-        <div
-          ref={guestRef}
-          className="p-3 relative border rounded-lg"
-        >
-          <div
-            className="cursor-pointer"
-            onClick={() => setShowGuestOptions((prev) => !prev)}
-          >
-            <p className="text-xs font-semibold text-gray-600 uppercase">
-              Guests
-            </p>
+        {/* Guests */}
+        <div ref={guestRef} className="relative border p-3 rounded-lg">
+          <div onClick={() => setShowGuestOptions(!showGuestOptions)}>
+            <p className="text-xs text-gray-600 uppercase">Guests</p>
             <p className="text-sm">
-              {guests.adults} adult{guests.adults !== 1 ? "s" : ""}
+              {guests.adults} adults
               {guests.children > 0 && `, ${guests.children} children`}
-              {guests.infants > 0 && `, ${guests.infants} infants`}
-              {guests.pets > 0 && `, ${guests.pets} pets`}
             </p>
           </div>
 
           {showGuestOptions && (
-            <div
-              className="absolute z-10 top-full left-0 w-full bg-white border rounded-lg shadow-lg p-4 mt-1 space-y-4"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="absolute top-full mt-2 w-full bg-white border rounded-lg p-4 shadow space-y-4">
               <GuestRow
                 label="Adults"
                 subtitle="Age 13+"
@@ -227,47 +201,31 @@ const BookingWidget = ({ property }) => {
                 onDecrease={() => updateGuestCount("adults", -1)}
                 onIncrease={() => updateGuestCount("adults", 1)}
               />
+
               <GuestRow
                 label="Children"
-                subtitle="Ages 2–12"
+                subtitle="Ages 2–12 (max 2)"
                 count={guests.children}
                 onDecrease={() => updateGuestCount("children", -1)}
                 onIncrease={() => updateGuestCount("children", 1)}
               />
-              <GuestRow
-                label="Infants"
-                subtitle="Under 2"
-                count={guests.infants}
-                onDecrease={() => updateGuestCount("infants", -1)}
-                onIncrease={() => updateGuestCount("infants", 1)}
-              />
-              {property.isPetFriendly && (
-                <GuestRow
-                  label="Pets"
-                  subtitle="Service animal?"
-                  count={guests.pets}
-                  onDecrease={() => updateGuestCount("pets", -1)}
-                  onIncrease={() => updateGuestCount("pets", 1)}
-                />
-              )}
+
+              <p className="text-xs text-gray-500">
+                Infants not allowed • Pets not allowed
+              </p>
             </div>
           )}
         </div>
 
         <button
           onClick={handleReserve}
-          disabled={!checkInUTC || !checkOutUTC}
-          className={`w-full py-3 rounded-lg font-semibold ${
-            !checkInUTC || !checkOutUTC
-              ? "bg-gray-400 cursor-not-allowed text-white"
-              : "bg-blue-800 text-white"
-          }`}
+          className="w-full bg-blue-800 text-white py-3 rounded-lg font-semibold"
         >
           Reserve
         </button>
 
         <p className="text-sm text-center text-gray-500">
-          You won't be charged yet
+          You won’t be charged yet
         </p>
       </div>
 
@@ -279,12 +237,12 @@ const BookingWidget = ({ property }) => {
 };
 
 const GuestRow = ({ label, subtitle, count, onDecrease, onIncrease }) => (
-  <div className="flex justify-between items-center py-2 border-b">
+  <div className="flex justify-between items-center">
     <div>
       <p className="font-medium">{label}</p>
       <p className="text-sm text-gray-500">{subtitle}</p>
     </div>
-    <div className="flex items-center gap-4">
+    <div className="flex gap-4 items-center">
       <button onClick={onDecrease} disabled={count <= 0}>
         −
       </button>
