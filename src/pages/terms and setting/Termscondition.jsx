@@ -35,25 +35,12 @@ const TermsAndConditions = () => {
         </ul>
       </section>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">4. Pet Policy</h2>
-        <ul className="list-disc ml-6">
-          <li>Pet-friendly rooms available on request.</li>
-          <li>$15 per pet, per night fee applies.</li>
-          <li>Pets must be leashed or crated and not left unattended.</li>
-        </ul>
-      </section>
+      
+
+      
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">5. Smoking Policy</h2>
-        <ul className="list-disc ml-6">
-          <li>We offer smoking and non-smoking rooms.</li>
-          <li>$200 minimum cleaning fee for smoking in a non-smoking room.</li>
-        </ul>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">6. Quiet Hours</h2>
+        <h2 className="text-xl font-semibold mb-2">4. Quiet Hours</h2>
         <ul className="list-disc ml-6">
           <li>Quiet hours: 10:00 PM – 7:00 AM.</li>
           <li>No loud music or disturbances allowed during this time.</li>
@@ -61,7 +48,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">7. Damage or Theft</h2>
+        <h2 className="text-xl font-semibold mb-2">5. Damage or Theft</h2>
         <ul className="list-disc ml-6">
           <li>Guests are responsible for loss or damage to motel property.</li>
           <li>Charges apply for broken items, excessive mess, or missing items.</li>
@@ -69,7 +56,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">8. Visitor Policy</h2>
+        <h2 className="text-xl font-semibold mb-2">6. Visitor Policy</h2>
         <ul className="list-disc ml-6">
           <li>Visitors allowed between 8:00 AM and 10:00 PM.</li>
           <li>No unregistered overnight guests permitted.</li>
@@ -77,12 +64,12 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">9. Long-Term Stays & Contractor Rates</h2>
+        <h2 className="text-xl font-semibold mb-2">7. Long-Term Stays & Contractor Rates</h2>
         <p>Please inquire at the front desk for daily, weekly, and monthly pricing for workers, contractors, and extended stays.</p>
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">10. Amenities Included</h2>
+        <h2 className="text-xl font-semibold mb-2">8. Amenities Included</h2>
         <ul className="list-disc ml-6">
           <li>Free continental breakfast</li>
           <li>Free Wi-Fi</li>
@@ -95,7 +82,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">11. Privacy & Safety</h2>
+        <h2 className="text-xl font-semibold mb-2">9. Privacy & Safety</h2>
         <ul className="list-disc ml-6">
           <li>Security cameras active in public areas for safety.</li>
           <li>Guest information is never shared with third parties.</li>
