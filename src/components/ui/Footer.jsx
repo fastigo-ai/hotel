@@ -56,7 +56,12 @@ const Footer = () => {
           <h4 className="text-xl font-semibold text-blue-700">Explore</h4>
           <ul className="mt-4 space-y-2">
             <li>
-              <a href="https://www.stettler.net/" className="text-blue-600">
+              <a
+                href="https://www.stettler.net/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600"
+              >
                 Town of Stettler
               </a>
             </li>

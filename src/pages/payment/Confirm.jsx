@@ -68,7 +68,9 @@ const Confirm = () => {
   const [formData, setFormData] = useState({
     firstname: user?.user?.firstname || user?.firstname || "",
     lastname: user?.user?.lastname || user?.lastname || "",
-    email: user?.user?.email || user?.email || "",
+    // email: user?.user?.email || user?.email || "",
+    email: "",
+
     phone: user?.user?.mobile || user?.mobile || "",
     specialRequest: "",
     isSmokingAllowed: false,
@@ -84,17 +86,16 @@ const Confirm = () => {
 
   // Update form when user data loads
   useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        firstname:
-          prev.firstname || user?.user?.firstname || user?.firstname || "",
-        lastname: prev.lastname || user?.user?.lastname || user?.lastname || "",
-        email: prev.email || user?.user?.email || user?.email || "",
-        phone: prev.phone || user?.user?.mobile || user?.mobile || "",
-      }));
-    }
-  }, [user]);
+  if (user) {
+    setFormData((prev) => ({
+      ...prev,
+      firstname: prev.firstname || user?.user?.firstname || user?.firstname || "",
+      lastname: prev.lastname || user?.user?.lastname || user?.lastname || "",
+      // email intentionally left blank
+      phone: prev.phone || user?.user?.mobile || user?.mobile || "",
+    }));
+  }
+}, [user]);
 
   // Update room quantity when guests change
   useEffect(() => {
