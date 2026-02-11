@@ -24,7 +24,7 @@ const FeedBack = () => {
   };
 
   const validateForm = () => {
-    // Make email optional
+    // Email is optional
     return formData.name.trim() && formData.message.trim() && agreed;
   };
 
@@ -35,22 +35,28 @@ const FeedBack = () => {
       return;
     }
 
+    setStatus("Sending...");
+
     try {
+      // Using FormData for Web3Forms
+      const data = new FormData();
+      data.append("access_key", "497781ff-4b0c-47db-a112-a0d6598fa2a9"); // your Web3Forms key
+      data.append("subject", "Feedback from Partner Form");
+      data.append("name", formData.name.trim());
+      data.append(
+        "email",
+        formData.email.trim() || "no-reply@example.com"
+      ); // placeholder if blank
+      data.append("message", formData.message.trim());
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "497781ff-4b0c-47db-a112-a0d6598fa2a9", // replace with your own key
-          subject: "Feedback from Partner Form",
-          name: formData.name.trim(),
-          email: formData.email.trim() || "no-reply@example.com", // placeholder if blank
-          message: formData.message.trim(),
-        }),
+        body: data,
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         setStatus("✅ Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
         setAgreed(false);
@@ -67,7 +73,9 @@ const FeedBack = () => {
     <div className="bg-gradient-to-r from-blue-100 to-blue-50 py-12 px-4 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-12">
       {/* Left Section */}
       <div className="max-w-xl">
-        <h2 className="text-xl font-semibold text-cyan-800 mb-2">We Value Your Feedback</h2>
+        <h2 className="text-xl font-semibold text-cyan-800 mb-2">
+          We Value Your Feedback
+        </h2>
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
           Tell us what you think
         </h1>
@@ -83,7 +91,9 @@ const FeedBack = () => {
 
       {/* Right Form Section */}
       <div className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
-        <h3 className="text-2xl font-bold text-cyan-900 mb-6 text-center">Your Feedback</h3>
+        <h3 className="text-2xl font-bold text-cyan-900 mb-6 text-center">
+          Your Feedback
+        </h3>
         <form onSubmit={handleSubmit} className="space-y-5">
           <input
             type="text"
