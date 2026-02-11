@@ -46,7 +46,7 @@ const FeedBack = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        access_key: "fda635c8-fa6e-4cfe-a139-14b5a85bfac0", // replace with your own key
+        access_key: "497781ff-4b0c-47db-a112-a0d6598fa2a9", // replace with your own key
         subject: "Feedback from Partner Form",
         ...formData,
       }),
