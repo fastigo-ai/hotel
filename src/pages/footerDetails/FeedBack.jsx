@@ -24,40 +24,42 @@ const FeedBack = () => {
   };
 
   const validateForm = () => {
-    const emailRegex = /\S+@\S+\.\S+/;
-    return (
-      formData.name.trim() &&
-      emailRegex.test(formData.email) &&
-      formData.message.trim() &&
-      agreed
-    );
+    // Make email optional
+    return formData.name.trim() && formData.message.trim() && agreed;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      setStatus("❗ Please fill all fields correctly and accept the terms.");
+      setStatus("❗ Please fill all required fields and accept the terms.");
       return;
     }
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        access_key: "497781ff-4b0c-47db-a112-a0d6598fa2a9", // replace with your own key
-        subject: "Feedback from Partner Form",
-        ...formData,
-      }),
-    });
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "497781ff-4b0c-47db-a112-a0d6598fa2a9", // replace with your own key
+          subject: "Feedback from Partner Form",
+          name: formData.name.trim(),
+          email: formData.email.trim() || "no-reply@example.com", // placeholder if blank
+          message: formData.message.trim(),
+        }),
+      });
 
-    if (response.ok) {
-      setStatus("✅ Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
-      setAgreed(false);
-    } else {
-      setStatus("❌ Failed to send message. Please try again.");
+      if (response.ok) {
+        setStatus("✅ Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+        setAgreed(false);
+      } else {
+        setStatus("❌ Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("❌ An error occurred. Please try again.");
     }
   };
 
@@ -88,24 +90,26 @@ const FeedBack = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Your Name"
+            placeholder="Your Name *"
             className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            required
           />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Your Email"
+            placeholder="Your Email (optional)"
             className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
           <textarea
             name="message"
             value={formData.message}
             onChange={handleChange}
-            placeholder="Your Feedback"
+            placeholder="Your Feedback *"
             rows="5"
             className="w-full p-3 rounded-lg border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            required
           ></textarea>
 
           <label className="flex items-center space-x-2 text-sm text-gray-700">
@@ -128,9 +132,7 @@ const FeedBack = () => {
           {status && (
             <p
               className={`text-sm text-center mt-3 ${
-                status.includes("success")
-                  ? "text-green-600"
-                  : "text-red-600"
+                status.includes("success") ? "text-green-600" : "text-red-600"
               }`}
             >
               {status}
