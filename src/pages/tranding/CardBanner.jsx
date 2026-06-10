@@ -2,12 +2,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
-const Banner = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092889/hotel_assets/logo/topBanner.png";
-const Banner1 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092890/hotel_assets/logo/topBanner1.png";
-const Daily = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092881/hotel_assets/logo/daily.png";
-const monthly = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092886/hotel_assets/logo/monthly.png";
-const weekly = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092892/hotel_assets/logo/weekly.png";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto, resized)
+const Banner = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_1200,h_500,c_fill/v1781092889/hotel_assets/logo/topBanner.png";
+const Banner1 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_1200,h_500,c_fill/v1781092890/hotel_assets/logo/topBanner1.png";
+const Daily = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_800,h_500,c_fill/v1781092881/hotel_assets/logo/daily.png";
+const monthly = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_800,h_500,c_fill/v1781092886/hotel_assets/logo/monthly.png";
+const weekly = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_800,h_500,c_fill/v1781092892/hotel_assets/logo/weekly.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 

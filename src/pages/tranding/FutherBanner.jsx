@@ -1,7 +1,7 @@
 import React from 'react';
-// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
-const Image = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092854/hotel_assets/card%20Image/no1.png";
-const QR = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092887/hotel_assets/logo/qrcode.png";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto, resized)
+const Image = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_800,h_600,c_fill/v1781092854/hotel_assets/card%20Image/no1.png";
+const QR = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_150,h_150,c_fill/v1781092887/hotel_assets/logo/qrcode.png";
 import '../../App.css'
 const FutherBanner = () => {
   return (

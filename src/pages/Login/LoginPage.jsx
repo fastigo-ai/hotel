@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AuthenticateWithMobile } from "../../api/Api"; // Updated API call
 import { useNavigate } from "react-router-dom";
-// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
-const logo = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092878/hotel_assets/logo/Logo13.png";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto, w_200)
+const logo = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_200/v1781092878/hotel_assets/logo/Logo13.png";
 
 export default function LoginPage() {
  

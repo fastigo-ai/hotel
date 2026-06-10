@@ -1,7 +1,7 @@
 import React from "react";
-// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
-const Image1 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092893/hotel_assets/offer/1.jpg";
-const Image2 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092894/hotel_assets/offer/2.jpg";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto, resized)
+const Image1 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_150,h_150,c_fill/v1781092893/hotel_assets/offer/1.jpg";
+const Image2 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_150,h_150,c_fill/v1781092894/hotel_assets/offer/2.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Offers = () => {

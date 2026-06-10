@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
-const bannerImg = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092878/hotel_assets/logo/Logo13.png";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto, w_300)
+const bannerImg = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto,w_300/v1781092878/hotel_assets/logo/Logo13.png";
 
 const FeedBack = () => {
   const [formData, setFormData] = useState({

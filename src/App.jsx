@@ -1,40 +1,39 @@
-import React from "react";
+import React, { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "./components/ui/Home";
 import AppLayout from "./components/layout/AppLayout";
 import Error from "./components/ui/Error";
-import CardDetails from "./pages/cards/CardDetails";
-import Confirm from "./pages/payment/Confirm";
-import PrivacyPolicy from "./pages/terms and setting/Privacy";
-import RefundPolicy from "./pages/terms and setting/RefundPolicy";
-import TermsAndConditions from "./pages/terms and setting/Termscondition";
-import Card from "./pages/cards/Card";
-import HotelCard from "./pages/searching/HotelCard ";
 
-import OtpForm from "./pages/Login/OtpForm";
-import About from "./pages/footerDetails/About";
-import Careers from "./pages/footerDetails/Careers";
-import Partner from "./pages/footerDetails/Partner";
-import News from "./pages/footerDetails/News";
-import Advertise from "./pages/footerDetails/Advertise";
-import Affiliate from "./pages/footerDetails/Affiliate";
-import TravelGuide from "./pages/footerDetails/TravelGuide";
-import MotelsInCanada from "./pages/footerDetails/MotelsInCanada";
-import VacationRentals from "./pages/footerDetails/VacationRentals";
-import ComparisonTable from "./pages/footerDetails/ComparisonTable";
-import AccommodationGuide from "./pages/footerDetails/Accommodation ";
-import CarRentalGuide from "./pages/footerDetails/CarRentalGuide";
-import DomesticFlightsGuide from "./pages/footerDetails/DomesticFlightsGuide";
-import ComingSoon from "./components/ui/ComingSoon";
-import Cookies from "./pages/footerDetails/Cookies";
-import Accessibility from "./pages/footerDetails/Accessibility"
-import Contact from "./pages/footerDetails/Contact";
-import FeedBack from "./pages/footerDetails/FeedBack";
-import Gallery from "./pages/gallery/Gallery";
-import BookingDetails from "./pages/profilePage/BookingDetails";
-import PaymentSuccess from "./pages/payment/PaymentSuccess";
-import LoginPage from "./pages/Login/LoginPage";
+const Home = lazy(() => import("./components/ui/Home"));
+const CardDetails = lazy(() => import("./pages/cards/CardDetails"));
+const Confirm = lazy(() => import("./pages/payment/Confirm"));
+const PrivacyPolicy = lazy(() => import("./pages/terms and setting/Privacy"));
+const RefundPolicy = lazy(() => import("./pages/terms and setting/RefundPolicy"));
+const TermsAndConditions = lazy(() => import("./pages/terms and setting/Termscondition"));
+const Card = lazy(() => import("./pages/cards/Card"));
+const HotelCard = lazy(() => import("./pages/searching/HotelCard "));
+const About = lazy(() => import("./pages/footerDetails/About"));
+const Careers = lazy(() => import("./pages/footerDetails/Careers"));
+const Partner = lazy(() => import("./pages/footerDetails/Partner"));
+const News = lazy(() => import("./pages/footerDetails/News"));
+const Advertise = lazy(() => import("./pages/footerDetails/Advertise"));
+const Affiliate = lazy(() => import("./pages/footerDetails/Affiliate"));
+const TravelGuide = lazy(() => import("./pages/footerDetails/TravelGuide"));
+const MotelsInCanada = lazy(() => import("./pages/footerDetails/MotelsInCanada"));
+const VacationRentals = lazy(() => import("./pages/footerDetails/VacationRentals"));
+const ComparisonTable = lazy(() => import("./pages/footerDetails/ComparisonTable"));
+const AccommodationGuide = lazy(() => import("./pages/footerDetails/Accommodation "));
+const CarRentalGuide = lazy(() => import("./pages/footerDetails/CarRentalGuide"));
+const DomesticFlightsGuide = lazy(() => import("./pages/footerDetails/DomesticFlightsGuide"));
+const ComingSoon = lazy(() => import("./components/ui/ComingSoon"));
+const Cookies = lazy(() => import("./pages/footerDetails/Cookies"));
+const Accessibility = lazy(() => import("./pages/footerDetails/Accessibility"));
+const Contact = lazy(() => import("./pages/footerDetails/Contact"));
+const FeedBack = lazy(() => import("./pages/footerDetails/FeedBack"));
+const Gallery = lazy(() => import("./pages/gallery/Gallery"));
+const BookingDetails = lazy(() => import("./pages/profilePage/BookingDetails"));
+const PaymentSuccess = lazy(() => import("./pages/payment/PaymentSuccess"));
+const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
 
 
 
