@@ -1,6 +1,7 @@
 import React from 'react';
-import Image from '../../assets/card Image/no1.png';
-import QR from '../../assets/logo/qrcode.png';
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
+const Image = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092854/hotel_assets/card%20Image/no1.png";
+const QR = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092887/hotel_assets/logo/qrcode.png";
 import '../../App.css'
 const FutherBanner = () => {
   return (

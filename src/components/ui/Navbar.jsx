@@ -5,7 +5,8 @@ import { CgMenuRound } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut, signIn } from "../../redux/slices/authSlice";
-import Logo from "../../assets/logo/Logo13.png";
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
+const Logo = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092878/hotel_assets/logo/Logo13.png";
 import UserMenu from "./UserMenu"; 
 
 export default function ExpediaHeader() {

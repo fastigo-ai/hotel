@@ -1,14 +1,15 @@
 import React from "react";
-import Image1 from '../../assets/trending/1.JPG';
-import Image2 from '../../assets/trending/2.JPG';
-import Image3 from '../../assets/trending/3.JPG';
-import Image4 from '../../assets/trending/4.JPG';
-import Image5 from '../../assets/trending/5.JPG';
-import Image6 from '../../assets/trending/6.JPG';
-import Image7 from '../../assets/trending/7.JPG';
-import Image8 from '../../assets/trending/8.JPG';
-import Image9 from '../../assets/trending/9.JPG';
-import Image10 from '../../assets/trending/10.JPG';
+// Cloudinary CDN Image URLs (Optimized with f_auto, q_auto)
+const Image1 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092936/hotel_assets/trending/1.jpg";
+const Image2 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092951/hotel_assets/trending/2.jpg";
+const Image3 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092954/hotel_assets/trending/3.jpg";
+const Image4 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092956/hotel_assets/trending/4.jpg";
+const Image5 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092959/hotel_assets/trending/5.jpg";
+const Image6 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092962/hotel_assets/trending/6.jpg";
+const Image7 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092964/hotel_assets/trending/7.jpg";
+const Image8 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092966/hotel_assets/trending/8.jpg";
+const Image9 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092969/hotel_assets/trending/9.jpg";
+const Image10 = "https://res.cloudinary.com/dt59dbh3f/image/upload/f_auto,q_auto/v1781092944/hotel_assets/trending/10.jpg";
 import { Link } from "react-router-dom";
 import "../../App.css";
 
