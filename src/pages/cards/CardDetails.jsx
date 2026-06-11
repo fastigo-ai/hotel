@@ -24,7 +24,65 @@ const CardDetails = () => {
     fetchProperty();
   }, [id]);
 
-  if (loading) return <p className="px-4">Loading property details...</p>;
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-6 animate-pulse">
+        {/* Shimmer Title */}
+        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+        
+        {/* Desktop Images Grid */}
+        <div className="hidden md:grid grid-cols-4 gap-2 h-[500px] my-6">
+          <div className="col-span-2 row-span-2 bg-gray-200 rounded-xl"></div>
+          <div className="bg-gray-200 rounded-xl"></div>
+          <div className="bg-gray-200 rounded-xl"></div>
+          <div className="bg-gray-200 rounded-xl"></div>
+          <div className="bg-gray-200 rounded-xl"></div>
+        </div>
+
+        {/* Mobile Images Scrollable */}
+        <div className="md:hidden flex gap-2 overflow-x-auto pb-4 my-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="w-80 h-60 bg-gray-200 rounded-xl flex-shrink-0"></div>
+          ))}
+        </div>
+
+        {/* Location & Meta info */}
+        <div className="py-4 space-y-2">
+          <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+
+        {/* Main Content split */}
+        <div className="flex flex-col md:flex-row md:gap-10 max-w-7xl justify-between mt-6">
+          {/* Left Column */}
+          <div className="md:w-1/2 space-y-6">
+            <div className="border border-gray-200 rounded-xl px-6 py-4 h-20 bg-gray-50"></div>
+            <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+            <div className="space-y-4 border-t pt-4">
+              <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className="h-5 w-5 bg-gray-200 rounded-full"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-2">
+              <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-200 rounded w-4/5"></div>
+            </div>
+          </div>
+
+          {/* Right Column / Widget */}
+          <div className="w-full md:w-[350px] lg:w-[380px] mt-6 md:mt-0">
+            <div className="border border-gray-200 rounded-xl p-6 h-96 bg-gray-50"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!property) return <p className="px-4">Property not found.</p>;
 
   return (

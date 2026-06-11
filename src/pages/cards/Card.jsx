@@ -22,7 +22,28 @@ const CardSlider = () => {
     fetchCards();
   }, []);
 
-  if (loading) return <p className="px-4">Loading properties...</p>;
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-6 mt-6">
+        {/* Shimmer Title */}
+        <div className="h-7 w-64 bg-gray-200 rounded animate-pulse mb-4"></div>
+        {/* Shimmer Cards Slider */}
+        <div className="flex space-x-4 overflow-x-auto pb-4 hide-scrollbar">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="min-w-[220px] sm:min-w-[250px] bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
+              <div className="w-full h-40 bg-gray-200"></div>
+              <div className="p-3 space-y-2.5">
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const renderCard = (item) => {
     const cardContent = (

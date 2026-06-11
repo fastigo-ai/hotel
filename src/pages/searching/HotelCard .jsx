@@ -21,7 +21,31 @@ const HotelCard = () => {
     fetchHotels();
   }, []);
 
-  if (loading) return <p className="px-4">Loading hotels...</p>;
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-pulse">
+            <div className="w-full h-48 bg-gray-200"></div>
+            <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <div className="h-5 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div className="space-y-1.5 my-2">
+                  <div className="h-3.5 bg-gray-200 rounded w-5/6"></div>
+                  <div className="h-3.5 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              </div>
+              <div className="flex justify-between items-center mt-4">
+                <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                <div className="h-6 bg-gray-200 rounded w-10"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

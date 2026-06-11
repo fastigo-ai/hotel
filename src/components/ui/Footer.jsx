@@ -5,15 +5,15 @@ import { Link } from "react-router-dom";
 import "../../App.css";
 const Footer = () => {
   return (
-    <footer className="bg-gray-50">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl pb-10">
+    <footer className="bg-gray-50 border-t border-gray-200">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl pt-12 pb-10">
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">
             <span className="Text">P</span>lains{" "}
             <span className="Text-M">M</span>otors{" "}
             <span className="Text-o">I</span>NN
           </h4>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-3.5">
             <li>
               <Link to="/about" className="text-blue-600">
                 About
@@ -54,7 +54,7 @@ const Footer = () => {
 
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Explore</h4>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-3.5">
             <li>
               <a
                 href="https://www.stettler.net/"
@@ -106,7 +106,7 @@ const Footer = () => {
 
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Policies</h4>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-3.5">
             <li>
               <Link to="/privacy-policy" className="text-blue-600">
                 Privacy
@@ -133,7 +133,7 @@ const Footer = () => {
 
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-semibold text-blue-700">Help</h4>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-3.5">
             <li>
               <Link to="/contact" className="text-blue-600">
                 Contact
