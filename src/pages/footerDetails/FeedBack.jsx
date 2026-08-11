@@ -71,38 +71,40 @@ const FeedBack = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-blue-50 py-12 px-4 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-12">
+    <div className="bg-[#F9FAFB] min-h-screen py-16 px-6 lg:px-16 flex flex-col lg:flex-row items-center justify-center gap-16 font-sans">
       {/* Left Section */}
       <div className="max-w-xl">
-        <h2 className="text-xl font-semibold text-cyan-800 mb-2">
+        <h2 className="uppercase tracking-[0.2em] font-bold text-xs text-[#F39C49] mb-4">
           We Value Your Feedback
         </h2>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
+        <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#1A4C43] leading-tight mb-6">
           Tell us what you think
         </h1>
-        <p className="text-lg text-gray-700 mb-6">
+        <p className="text-lg text-gray-600 mb-10 leading-relaxed">
           Your feedback helps us improve our services and serve you better.
         </p>
-        <img
-          src={bannerImg}
-          alt="Feedback"
-          className="hidden lg:block w-72 rounded-xl drop-shadow-lg"
-        />
+        <div className="bg-[#1A4C43] p-8 rounded-2xl hidden lg:inline-block shadow-lg">
+          <img
+            src={bannerImg}
+            alt="Feedback"
+            className="w-48 brightness-0 invert"
+          />
+        </div>
       </div>
 
       {/* Right Form Section */}
-      <div className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
-        <h3 className="text-2xl font-bold text-cyan-900 mb-6 text-center">
+      <div className="w-full max-w-lg bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
+        <h3 className="text-2xl font-serif font-bold text-[#1A4C43] mb-8 text-center">
           Your Feedback
         </h3>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Your Name *"
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#1A4C43] bg-gray-50 text-gray-900 transition-shadow"
             required
           />
           <input
@@ -111,7 +113,7 @@ const FeedBack = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Your Email (optional)"
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#1A4C43] bg-gray-50 text-gray-900 transition-shadow"
           />
           <textarea
             name="message"
@@ -119,31 +121,33 @@ const FeedBack = () => {
             onChange={handleChange}
             placeholder="Your Feedback *"
             rows="5"
-            className="w-full p-3 rounded-lg border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full p-4 rounded-xl border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-[#1A4C43] bg-gray-50 text-gray-900 transition-shadow"
             required
           ></textarea>
 
-          <label className="flex items-center space-x-2 text-sm text-gray-700">
+          <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer">
             <input
               type="checkbox"
               checked={agreed}
               onChange={handleChange}
-              className="accent-cyan-600"
+              className="w-5 h-5 accent-[#1A4C43] rounded border-gray-300 cursor-pointer"
             />
-            <span>I confirm the above information is accurate.</span>
+            <span className="font-medium">I confirm the above information is accurate.</span>
           </label>
 
           <button
             type="submit"
-            className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 rounded-lg transition duration-200"
+            className="w-full bg-[#1A4C43] hover:bg-[#133c35] text-white font-bold py-4 rounded-xl transition duration-200 shadow-md flex justify-center items-center gap-2 mt-2"
           >
             Submit Feedback
           </button>
 
           {status && (
             <p
-              className={`text-sm text-center mt-3 ${
-                status.includes("success") ? "text-green-600" : "text-red-600"
+              className={`text-sm text-center font-medium mt-4 p-3 rounded-lg ${
+                status.includes("success") ? "bg-green-50 text-green-700 border border-green-200" : 
+                status.includes("Sending") ? "bg-blue-50 text-blue-700 border border-blue-200" :
+                "bg-red-50 text-red-700 border border-red-200"
               }`}
             >
               {status}

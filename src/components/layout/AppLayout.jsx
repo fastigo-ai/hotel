@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import Navbar from "../ui/Navbar"; // or ExpediaHeader if that’s your main nav
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../ui/Footer";
 import ScrollToTop from "../ui/ScrollToTop";
 
@@ -29,11 +29,14 @@ const PageSkeleton = () => (
 );
 
 const AppLayout = () => {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <div>
       <ScrollToTop />
       <Navbar />
-      <main>
+      <main className={!isHome ? "pt-24 lg:pt-28" : ""}>
         <Suspense fallback={<PageSkeleton />}>
           <Outlet />
         </Suspense>

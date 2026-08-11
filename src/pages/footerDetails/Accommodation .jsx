@@ -1,5 +1,6 @@
 // src/components/AccommodationGuide.jsx
 import React from "react";
+import '../../App.css';
 
 const accommodationData = [
   {
@@ -72,58 +73,81 @@ const accommodationData = [
 ];
 
 const PlainsMotorHighlight = () => (
-  <div className="p-6 rounded-xl shadow-sm mt-8">
-    <h3 className="text-lg font-semibold  mb-3">📍 Why Choose a Motel Like Plains?</h3>
-    <ul className="list-disc list-inside space-y-1 text-gray-700">
-      <li>✅ Affordable daily, weekly, and monthly rates</li>
-      <li>✅ Pet-friendly rooms and truck parking</li>
-      <li>✅ Convenient highway access — perfect for road travelers</li>
-      <li>✅ Quiet, small-town Alberta hospitality</li>
+  <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mt-12 max-w-4xl mx-auto border-t-4 border-t-[#F39C49]">
+    <h3 className="text-2xl font-serif font-bold text-[#4BA9A2] mb-6">📍 Why Choose a Motel Like Plains?</h3>
+    <ul className="space-y-4 mb-8">
+      {[
+        "✅ Affordable daily, weekly, and monthly rates",
+        "✅ Pet-friendly rooms and truck parking",
+        "✅ Convenient highway access — perfect for road travelers",
+        "✅ Quiet, small-town Alberta hospitality"
+      ].map((item, idx) => (
+        <li key={idx} className="flex items-start gap-3">
+          <span className="text-gray-700 text-lg">{item}</span>
+        </li>
+      ))}
     </ul>
-    <div className="mt-5 bg-white p-4   rounded-lg">
-      <p className="text-gray-800 font-medium">
+    <div className="bg-[#F9FAFB] p-6 rounded-lg border border-gray-100">
+      <p className="text-[#4BA9A2] font-bold text-lg mb-2">
         🧳 Explore Your Way — Then Stay with Us
       </p>
-      <p className="text-sm mt-1">
+      <p className="text-gray-700 text-lg mb-4">
         No matter how you travel across Canada, Plains Motor Inn offers a clean, comfortable, and affordable place to stay in Stettler.
       </p>
-      <p className="mt-3">
-        📞 <a href="tel:4037423491" className=" font-semibold">403-742-3491</a><br />
-        📧 <a href="mailto:plainsmotorinnn@gmail.com" className=" font-semibold">plainsmotorinnn@gmail.com</a>
-      </p>
+      <div className="text-lg text-gray-800 space-y-1">
+        <p>📞 <a href="tel:4037423491" className="text-[#4BA9A2] hover:text-[#F39C49] font-medium transition-colors underline">403-742-3491</a></p>
+        <p>📧 <a href="mailto:plainsmotorinnn@gmail.com" className="text-[#4BA9A2] hover:text-[#F39C49] font-medium transition-colors underline">plainsmotorinnn@gmail.com</a></p>
+      </div>
     </div>
   </div>
 );
 
 const AccommodationGuide = () => {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-10">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-gray-800">🛏️ Accommodation Types in Canada</h2>
-        <p className="text-lg text-gray-600 mt-2">Find the Stay That Suits Your Style — From Motels to Mountain Lodges</p>
-      </div>
+    <div className="bg-[#F9FAFB] min-h-screen text-gray-800 font-sans">
+      {/* Hero Section */}
+      <section className="relative h-[300px] md:h-[400px] w-full flex items-center justify-center bg-[#1A4C43] overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <p className="uppercase tracking-[0.2em] font-bold text-xs text-[#F39C49] mb-4">Accommodation Guide</p>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
+            🛏️ Accommodation Types in Canada
+          </h1>
+          <p className="mt-4 text-lg text-white/90">
+            <strong>Find the Stay That Suits Your Style — From Motels to Mountain Lodges</strong>
+          </p>
+        </div>
+      </section>
 
-      <div className="space-y-8">
-        {accommodationData.map((item, index) => (
-          <div key={index} className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
-            <h3 className="text-xl font-semibold  mb-2">🔹 {item.type}</h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-700">
-              {item.description.map((desc, i) => (
-                <li key={i}>{desc}</li>
-              ))}
-            </ul>
-            {item.extra && <p className="mt-2 text-sm text-gray-600 italic">{item.extra}</p>}
-            {item.highlight && (
-              <div className="mt-4 bg-blue-100 p-3 rounded-md text-blue-900 text-sm">
-                ✅ {item.highlight}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      {/* Main Content Sections */}
+      <section className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {accommodationData.map((item, index) => (
+            <div key={index} className="bg-white border border-gray-100 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-2xl font-serif font-bold text-[#4BA9A2] mb-4">🔹 {item.type}</h3>
+              <ul className="space-y-3 mb-4">
+                {item.description.map((desc, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full bg-[#F39C49] mt-2 shrink-0"></div>
+                    <span className="text-gray-700 text-lg">{desc}</span>
+                  </li>
+                ))}
+              </ul>
+              {item.extra && <p className="mt-4 text-sm text-gray-500 italic border-t border-gray-100 pt-4">{item.extra}</p>}
+              {item.highlight && (
+                <div className="mt-6 bg-[#E6EFEA] p-4 rounded-lg text-[#4BA9A2] text-lg font-medium">
+                  ✅ {item.highlight}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
 
-      <PlainsMotorHighlight />
-    </section>
+        <PlainsMotorHighlight />
+        
+      </section>
+    </div>
   );
 };
 

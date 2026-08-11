@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { BASE_URL } from "../../api/Api";
-
+import { User, BedDouble, Users, DoorOpen, CreditCard, Banknote, HeadphonesIcon, Star, Wallet } from "lucide-react";
 const Confirm = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -78,6 +78,9 @@ const Confirm = () => {
     pets: 0,
     extraPersons: 0,
     roomQuantity: minRoomsNeeded, // Manual room quantity field
+    vehicleType: "",
+    vehicleLength: "",
+    arrivalTime: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -212,6 +215,11 @@ const Confirm = () => {
       currency: "cad",
       paymentMethod,
       specialRequest: formData.specialRequest || "",
+      vehicleInfo: {
+        type: formData.vehicleType,
+        length: formData.vehicleLength,
+        arrivalTime: formData.arrivalTime,
+      },
       user: {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
@@ -300,462 +308,313 @@ const Confirm = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* FORM SECTION */}
-      <form onSubmit={handleSubmit} className="space-y-8 lg:col-span-2">
-        <div className="bg-white rounded-2xl shadow-sm border p-6">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Guest Details
-          </h2>
+    <div className="min-h-screen bg-[#F8F9F8] pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold font-serif text-gray-900 mb-2">Complete Your Booking</h1>
+          <p className="text-sm text-gray-600">A few final details and your stay at the {property?.title || "Plains Motor Inn"} is secured.</p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <input
-                type="text"
-                placeholder="First Name *"
-                required
-                value={formData.firstname}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstname: e.target.value })
-                }
-                className={`px-4 py-3 border rounded-xl w-full ${
-                  validationErrors.firstname
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
-              />
-              {validationErrors.firstname && (
-                <p className="text-red-500 text-sm mt-1">
-                  {validationErrors.firstname}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <input
-                type="text"
-                placeholder="Last Name *"
-                required
-                value={formData.lastname}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastname: e.target.value })
-                }
-                className={`px-4 py-3 border rounded-xl w-full ${
-                  validationErrors.lastname
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
-              />
-              {validationErrors.lastname && (
-                <p className="text-red-500 text-sm mt-1">
-                  {validationErrors.lastname}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <input
-              type="tel"
-              placeholder="Phone Number *"
-              required
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-              className={`px-4 py-3 border rounded-xl w-full ${
-                validationErrors.phone ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {validationErrors.phone && (
-              <p className="text-red-500 text-sm mt-1">
-                {validationErrors.phone}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-4">
-            <input
-              type="email"
-              placeholder="Email Address *"
-              required
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className={`px-4 py-3 border rounded-xl w-full ${
-                validationErrors.email ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {validationErrors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {validationErrors.email}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-4">
-            <textarea
-              rows="4"
-              placeholder="Any special requests (optional)"
-              value={formData.specialRequest}
-              onChange={(e) =>
-                setFormData({ ...formData, specialRequest: e.target.value })
-              }
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl resize-none"
-            />
-          </div>
-
-          {/* Room Quantity Selection */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-            <h4 className="font-semibold text-blue-800 mb-2">Room Selection</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Room Type:{" "}
-                  <span className="capitalize font-semibold">{roomType}</span>
-                </label>
-                <p className="text-xs text-blue-600 mb-3">
-                  Max {maxGuestsPerRoom} guests per room (Children stay free
-                  with adults in double rooms)
-                </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* FORM SECTION */}
+          <form onSubmit={handleSubmit} className="space-y-6 lg:col-span-2">
+            
+            {/* Guest Details */}
+            <div className="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-200 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <User className="text-[#006C64]" size={24} />
+                <h2 className="text-2xl font-bold font-serif text-gray-900">Guest Details</h2>
               </div>
-            </div>
 
-            <div className="mt-3 p-3 bg-white rounded-lg">
-              <div className="text-sm text-gray-700">
-                <div className="flex justify-between mb-1">
-                  <span>Paying Guests (Adults + Infants):</span>
-                  <span className="font-medium">{payingGuests}</span>
-                </div>
-                <div className="flex justify-between mb-1">
-                  <span>Children (Free):</span>
-                  <span className="font-medium">{guests.children || 0}</span>
-                </div>
-                <div className="flex justify-between mb-1">
-                  <span>
-                    Total Capacity ({roomsBooked} × {maxGuestsPerRoom}):
-                  </span>
-                  <span className="font-medium">{totalCapacity}</span>
-                </div>
-                {extraPersonsNeeded > 0 && (
-                  <div className="flex justify-between text-orange-600">
-                    <span>Extra Persons Needed:</span>
-                    <span className="font-medium">{extraPersonsNeeded}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Extra Persons */}
-          {(payingGuests > totalCapacity || extraPersonsNeeded > 0) && (
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-              <h4 className="font-semibold text-yellow-800 mb-2">
-                Extra Person Charge
-              </h4>
-              <p className="text-sm text-yellow-700 mb-3">
-                Your party exceeds the room capacity.{" "}
-                {extraPersonsNeeded > 0 &&
-                  `${extraPersonsNeeded} extra person${
-                    extraPersonsNeeded > 1 ? "s" : ""
-                  } required.`}
-              </p>
-              <label className="block">
-                <span className="text-sm font-medium">
-                  Additional extra persons (+${extraPersonCharge} per person per
-                  night):
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={formData.extraPersons}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      extraPersons: parseInt(e.target.value) || 0,
-                    })
-                  }
-                  className="mt-1 px-3 py-2 border rounded-lg w-full max-w-xs"
-                />
-              </label>
-              {extraPersonsNeeded > 0 && (
-                <p className="text-xs text-orange-600 mt-2">
-                  Note: {extraPersonsNeeded} extra person
-                  {extraPersonsNeeded > 1 ? "s" : ""} will be automatically
-                  charged
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* Smoking Room Option */}
-          {smokingRoomCharge > 0 && (
-            <div className="mt-6">
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={formData.isSmokingAllowed}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      isSmokingAllowed: e.target.checked,
-                    })
-                  }
-                  className="w-4 h-4 text-indigo-600"
-                />
-                <span>Request a Smoking Room (+${smokingRoomCharge})</span>
-              </label>
-            </div>
-          )}
-
-          {/* Pet Friendly Option */}
-          {allowedPets > 0 && (
-            <div className="mt-4 space-y-2">
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={formData.isPetFriendly}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      isPetFriendly: e.target.checked,
-                      pets: e.target.checked ? 1 : 0,
-                    })
-                  }
-                  className="w-4 h-4 text-indigo-600"
-                />
-                <span>Bringing Pets? (${petFeePerPet} per pet)</span>
-              </label>
-              {formData.isPetFriendly && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">First Name *</label>
                   <input
-                    type="number"
-                    min="1"
-                    max={allowedPets}
-                    placeholder="Number of Pets"
-                    value={formData.pets || ""}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        pets: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    className={`px-4 py-2 border rounded-xl w-full max-w-xs ${
-                      validationErrors.pets
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    type="text"
+                    required
+                    value={formData.firstname}
+                    onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm ${validationErrors.firstname ? "border-red-500" : "border-gray-300"}`}
+                    placeholder="e.g. John"
                   />
-                  {validationErrors.pets && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.pets}
-                    </p>
-                  )}
-                  <p className="text-sm text-gray-600 mt-1">
-                    Maximum {allowedPets} pets allowed
-                  </p>
+                  {validationErrors.firstname && <p className="text-red-500 text-xs mt-1">{validationErrors.firstname}</p>}
                 </div>
-              )}
-            </div>
-          )}
-
-          {validationErrors.guests && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 text-sm">{validationErrors.guests}</p>
-            </div>
-          )}
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 font-medium">
-            {error}
-          </div>
-        )}
-
-        <div className="bg-white rounded-2xl shadow-sm border p-6">
-          <div className="mt-6 bg-white rounded-2xl shadow-sm border p-6 mb-6">
-            <h3 className="text-lg font-bold mb-4">Payment Method</h3>
-
-            <label className="flex items-center gap-3 mb-3">
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="stripe"
-                checked={paymentMethod === "stripe"}
-                onChange={() => setPaymentMethod("stripe")}
-              />
-              <span>Pay Online (Card)</span>
-            </label>
-
-            <label className="flex items-center gap-3">
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="cod"
-                checked={paymentMethod === "cod"}
-                onChange={() => setPaymentMethod("cod")}
-              />
-              <span>Pay at Desk (Cash)</span>
-            </label>
-
-            {paymentMethod === "cod" && (
-              <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                <p className="text-sm text-yellow-800">
-                  💵 You will pay <strong>${total} CAD</strong> directly at the
-                  hotel during check-in.
-                </p>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Last Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.lastname}
+                    onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm ${validationErrors.lastname ? "border-red-500" : "border-gray-300"}`}
+                    placeholder="e.g. Doe"
+                  />
+                  {validationErrors.lastname && <p className="text-red-500 text-xs mt-1">{validationErrors.lastname}</p>}
+                </div>
               </div>
-            )}
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-xl"
-          >
-            {loading
-              ? "Processing..."
-              : paymentMethod === "cod"
-              ? `Confirm Booking – Pay $${total} at Hotel`
-              : `Confirm & Pay $${total} CAD`}
-          </button>
-          <Link to="/terms">
-            <p className="text-sm text-gray-500 mt-2 text-center">
-              By clicking confirm & pay, you agree to our terms and conditions
-            </p>
-          </Link>
-        </div>
-      </form>
 
-      {/* SIDEBAR SECTION */}
-      <div className="lg:sticky lg:top-8">
-        <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-          <div className="p-6">
-            <div className="flex gap-4 mb-6">
-              <img
-                src={property?.images?.[0] || property?.image}
-                alt="Property"
-                className="w-24 h-24 rounded-xl object-cover"
-                onError={(e) => {
-                  e.target.src =
-                    "https://via.placeholder.com/96x96?text=No+Image";
-                }}
-              />
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  {property?.title || property?.name}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {property?.location?.city || property?.city},{" "}
-                  {property?.location?.country || property?.country}
-                </p>
-                <div className="flex items-center gap-1">
-                  <svg
-                    className="w-4 h-4 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Phone Number *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm ${validationErrors.phone ? "border-red-500" : "border-gray-300"}`}
+                    placeholder="+1 (555) 000-0000"
+                  />
+                  {validationErrors.phone && <p className="text-red-500 text-xs mt-1">{validationErrors.phone}</p>}
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Email Address *</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className={`w-full px-4 py-3 border rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm ${validationErrors.email ? "border-red-500" : "border-gray-300"}`}
+                    placeholder="john.doe@example.com"
+                  />
+                  {validationErrors.email && <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Vehicle Type</label>
+                  <select
+                    value={formData.vehicleType}
+                    onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm bg-white"
                   >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <span className="text-sm font-semibold">
-                    {property?.rating || "N/A"}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    ({property?.reviews || 0} reviews)
-                  </span>
+                    <option value="">Select vehicle type</option>
+                    <option value="car">Car / SUV</option>
+                    <option value="pickup">Pickup Truck</option>
+                    <option value="semi">Semi-Truck</option>
+                    <option value="rv">RV / Motorhome</option>
+                    <option value="none">No Vehicle</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Truck/Trailer Length</label>
+                  <input
+                    type="text"
+                    value={formData.vehicleLength}
+                    onChange={(e) => setFormData({ ...formData, vehicleLength: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm"
+                    placeholder="e.g. 53 ft (if applicable)"
+                  />
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Expected Arrival Time</label>
+                <input
+                  type="time"
+                  value={formData.arrivalTime}
+                  onChange={(e) => setFormData({ ...formData, arrivalTime: e.target.value })}
+                  className="w-full md:w-1/2 px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Special Requests (Optional)</label>
+                <textarea
+                  rows="3"
+                  value={formData.specialRequest}
+                  onChange={(e) => setFormData({ ...formData, specialRequest: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#006C64] focus:outline-none resize-none text-sm"
+                  placeholder="Any dietary requirements or specific room needs?"
+                />
+              </div>
+              
+              {validationErrors.guests && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-red-700 text-sm">{validationErrors.guests}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Room Selection */}
+            <div className="bg-[#EBF7F3] rounded-xl shadow-sm border border-[#D0EBE1] p-8 relative">
+              <div className="absolute top-8 right-8 text-[#006C64]">
+                <BedDouble size={28} />
+              </div>
+              <p className="text-[10px] font-bold text-[#006C64] uppercase tracking-widest mb-3">Room Selection</p>
+              <h3 className="text-2xl font-bold font-serif text-gray-900 mb-3 capitalize">{roomType} Room: Signature Comfort</h3>
+              <p className="text-sm text-gray-700 mb-6">Max {maxGuestsPerRoom} guests per room. High-speed Wi-Fi, Coffee station, and Luxury Linens included.</p>
+              
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2 bg-white px-4 py-2 rounded border border-[#D0EBE1] text-sm text-[#006C64] font-medium">
+                  <Users size={16} />
+                  <span>{payingGuests} Adult{payingGuests > 1 ? 's' : ''}, {guests.children || 0} Children</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white px-4 py-2 rounded border border-[#D0EBE1] text-sm text-[#006C64] font-medium">
+                  <DoorOpen size={16} />
+                  <span>{roomsBooked} Room{roomsBooked > 1 ? 's' : ''}</span>
+                </div>
+              </div>
+              
+              {(payingGuests > totalCapacity || extraPersonsNeeded > 0) && (
+                <div className="mt-6 p-4 bg-white border border-yellow-200 rounded-md">
+                   <p className="text-sm text-yellow-800 font-medium">Extra Persons: {formData.extraPersons + extraPersonsNeeded}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Payment Method */}
+            <div className="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-200 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <Wallet className="text-[#006C64]" size={24} />
+                <h2 className="text-2xl font-bold font-serif text-gray-900">Payment Method</h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <label className={`cursor-pointer border rounded-md p-5 flex gap-4 ${paymentMethod === 'stripe' ? 'border-[#006C64] bg-[#F7FBF9]' : 'border-gray-200 hover:border-gray-300'}`}>
+                   <input type="radio" name="paymentMethod" value="stripe" checked={paymentMethod === 'stripe'} onChange={() => setPaymentMethod('stripe')} className="mt-1 w-4 h-4 text-[#006C64] focus:ring-[#006C64]" />
+                   <div className="w-full">
+                     <div className="flex justify-between items-center w-full mb-2">
+                       <span className="font-semibold text-gray-900 text-sm">Pay Online (Card)</span>
+                       <CreditCard size={18} className="text-gray-400" />
+                     </div>
+                     <p className="text-xs text-gray-500">Instant confirmation via secure payment gateway.</p>
+                   </div>
+                </label>
+
+                <label className={`cursor-pointer border rounded-md p-5 flex gap-4 ${paymentMethod === 'cod' ? 'border-[#006C64] bg-[#F7FBF9]' : 'border-gray-200 hover:border-gray-300'}`}>
+                   <input type="radio" name="paymentMethod" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="mt-1 w-4 h-4 text-[#006C64] focus:ring-[#006C64]" />
+                   <div className="w-full">
+                     <div className="flex justify-between items-center w-full mb-2">
+                       <span className="font-semibold text-gray-900 text-sm">Pay at Desk (Cash)</span>
+                       <Banknote size={18} className="text-gray-400" />
+                     </div>
+                     <p className="text-xs text-gray-500">Hold your room with card, pay on arrival.</p>
+                   </div>
+                </label>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 text-red-700 text-sm mb-6">
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 bg-[#F39C49] hover:bg-[#e08c3c] text-black font-bold text-lg rounded-md transition-colors"
+              >
+                {loading
+                  ? "Processing..."
+                  : `Confirm & Pay $${total}`}
+              </button>
+              
+              <p className="text-[10px] text-gray-500 mt-4 text-center">
+                By clicking confirm & pay, you agree to our <Link to="/terms" className="underline hover:text-gray-700">terms and conditions</Link> and <Link to="/privacy-policy" className="underline hover:text-gray-700">privacy policy</Link>.
+              </p>
+            </div>
+          </form>
+
+          {/* SIDEBAR SECTION */}
+          <div className="lg:col-span-1 space-y-6">
+            
+            {/* Summary Card */}
+            <div className="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-200 overflow-hidden">
+              <img
+                src={property?.images?.[0] || property?.image || "https://via.placeholder.com/600x400"}
+                alt="Property"
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-2xl font-bold font-serif text-gray-900 capitalize">{roomType} Room</h3>
+                  <div className="flex items-center gap-1 text-sm font-semibold text-[#8B5E34]">
+                    <Star size={14} fill="currentColor" stroke="none" />
+                    <span>{property?.rating || "5.0"}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mb-6 pb-6 border-b border-gray-100 uppercase tracking-widest">{property?.title || "Plains Motor Inn"}</p>
+
+                <div className="space-y-4 mb-8">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-gray-500 uppercase tracking-widest">Check-in</span>
+                    <span className="font-semibold text-gray-900">{formatDate(checkIn)}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-gray-500 uppercase tracking-widest">Check-out</span>
+                    <span className="font-semibold text-gray-900">{formatDate(checkOut)}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-gray-500 uppercase tracking-widest">Total Guests</span>
+                    <span className="font-semibold text-gray-900">{totalGuests} Guest{totalGuests !== 1 ? 's' : ''}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-gray-500 uppercase tracking-widest">Room Type</span>
+                    <span className="font-semibold text-gray-900 capitalize">{roomsBooked === 1 ? 'Single' : 'Multiple'} {roomType}</span>
+                  </div>
+                </div>
+
+                <div className="bg-[#F8F9F8] rounded-md p-5 border border-gray-100">
+                  <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Price Breakdown</h4>
+                  <div className="space-y-3 text-sm text-gray-600 border-b border-gray-200 pb-4 mb-4">
+                    <div className="flex justify-between">
+                      <span>${nightlyPrice} × {nights} night{nights > 1 ? 's' : ''}</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    {extraPersonFee > 0 && (
+                      <div className="flex justify-between">
+                        <span>Extra persons</span>
+                        <span>${extraPersonFee.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {smokingFee > 0 && (
+                      <div className="flex justify-between">
+                        <span>Smoking room</span>
+                        <span>${smokingFee.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {petFee > 0 && (
+                      <div className="flex justify-between">
+                        <span>Pet fee</span>
+                        <span>${petFee.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Taxes</span>
+                      <span>${tax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tourism Levy</span>
+                      <span>${tourismLevy.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-end">
+                    <span className="text-xl font-bold font-serif text-gray-900">Total</span>
+                    <div className="text-right flex items-end gap-1">
+                      <span className="text-3xl font-bold text-[#006C64] leading-none">${total}</span>
+                      <span className="text-[10px] font-bold text-gray-500 mb-1">CAD</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-3 border-t pt-4 text-sm text-gray-700">
-              <div className="flex justify-between">
-                <span>Check-in</span>
-                <span className="font-medium text-gray-900">
-                  {formatDate(checkIn)}
-                </span>
+            {/* Help Box */}
+            <div className="bg-[#EEF1F0] rounded-xl p-5 flex items-center gap-4 border border-gray-200">
+              <div className="bg-[#DCE6E3] p-3 rounded-full text-[#006C64]">
+                <HeadphonesIcon size={20} />
               </div>
-              <div className="flex justify-between">
-                <span>Check-out</span>
-                <span className="font-medium text-gray-900">
-                  {formatDate(checkOut)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Total Guests</span>
-                <span className="font-medium text-gray-900">
-                  {totalGuests} guest{totalGuests !== 1 ? "s" : ""} (
-                  {payingGuests} paying)
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Room Type</span>
-                <span className="font-medium text-gray-900 capitalize">
-                  {roomType}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Rooms</span>
-                <span className="font-medium text-gray-900">
-                  {roomsBooked} room{roomsBooked !== 1 ? "s" : ""}
-                </span>
+              <div>
+                <p className="text-[13px] font-bold text-gray-900">Need help with booking?</p>
+                <p className="text-[11px] text-gray-600">Call our concierge: 403-742-3491</p>
               </div>
             </div>
-          </div>
 
-          <div className="bg-gray-50 p-6">
-            <h4 className="font-bold text-lg mb-4">Price breakdown</h4>
-            <div className="space-y-2 text-sm text-gray-700">
-              <div className="flex justify-between">
-                <span>
-                  ${nightlyPrice} × {nights} night{nights > 1 ? "s" : ""} ×{" "}
-                  {roomsBooked} room{roomsBooked > 1 ? "s" : ""}
-                </span>
-                <span className="font-medium text-gray-900">${subtotal}</span>
-              </div>
-              {extraPersonFee > 0 && (
-                <div className="flex justify-between">
-                  <span>
-                    Extra person charge (
-                    {formData.extraPersons + extraPersonsNeeded} × $
-                    {extraPersonCharge})
-                  </span>
-                  <span className="font-medium text-gray-900">
-                    ${extraPersonFee}
-                  </span>
-                </div>
-              )}
-              {smokingFee > 0 && (
-                <div className="flex justify-between">
-                  <span>Smoking room charge</span>
-                  <span className="font-medium text-gray-900">
-                    ${smokingFee}
-                  </span>
-                </div>
-              )}
-              {petFee > 0 && (
-                <div className="flex justify-between">
-                  <span>
-                    Pet fee ({formData.pets} × ${petFeePerPet})
-                  </span>
-                  <span className="font-medium text-gray-900">${petFee}</span>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span>Taxes</span>
-                <span className="font-medium text-gray-900">${tax}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tourism Levy tax</span>
-                <span className="font-medium text-gray-900">
-                  ${tourismLevy}
-                </span>
-              </div>
-              <div className="border-t pt-3 flex justify-between text-base font-bold text-gray-900">
-                <span>Total</span>
-                <span>${total} CAD</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

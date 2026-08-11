@@ -71,7 +71,7 @@ const Gallery = () => {
     <div className="w-full bg-gray-50">
       <section className="max-w-7xl mx-auto p-6">
         <h2 className="text-3xl font-bold text-center mb-8 tracking-wide">
-          <span className="Text">P</span>lans <span className="Text-M">M</span>otor <span className="Text-o">I</span>nn
+          <span className="Text">Plains</span> <span className="Text-M">Motor</span> <span className="Text-o">Inn</span>
         </h2>
 
         {/* Desktop & Tablet Layout */}

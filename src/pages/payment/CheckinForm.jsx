@@ -16,6 +16,9 @@ export default function UnifiedCheckInAndCheckoutForm({
     countryCode: "+1",
     phone: "",
     specialRequest: "",
+    vehicleType: "",
+    vehicleLength: "",
+    arrivalTime: "",
   });
 
   const [submittedData, setSubmittedData] = useState([]);
@@ -93,6 +96,11 @@ export default function UnifiedCheckInAndCheckoutForm({
           firstname: formData.firstName,
           lastname: formData.lastName,
           phone: formData.phone
+        },
+        vehicleInfo: {
+          type: formData.vehicleType,
+          length: formData.vehicleLength,
+          arrivalTime: formData.arrivalTime,
         },
         totalAmount: total,
         currency: "usd"
@@ -239,6 +247,45 @@ export default function UnifiedCheckInAndCheckoutForm({
             onChange={handleChange}
             placeholder="Accessibility needs or special requests (optional)"
             className="w-full px-4 py-3 border rounded min-h-[100px]"
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <select
+              name="vehicleType"
+              value={formData.vehicleType}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded bg-white"
+            >
+              <option value="">Select vehicle type</option>
+              <option value="car">Car / SUV</option>
+              <option value="pickup">Pickup Truck</option>
+              <option value="semi">Semi-Truck</option>
+              <option value="rv">RV / Motorhome</option>
+              <option value="none">No Vehicle</option>
+            </select>
+          </div>
+          <div className="flex-1">
+            <input
+              type="text"
+              name="vehicleLength"
+              value={formData.vehicleLength}
+              onChange={handleChange}
+              placeholder="Truck/Trailer Length (e.g. 53 ft)"
+              className="w-full px-4 py-3 border rounded"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1 text-gray-700">Expected Arrival Time</label>
+          <input
+            type="time"
+            name="arrivalTime"
+            value={formData.arrivalTime}
+            onChange={handleChange}
+            className="w-full md:w-1/2 px-4 py-3 border rounded"
           />
         </div>
 

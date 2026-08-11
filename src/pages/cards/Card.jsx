@@ -79,7 +79,7 @@ const CardSlider = () => {
             {item.isSmokingAllowed ? "Smoking Allowed" : "Non-smoking"}
           </p>
           <p className="text-sm text-gray-700">
-            {item.price} CAD for 1 night • ★ {item.rating}
+            ${item.price} for 1 night • ★ {item.rating}
           </p>
           {!item.inStock && (
             <p className="text-xs text-red-600 font-semibold mt-1">

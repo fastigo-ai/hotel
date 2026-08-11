@@ -21,7 +21,7 @@ const UserMenu = () => {
   return (
     <div className="relative">
       <FaRegUserCircle
-        className="text-2xl text-gray-900 cursor-pointer"
+        className="text-3xl text-gray-900 cursor-pointer"
         onClick={() => setDropdownOpen(!dropdownOpen)}
       />
       {dropdownOpen && (

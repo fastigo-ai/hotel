@@ -1,154 +1,54 @@
-// src/Footer.js
-
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../App.css";
-const Footer = () => {
+import Logo from "../../assets/logo/Logo13.png";
+
+export default function Footer() {
   return (
-    <footer className="bg-gray-50 border-t border-gray-200">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between px-4 max-w-7xl pt-12 pb-10">
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-semibold text-blue-700">
-            <span className="Text">P</span>lains{" "}
-            <span className="Text-M">M</span>otors{" "}
-            <span className="Text-o">I</span>NN
-          </h4>
-          <ul className="mt-4 space-y-3.5">
-            <li>
-              <Link to="/about" className="text-blue-600">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to="/Careers" className="text-blue-600">
-                Jobs
-              </Link>
-            </li>
-            <li>
-              <Link to="/Partner" className="text-blue-600">
-                Partnerships
-              </Link>
-            </li>
-            <li>
-              <Link to="/news" className="text-blue-600">
-                Newsroom
-              </Link>
-            </li>
-            <li>
-              <Link to="/advertise" className="text-blue-600">
-                Advertising
-              </Link>
-            </li>
-            <li>
-              <Link to="/affiliate" className="text-blue-600">
-                Affiliate Marketing
-              </Link>
-            </li>
-            <li>
-              <Link to="/feedback" className="text-blue-600">
-                Feedback
-              </Link>
-            </li>
+    <footer className="bg-[#4BA9A2] text-black pt-16 pb-20">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        {/* Column 1: Logo & Links */}
+        <div>
+          <Link to="/" className="inline-block mb-6">
+            <img src={Logo} alt="Plains Motor Inn Logo" className="h-10 w-auto object-contain" />
+          </Link>
+          <ul className="space-y-4">
+            <li><Link to="/about" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">About</Link></li>
+            <li><Link to="/contact" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Contact</Link></li>
+            <li><Link to="/hotel-card" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Rooms & Rates</Link></li>
           </ul>
         </div>
 
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-semibold text-blue-700">Explore</h4>
-          <ul className="mt-4 space-y-3.5">
-            <li>
-              <a
-                href="https://www.stettler.net/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600"
-              >
-                Town of Stettler
-              </a>
-            </li>
-
-            <li>
-              <Link to="/travelGuide" className="text-blue-600">
-                Canada Travel Guide
-              </Link>
-            </li>
-            <li>
-              <Link to="/MotelsInCanada" className="text-blue-600">
-                Motels in Canada
-              </Link>
-            </li>
-            <li>
-              <Link to="/vacationRentals" className="text-blue-600">
-                Vacation Rentals in Canada
-              </Link>
-            </li>
-            <li>
-              <Link to="/comparisonTable" className="text-blue-600">
-                Vacation packages in Canada
-              </Link>
-            </li>
-            <li>
-              <Link to="/domestic-Flights-Guide" className="text-blue-600">
-                Domestic flights
-              </Link>
-            </li>
-            <li>
-              <Link to="/car-rentalGuide" className="text-blue-600">
-                Car rentals in Canada
-              </Link>
-            </li>
-            <li>
-              <Link to="/accommodationGuide" className="text-blue-600">
-                All accommodation types
-              </Link>
-            </li>
+        {/* Column 2: Explore */}
+        <div>
+          <h3 className="font-bold text-black text-lg mb-6">Explore</h3>
+          <ul className="space-y-4">
+            <li><a href="https://www.stettler.net" target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Town of Stettler</a></li>
+            <li><Link to="/hotel-card" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Rooms</Link></li>
+            <li><Link to="/gallery" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Gallery</Link></li>
           </ul>
         </div>
 
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-semibold text-blue-700">Policies</h4>
-          <ul className="mt-4 space-y-3.5">
-            <li>
-              <Link to="/privacy-policy" className="text-blue-600">
-                Privacy
-              </Link>
-            </li>
-            <li>
-              <Link to="/cookies" className="text-blue-600">
-                Cookies
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/terms" className="text-blue-600">
-                Plains & Motors terms and conditions
-              </Link>
-            </li>
-            <li>
-              <Link to="/accessibility" className="text-blue-600">
-                Accessibility
-              </Link>
-            </li>
+        {/* Column 3: Policies */}
+        <div>
+          <h3 className="font-bold text-black text-lg mb-6">Policies</h3>
+          <ul className="space-y-4">
+            <li><Link to="/privacy-policy" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Terms & Conditions</Link></li>
+            <li><Link to="/cookies" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Cookies</Link></li>
           </ul>
         </div>
 
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-semibold text-blue-700">Help</h4>
-          <ul className="mt-4 space-y-3.5">
-            <li>
-              <Link to="/contact" className="text-blue-600">
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link to="/refund-policy" className="text-blue-600">
-                Refund basics
-              </Link>
-            </li>
+        {/* Column 4: Help */}
+        <div>
+          <h3 className="font-bold text-black text-lg mb-6">Help</h3>
+          <ul className="space-y-4">
+            <li><Link to="/contact" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Support</Link></li>
+            <li><Link to="/accessibility" className="text-[13px] font-medium text-black/90 hover:text-black hover:underline">Accessibility</Link></li>
           </ul>
         </div>
+
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

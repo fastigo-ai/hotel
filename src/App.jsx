@@ -60,7 +60,6 @@ const router = createBrowserRouter([
         path: "/carddetails/:id",
         element: <CardDetails />,
       },
-
       {
         path: "/confirm",
         element: <Confirm />,
