@@ -75,17 +75,7 @@ const Contact = () => {
             </div>
 
             {/* Front Desk Hours */}
-            <div className="bg-[#E8B923]/10 rounded-xl p-8 border border-[#E8B923]/30 flex items-start gap-4">
-              <div className="bg-[#E8B923]/20 p-4 rounded-full text-[#b38e1b]">
-                <FaClock className="text-2xl" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">Front Desk</h3>
-                <p className="text-gray-700 font-medium">
-                  Available 24/7 for your convenience.
-                </p>
-              </div>
-            </div>
+            
 
           </div>
 

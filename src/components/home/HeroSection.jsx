@@ -4,7 +4,7 @@ import heroBg from "../../assets/card Image/plainsmotorinn.jpeg";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-[600px] md:h-[700px] w-full flex items-center bg-gray-900">
+    <section className="relative h-[700px] md:h-[850px] w-full flex items-center bg-gray-900">
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -14,7 +14,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row justify-start items-center mt-20 md:mt-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row justify-start items-center mt-36 md:mt-0">
         
         {/* Left Content */}
         <div className="text-white max-w-lg mb-10 md:mb-0 space-y-6">

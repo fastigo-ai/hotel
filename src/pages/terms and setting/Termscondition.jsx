@@ -132,7 +132,7 @@ const TermsAndConditions = () => {
                 "Free parking (including large trucks)",
                 "Cable TV",
                 "Microwave and fridge in all rooms",
-                "24/7 front desk assistance",
+                
                 "Friendly staff always ready to help"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-3">

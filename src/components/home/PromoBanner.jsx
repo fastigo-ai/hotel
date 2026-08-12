@@ -24,9 +24,7 @@ export default function PromoBanner() {
             Ample space for large vehicles with easy access and peace of mind. We understand the needs of professional drivers and travelers towing equipment.
           </p>
           <div className="pt-4">
-            <Link to="/amenities" className="inline-block bg-[#F39C49] hover:bg-[#e08c3c] text-black font-bold py-3 px-8 rounded-sm transition-colors uppercase tracking-wide text-xs sm:text-sm">
-              Learn More
-            </Link>
+            
           </div>
         </div>
       </div>

@@ -4,8 +4,8 @@ import Logo from "../../assets/logo/Logo13.png";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#4BA9A2] text-black pt-16 pb-20">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-[#4BA9A2]/20 text-black pt-16 pb-20">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
         
         {/* Column 1: Logo & Links */}
         <div>

@@ -33,7 +33,7 @@ export default function WhyChooseUs() {
           Why Guests <span className="text-[#4BA9A2]">Choose Us</span>
         </h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {features.map((feature, index) => (
             <FeatureCard 
               key={index}
