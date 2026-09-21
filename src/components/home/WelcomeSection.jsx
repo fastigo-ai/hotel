@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import no1 from "../../assets/card Image/no1.png";
 import "../../App.css";
 import { FaBed, FaMapMarkerAlt, FaHandshake, FaCalendarAlt } from "react-icons/fa";
+import { getPropertyCards } from "../../api/Api";
 
 export default function WelcomeSection() {
+  const [lowestPrice, setLowestPrice] = useState(98);
+
+  useEffect(() => {
+    const fetchLowestPrice = async () => {
+      try {
+        const data = await getPropertyCards();
+        if (data && data.length > 0) {
+          const min = Math.min(...data.map(room => Number(room.price) || Infinity));
+          if (min !== Infinity) {
+            setLowestPrice(min);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch property cards for welcome section:", error);
+      }
+    };
+    fetchLowestPrice();
+  }, []);
+
   const benefits = [
     {
       title: "Clean & Quiet Rooms",
@@ -81,7 +101,7 @@ export default function WelcomeSection() {
             <p className="text-gray-600 font-medium mb-1">Rates from</p>
             <div className="flex items-baseline gap-1 text-[#4BA9A2] mb-3">
               <span className="text-3xl font-medium">$</span>
-              <span className="text-6xl font-serif font-bold">98</span>
+              <span className="text-6xl font-serif font-bold">{lowestPrice}</span>
               <span className="text-lg text-gray-600">/night</span>
             </div>
             <p className="text-sm font-medium text-gray-500 flex items-center gap-2">
