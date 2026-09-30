@@ -86,18 +86,21 @@ const CardDetails = () => {
   }
   if (!property) return <p className="px-4">Property not found.</p>;
 
+  // Fallback if images array is missing
+  const propertyImages = property.images?.length > 0 ? property.images : (property.image ? [property.image] : []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 pb-6">
       {/* Desktop Images */}
       <div className="hidden md:grid grid-cols-4 gap-2 h-[500px] my-6">
         <div className="col-span-2 row-span-2">
           <img
-            src={property.images[0]}
+            src={propertyImages[0] || '/placeholder.jpg'}
             alt="Main"
             className="w-full h-full object-cover rounded-xl"
           />
         </div>
-        {property.images.slice(1, 5).map((img, i) => (
+        {propertyImages.slice(1, 5).map((img, i) => (
           <img
             key={i}
             src={img}
@@ -110,7 +113,7 @@ const CardDetails = () => {
 
       {/* Mobile Scrollable Images */}
       <div className="md:hidden flex gap-2 overflow-x-auto snap-x scroll-smooth pb-4 my-6">
-        {property.images.map((img, i) => (
+        {propertyImages.map((img, i) => (
           <img
             key={i}
             src={img}
