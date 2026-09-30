@@ -1,8 +1,8 @@
 import axios from "axios";
 import { signIn } from "../redux/slices/authSlice"
 
-// export const BASE_URL = "https://plains-motor.onrender.com";
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://plains-motor.onrender.com";
+// export const BASE_URL = "http://localhost:3000";
 
 export const LoginWithOtp = async (mobile, setIsLoading) => {
     try {
